@@ -1,3 +1,65 @@
+import { translations } from './translations.js';
+
+// Setup i18n
+window.t = function(key, params = {}) {
+    const lang = localStorage.getItem('dehliz_lang') || 'en';
+    const keys = key.split('.');
+    let translation = translations[lang];
+    for (const k of keys) {
+        if (translation) {
+            translation = translation[k];
+        } else {
+            return key; // Fallback to key itself
+        }
+    }
+    if (!translation) return key;
+    
+    // Replace placeholders like {{name}}
+    Object.keys(params).forEach(pKey => {
+        translation = translation.replace(new RegExp(`{{${pKey}}}`, 'g'), params[pKey]);
+    });
+    return translation;
+};
+
+window.setLanguage = function(lang) {
+    localStorage.setItem('dehliz_lang', lang);
+    window.localizeDOM();
+    
+    // Rerender active page to apply translations to dynamic strings
+    const hash = window.location.hash || '#/';
+    let path = hash.substring(1);
+    if (!path.startsWith('/')) {
+        path = '/' + path;
+    }
+    renderPage(path);
+};
+
+window.localizeDOM = function() {
+    // Translate standard elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const attr = el.getAttribute('data-i18n-attr');
+        if (attr) {
+            el.setAttribute(attr, window.t(key));
+        } else {
+            el.innerHTML = window.t(key);
+        }
+    });
+
+    // Update active language switcher UI
+    const currentLang = localStorage.getItem('dehliz_lang') || 'en';
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        if (btn.getAttribute('data-lang') === currentLang) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    // Set HTML lang attribute
+    document.documentElement.lang = currentLang;
+};
+
 /**
  * DEHLIZ Website Application Engine
  * Implements client-side Routing, CMS-Ready Data Architecture,
@@ -150,197 +212,103 @@ const DEHLIZ_DATA = {
     resources: [
         {
             id: 'r1',
-            title: 'Understanding Women\'s Inheritance Under Islamic Jurisprudence',
-            category: 'Rights in Islam',
-            type: 'Guide',
-            date: '2026-05-15',
-            summary: 'A detailed walkthrough of property rights, inheritance fractions, and economic independence structures provided to women in traditional Islamic law.',
-            content: 'Islamic law establishes clear property and economic rights for women, separate from their male relatives. This comprehensive guide outlines the specific provisions, references from historical jurisprudence, and modern applications.'
-        },
-        {
-            id: 'r2',
-            title: 'A Guide to the Protection of Women from Domestic Violence Act, 2005',
-            category: 'Indian Law',
-            type: 'Publication',
-            date: '2026-04-10',
-            summary: 'An accessibility-focused overview of the legal protections, definitions of abuse, protection orders, and how to file a domestic incident report under Indian law.',
-            content: 'Understanding your legal remedies is the first step toward safety. The Domestic Violence Act of 2005 offers civil protection orders, residence orders, and monetary relief. This publication explains how the law works and step-by-step procedures for seeking aid.'
-        },
-        {
-            id: 'r3',
-            title: 'Annual Social Impact and Community Support Report',
-            category: 'Publications',
-            type: 'Report',
-            date: '2026-01-20',
-            summary: 'Our annual review detailing outreach statistics, workshop counts, and strategic goals for support and legal awareness.',
-            content: 'This document compiles the quantitative metrics and qualitative frameworks used by DEHLIZ during the previous fiscal year to promote rights education and safety networks across target communities.'
-        },
-        {
-            id: 'r4',
-            title: 'Empowerment Through Education: Empowering Local Community Leaders',
-            category: 'Blog',
-            type: 'Article',
-            date: '2026-07-02',
-            summary: 'A feature article on our latest training program for female community leaders in municipal legal resources.',
-            content: 'Training local leaders ensures that legal and spiritual rights knowledge is distributed organically. Last month, we gathered 25 community advocates to discuss mediation frameworks and public assistance directories.'
-        },
-        {
-            id: 'r5',
-            title: 'Rights to Mehr (Dower) & Maintenance: Islamic Law Perspectives',
-            category: 'Rights in Islam',
-            type: 'Guide',
-            date: '2026-03-05',
-            summary: 'Exploring the legal and economic implications of Mehr, maintenance responsibilities, and marriage contracts.',
-            content: 'Mehr is a mandatory payment given by the groom to the bride at the time of marriage, representing her exclusive property. This educational paper details the classifications of Mehr and legal recourse options.'
-        },
-        {
-            id: 'r6',
-            title: 'Know Your Rights: Family Courts and Personal Laws in India',
-            category: 'Indian Law',
-            type: 'Guide',
-            date: '2026-02-12',
-            summary: 'Practical overview of how Family Courts operate in India, procedure timelines, and what to expect during legal proceedings.',
-            content: 'Navigating family courts can be overwhelming. This guide breaks down legal representation rules, reconciliation processes, and rights pertaining to custody and support.'
-        },
-        {
-            id: 'r7',
-            title: 'Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013',
-            category: 'Indian Law',
-            type: 'Act / PDF',
-            date: '2013-12-09',
-            summary: 'The official POSH Act, 2013 outlining prevention, prohibition, and redressal mechanisms against sexual harassment at the workplace.',
-            content: 'The Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013 is a legislative act in India that seeks to protect women from sexual harassment at their place of work. It was passed by the Lok Sabha on 3 September 2012, by the Rajya Sabha on 26 February 2013, and received the assent of the President on 22 April 2013.',
-            pdfUrl: 'https://share.google/n4bQOWPBErWlcscRs'
-        },
-        {
-            id: 'r8',
-            title: 'The National Commission For Minorities Act, 1992',
-            category: 'Indian Law',
-            type: 'Act / PDF',
-            date: '1992-05-17',
-            summary: 'The legal framework establishing the National Commission for Minorities to safeguard the rights and interests of minority communities in India.',
-            content: 'An Act to constitute a National Commission for Minorities and to provide for matters connected therewith or incidental thereto. It mandates the evaluation of progress of minority development under the Union and States.',
-            pdfUrl: 'https://share.google/WuhPq9Xr9EYqQq7TI'
-        },
-        {
-            id: 'r9',
-            title: 'Case Comment: TMA Pai Foundation Vs State of Karnataka, 2002',
-            category: 'Indian Law',
-            type: 'Case Comment / PDF',
-            date: '2002-10-31',
-            summary: 'Analysis of the landmark Supreme Court judgment on the rights of minorities to establish and administer educational institutions under Article 30(1).',
-            content: 'T.M.A. Pai Foundation v. State of Karnataka is a landmark decision of the Supreme Court of India. The Court ruled on the scope of right of minorities to establish and administer educational institutions of their choice under Article 30(1) and Article 19(1)(g) of the Constitution of India.',
-            pdfUrl: 'https://share.google/XjXij4ZRHszOn1pjl'
-        },
-        {
-            id: 'r10',
-            title: 'Islamic Academy Of Education And Others vs State Of Karnataka And Others, 2003',
-            category: 'Indian Law',
-            type: 'Judgment / PDF',
-            date: '2003-08-14',
-            summary: 'Supreme Court judgment clarifying the implementation guidelines of the TMA Pai Foundation verdict on minority institution rights.',
-            content: 'This judgment clarification deals with the regulation of fee structures, admission processes, and seat allocations in minority and non-minority educational institutions under Article 30 of the Constitution.',
-            pdfUrl: 'https://share.google/wdpIqKbsphD8dksoi'
-        },
-        {
-            id: 'r11',
-            title: 'Fatima Sheikh - Wikipedia',
-            category: 'Indian Law',
-            type: 'Biography / PDF',
-            date: '2026-08-30',
-            summary: 'The life and legacy of Fatima Sheikh, one of India\'s first Muslim woman teachers and social reformers working alongside Savitribai Phule.',
-            content: 'Fatima Sheikh was an Indian educator and social reformer, who was a colleague of the social reformers Jyotirao Phule and Savitribai Phule. She is widely regarded as the first Muslim woman teacher in modern India.',
-            pdfUrl: 'https://share.google/HZpPVBarPbXeP2R0q'
-        },
-        {
-            id: 'r12',
-            title: 'Shabnam Hashmi vs. Union of India & Ors. (2014)',
-            category: 'Indian Law',
-            type: 'Judgment / PDF',
-            date: '2014-02-19',
-            summary: 'Supreme Court ruling establishing the right to adopt children under the Juvenile Justice Act as a fundamental right transcending personal laws.',
-            content: 'In this landmark case, the Supreme Court of India held that prospective adoptive parents have the right to adopt a child under the Juvenile Justice (Care and Protection of Children) Act, 2000, irrespective of their personal laws.',
-            pdfUrl: 'https://share.google/Sofdo8MabPzQso44x'
-        },
-        {
-            id: 'r13',
-            title: 'Women & The Law: Legal Awareness Programme',
-            category: 'Indian Law',
-            type: 'Act / PDF',
-            date: '2026-08-30',
-            summary: 'A comprehensive NALSA and NCW training module on constitutional rights, personal laws, labour laws, criminal laws, and reproductive rights for women.',
-            content: 'This training module was created for NALSA resource persons in collaboration with the National Commission for Women (NCW) and All India Reporter. It covers Fundamental Rights, Directive Principles, Family Laws, Labour Laws, and Criminal Law protections.',
-            pdfUrl: 'public/nalsa_women_and_law.pdf'
-        },
-        {
-            id: 'r14',
-            title: 'The Protection of Women from Domestic Violence Act, 2005',
-            category: 'Indian Law',
-            type: 'Act / PDF',
-            date: '2005-09-13',
-            summary: 'The full official text of the Protection of Women from Domestic Violence Act, 2005 outlining legal remedies, duties, and procedures for seeking relief.',
-            content: 'An Act to provide for more effective protection of the rights of women guaranteed under the Constitution who are victims of violence of any kind occurring within the family and for matters connected therewith or incidental thereto.',
-            pdfUrl: 'public/domestic_violence_act_2005.pdf'
-        },
-        {
-            id: 'r15',
-            title: 'Post-Matric Scholarship Scheme for Minority Communities',
-            category: 'Publications',
-            type: 'Act / PDF',
-            date: '2026-08-30',
-            summary: 'Official guidelines and eligibility criteria of the Post-Matric Scholarship scheme for students belonging to minority communities.',
-            content: 'This scheme provides financial assistance for higher secondary, college, and university level studies to students belonging to notified minority communities (Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains). Features 30% earmarking for girl students.',
-            pdfUrl: 'public/post_matric_scholarship.pdf'
-        },
-        {
-            id: 'r16',
-            title: 'Summary of the Sachar Committee Report',
-            category: 'Publications',
-            type: 'Report / PDF',
-            date: '2006-11-30',
-            summary: 'A concise summary of the Prime Minister\'s High Level Committee Report on the social, economic, and educational status of the Muslim community in India.',
-            content: 'Chaired by Justice Rajindar Sachar, this report examines the development deficits among Muslims in India, including literacy rates, employment shares in public sectors, and bank credit access.',
-            pdfUrl: 'public/sachar_committee_report.pdf'
-        },
-        {
-            id: 'r17',
             title: 'The Bharatiya Nyaya Sanhita, 2023',
-            category: 'Indian Law',
+            category: 'Indian Law Protections',
             type: 'Act / PDF',
             date: '2023-12-25',
             summary: 'The official gazetted text of the Bharatiya Nyaya Sanhita, 2023 consolidating and amending general criminal code provisions in India.',
             content: 'An Act to consolidate and amend the provisions relating to offences and for matters connected therewith or incidental thereto, replacing the Indian Penal Code (IPC). It includes chapters on offences against women and children.',
-            pdfUrl: 'public/bharatiya_nyaya_sanhita_2023.pdf'
+            pdfUrl: '/pdfs/250883_english_01042024_copy.pdf'
         },
         {
-            id: 'r18',
-            title: 'Shamim Ara vs State of U.P. & Anr (2002)',
-            category: 'Indian Law',
+            id: 'r2',
+            title: 'Muslim Personal Law Overview',
+            category: 'Rights in Islam',
+            type: 'Word / DOCX',
+            date: '2026-08-30',
+            summary: 'A comprehensive summary of marriage, maintenance, and inheritance rights under traditional Muslim personal laws.',
+            content: 'A summary document outlining rights pertaining to marriage contracts (Nikahnama), dower (Mehr), maintenance, divorce, and succession frameworks under Islamic family laws.',
+            pdfUrl: '/pdfs/Muslimlaw.docx'
+        },
+        {
+            id: 'r3',
+            title: 'NALSA Women & Law Handbook',
+            category: 'Indian Law Protections',
+            type: 'Act / PDF',
+            date: '2026-08-30',
+            summary: 'A training module on constitutional rights, personal laws, labour laws, criminal laws, and reproductive rights for women.',
+            content: 'This handbook was created in collaboration with the National Commission for Women (NCW) and All India Reporter. It covers Fundamental Rights, Directive Principles, and Criminal Law protections.',
+            pdfUrl: '/pdfs/NALSA Women Law.pdf'
+        },
+        {
+            id: 'r4',
+            title: 'NCW - Muslim Womens Rights Booklet',
+            category: 'Rights in Islam',
+            type: 'Manual / PDF',
+            date: '2026-08-30',
+            summary: 'Official National Commission for Women resource guide explaining statutory protections and civil privileges for Muslim women in India.',
+            content: 'A detailed manual published by the National Commission for Women containing verified guidelines on marital rights, Mehr protections, custody, and social security structures.',
+            pdfUrl: '/pdfs/NCW_MUSLIM_Rights_compressed_copy.pdf'
+        },
+        {
+            id: 'r5',
+            title: 'Nai Roshni Leadership Development Scheme',
+            category: 'Research & Briefs',
+            type: 'Scheme Guidelines / PDF',
+            date: '2017-09-23',
+            summary: 'Official guidelines for the "Nai Roshni" scheme focused on confidence building and economic empowerment of minority women.',
+            content: 'Implemented by the Ministry of Minority Affairs, the Nai Roshni scheme aims to empower and instill confidence among minority women by providing training, tools, and knowledge to interact with government systems, banks, and other institutions.',
+            pdfUrl: '/pdfs/Nai Roshni Scheme.pdf'
+        },
+        {
+            id: 'r6',
+            title: 'Minority Students Post-Matric Scholarship Details',
+            category: 'Research & Briefs',
+            type: 'Scheme Guidelines / PDF',
+            date: '2026-08-30',
+            summary: 'Official guidelines and eligibility criteria of the Post-Matric Scholarship scheme for students belonging to minority communities.',
+            content: 'This scheme provides financial assistance for higher secondary, college, and university level studies to students belonging to notified minority communities (Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains). Features 30% earmarking for girl students.',
+            pdfUrl: '/pdfs/SCHEME-OF-POST-MATRIC-SCHOLARSHIP-FOR-STUDENTS-BELONGING-TO-MINORITY-COMMUNITY_copy.pdf'
+        },
+        {
+            id: 'r7',
+            title: 'Shamim Ara vs State of U.P. Landmark Judgement',
+            category: 'Rights in Islam',
             type: 'Judgment / PDF',
             date: '2002-10-01',
             summary: 'Landmark Supreme Court of India judgment clarifying the legal requirements and validity of Talaq (divorce) under Muslim Personal Law.',
             content: 'In this decision, the Supreme Court ruled that a mere plea of previous divorce in a written statement or an affidavit does not by itself dissolve a marriage. For a divorce to be legally valid and effective, the pronouncement of Talaq must be proved with reasonable cause and preceded by attempts at reconciliation.',
-            pdfUrl: 'public/shamim_ara_v_state_of_up.pdf'
+            pdfUrl: '/pdfs/Shamim Ara Vs state of U.P.pdf'
         },
         {
-            id: 'r19',
-            title: 'Guidelines for "Nai Roshni" Scheme (2017)',
-            category: 'Publications',
-            type: 'Scheme Guidelines / PDF',
-            date: '2017-09-23',
-            summary: 'Official guidelines for the "Nai Roshni" scheme, focused on leadership development, confidence building, and economic empowerment of minority women.',
-            content: 'Implemented by the Ministry of Minority Affairs, the Nai Roshni scheme aims to empower and instill confidence among minority women, including their neighbours, by providing training, tools, and knowledge to interact with government systems, banks, and other institutions.',
-            pdfUrl: 'public/nai_roshni_guidelines.pdf'
+            id: 'r8',
+            title: 'Sachar Committee Report Summary',
+            category: 'Research & Briefs',
+            type: 'Report Summary / PDF',
+            date: '2006-11-30',
+            summary: 'A concise summary of the Prime Minister\'s High Level Committee Report on the social, economic, and educational status of the Muslim community in India.',
+            content: 'Chaired by Justice Rajindar Sachar, this report examines the development deficits among Muslims in India, including literacy rates, employment shares in public sectors, and bank credit access.',
+            pdfUrl: '/pdfs/Summary of Sachar Committee Report_copy.pdf'
         },
         {
-            id: 'r20',
-            title: 'Legal Frame Work and Constitutionalism of Wakf (Amendment) Act, 2025',
-            category: 'Indian Law',
-            type: 'Research Paper / PDF',
-            date: '2025-05-01',
-            summary: 'An academic research paper exploring the legal, constitutional, and socio-political dimensions of the Waqf (Amendment) Act, 2025.',
-            content: 'This paper analyzes the principal provisions of the 2025 Waqf Amendment, including the inclusion of non-Muslim members, deletion of the "Waqf by User" provision, increased government oversight, and constitutional concerns regarding religious autonomy under Articles 25 and 26.',
-            pdfUrl: 'public/wakf_amendment_act_2025.pdf'
+            id: 'r9',
+            title: 'Waqf Act Board Rules',
+            category: 'Indian Law Protections',
+            type: 'Act / PDF',
+            date: '1995-11-22',
+            summary: 'The statutory framework regulating Waqf properties, administrative boards, and community asset security in India.',
+            content: 'The primary legislation governing Waqf properties, defining responsibilities, mutations, lease powers, and dispute resolutions under regional Waqf Tribunals.',
+            pdfUrl: '/pdfs/Waqf Act .pdf'
+        },
+        {
+            id: 'r10',
+            title: 'Protection of Women from Domestic Violence Act, 2005',
+            category: 'Indian Law Protections',
+            type: 'Act / PDF',
+            date: '2005-09-13',
+            summary: 'The full official text of the Protection of Women from Domestic Violence Act, 2005 outlining legal remedies, duties, and procedures for seeking relief.',
+            content: 'An Act to provide for more effective protection of the rights of women guaranteed under the Constitution who are victims of violence of any kind occurring within the family and for matters connected therewith or incidental thereto.',
+            pdfUrl: '/pdfs/protection_of_women_from_domestic_violence_act,_2005_copy.pdf'
         }
     ],
 
@@ -606,6 +574,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initRouter();
     setupGlobalEvents();
     initDatabaseData();
+    window.localizeDOM();
 });
 
 // Client-Side Hash Router
@@ -621,6 +590,7 @@ function initRouter() {
         currentRoute = path;
         renderPage(path);
         updateActiveNavLinks(hash);
+        window.localizeDOM();
         window.scrollTo(0, 0);
     };
 
@@ -712,34 +682,49 @@ function renderPage(path) {
 
 function getHomeHtml() {
     // Generate campaigns markup
-    const campaignsHtml = DEHLIZ_DATA.campaigns.map(c => `
+    const campaignsHtml = DEHLIZ_DATA.campaigns.map((c, idx) => {
+        const key = `campaigns.c${idx + 1}`;
+        const title = window.t(`${key}.title`) !== `${key}.title` ? window.t(`${key}.title`) : c.title;
+        const category = window.t(`${key}.category`) !== `${key}.category` ? window.t(`${key}.category`) : c.category;
+        const description = window.t(`${key}.desc`) !== `${key}.desc` ? window.t(`${key}.desc`) : c.description;
+        
+        return `
         <div class="img-card fade-in-section">
             <div class="img-card-media">
-                <img src="${c.image}" alt="${c.title}" loading="lazy">
+                <img src="${c.image}" alt="${title}" loading="lazy">
             </div>
             <div class="img-card-content">
-                <span class="card-meta">${c.category}</span>
-                <h3 class="card-title">${c.title}</h3>
-                <p class="card-text">${c.description}</p>
-                <a href="#/our-work/advocacy" class="card-link">Learn More &rarr;</a>
+                <span class="card-meta">${category}</span>
+                <h3 class="card-title">${title}</h3>
+                <p class="card-text">${description}</p>
+                <a href="#/our-work/advocacy" class="card-link">${window.t('campaigns.learnMore')}</a>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 
     // Generate success stories markup
-    const storiesHtml = DEHLIZ_DATA.successStories.map(s => `
+    const storiesHtml = DEHLIZ_DATA.successStories.map((s, idx) => {
+        const key = `stories.s${idx + 1}`;
+        const badge = window.t(`${key}.badge`) !== `${key}.badge` ? window.t(`${key}.badge`) : s.badge;
+        const quote = window.t(`${key}.quote`) !== `${key}.quote` ? window.t(`${key}.quote`) : s.quote;
+        const author = window.t(`${key}.author`) !== `${key}.author` ? window.t(`${key}.author`) : s.author;
+        const result = window.t(`${key}.result`) !== `${key}.result` ? window.t(`${key}.result`) : s.result;
+
+        return `
         <div class="story-card fade-in-section">
             <div class="story-img-area">
-                <img src="${s.image || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600'}" alt="${s.badge}" loading="lazy" style="object-fit: cover; width: 100%; height: 100%;">
+                <img src="${s.image || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600'}" alt="${badge}" loading="lazy" style="object-fit: cover; width: 100%; height: 100%;">
             </div>
             <div class="story-content-area">
-                <span class="story-badge">${s.badge}</span>
-                <p class="story-quote">${s.quote}</p>
-                <div class="story-author">${s.author}</div>
-                <div class="story-result">${s.result}</div>
+                <span class="story-badge">${badge}</span>
+                <p class="story-quote">${quote}</p>
+                <div class="story-author">${author}</div>
+                <div class="story-result">${result}</div>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 
     // Generate recent resources
     const recentResourcesHtml = DEHLIZ_DATA.resources.slice(0, 3).map(r => `
@@ -786,7 +771,7 @@ function getHomeHtml() {
                     </p>
                     <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(142,112,79,0.08); padding-top: 0.75rem; margin-top: auto;">
                         <span style="font-size: 0.75rem; color: var(--color-text-light); font-weight: 500;">${p.date}</span>
-                        <a href="${p.url}" target="_blank" style="font-size: 0.8rem; font-weight: 700; color: var(--color-bronze); text-decoration: none; display: flex; align-items: center; gap: 4px;">View Post &rarr;</a>
+                        <a href="${p.url}" target="_blank" style="font-size: 0.8rem; font-weight: 700; color: var(--color-bronze); text-decoration: none; display: flex; align-items: center; gap: 4px;">${window.t('social.viewPost')}</a>
                     </div>
                 </div>
             </div>
@@ -803,12 +788,12 @@ function getHomeHtml() {
         <section class="hero bg-beige-section">
             <div class="container grid-2">
                 <div class="hero-content">
-                    <span class="hero-tag" style="font-family: var(--font-logo); text-transform: lowercase; font-size: 1.3rem; color: var(--color-bronze); display: inline-flex; align-items: center; gap: 8px; margin-bottom: 1.5rem;">dehliz <span style="font-size: 9px; color: var(--color-charcoal); line-height: 1;">&hearts;</span> <span style="font-family: var(--font-body); font-size: 0.85rem; letter-spacing: 2px; font-weight: 600;">ek umeed</span></span>
-                    <h1 class="hero-title">Empowering Communities. Protecting Rights.</h1>
-                    <p class="hero-description">We promote awareness, social safety networks, and legal understanding, focusing on women's rights under Indian constitutional law and Islamic jurisprudence.</p>
+                    <span class="hero-tag" style="font-family: var(--font-logo); text-transform: lowercase; font-size: 1.3rem; color: var(--color-bronze); display: inline-flex; align-items: center; gap: 8px; margin-bottom: 1.5rem;">${window.t('hero.tag')}</span>
+                    <h1 class="hero-title">${window.t('hero.title')}</h1>
+                    <p class="hero-description">${window.t('hero.desc')}</p>
                     <div class="hero-actions">
-                        <a href="#/our-work" class="btn btn-primary">Get Support</a>
-                        <a href="#/donate" class="btn btn-secondary">Support Our Work</a>
+                        <a href="#/our-work" class="btn btn-primary">${window.t('hero.actions.getSupport')}</a>
+                        <a href="#/donate" class="btn btn-secondary">${window.t('hero.actions.donate')}</a>
                     </div>
                 </div>
             </div>
@@ -824,52 +809,49 @@ function getHomeHtml() {
         <section class="container">
             <div class="logo-anchor-card" style="overflow: hidden; background: transparent; border: none; box-shadow: none;">
                 <video src="vid.mp4" autoplay loop muted playsinline style="width: 100%; height: auto; max-width: 180px; display: block; margin: 0 auto; border-radius: 8px;"></video>
-                <h2 style="font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 1.5rem; color: var(--color-charcoal);">Our Foundation & Trust</h2>
+                <h2 style="font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 1.5rem; color: var(--color-charcoal);">${window.t('footer.explore')}</h2>
                 <p style="max-width: 800px; margin: 0 auto 1.5rem auto; font-size: 1.15rem; color: var(--color-text-dark); font-weight: 500;">
-                    DEHLIZ (meaning 'threshold' or 'doorstep') symbolizes the safe boundary between struggle and empowerment, guiding families and individuals into safe, informed, and dignified lives.
-                </p>
-                <p style="max-width: 700px; margin: 0 auto; font-size: 0.95rem;">
-                    Our commitment blends rigorous legal advocacy under Indian statutes with a faithful understanding of marital and financial rights granted within Islamic tradition.
+                    ${window.t('footer.desc')}
                 </p>
             </div>
             
             <div class="grid-2" style="margin-top: 4rem;">
                 <div>
-                    <span class="section-tag">WHO WE ARE</span>
-                    <h2 class="section-title">Turning Awareness into Action</h2>
-                    <p style="margin-bottom: 2rem; font-size: 1.1rem; font-weight: 500;">Our work focuses on turning awareness into action through four key areas:</p>
+                    <span class="section-tag">${window.t('whoWeAre.tag')}</span>
+                    <h2 class="section-title">${window.t('whoWeAre.title')}</h2>
+                    <p style="margin-bottom: 2rem; font-size: 1.1rem; font-weight: 500;">${window.t('whoWeAre.subtitle')}</p>
                     
                     <ul style="list-style: none; padding: 0; margin: 0 0 2.5rem 0; display: flex; flex-direction: column; gap: 1.25rem;">
                         <li style="display: flex; gap: 1rem; align-items: flex-start;">
                             <span style="font-weight: 700; color: var(--color-text-white); background: var(--color-bronze); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; font-size: 0.95rem;">1</span>
                             <div>
-                                <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">Education & Literacy</strong>
-                                <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">Promoting access to education, digital literacy and learning opportunities for Muslim girls and women.</span>
+                                <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">${window.t('whoWeAre.point1.title')}</strong>
+                                <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">${window.t('whoWeAre.point1.desc')}</span>
                             </div>
                         </li>
                         <li style="display: flex; gap: 1rem; align-items: flex-start;">
                             <span style="font-weight: 700; color: var(--color-text-white); background: var(--color-bronze); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; font-size: 0.95rem;">2</span>
                             <div>
-                                <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">Livelihoods & Employment</strong>
-                                <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">Supporting Muslim women with skills, employment opportunities, entrepreneurship and pathways towards economic independence.</span>
+                                <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">${window.t('whoWeAre.point2.title')}</strong>
+                                <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">${window.t('whoWeAre.point2.desc')}</span>
                             </div>
                         </li>
                         <li style="display: flex; gap: 1rem; align-items: flex-start;">
                             <span style="font-weight: 700; color: var(--color-text-white); background: var(--color-bronze); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; font-size: 0.95rem;">3</span>
                             <div>
-                                <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">Legal Literacy & Access to Justice</strong>
-                                <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">Creating awareness about constitutional rights, laws, government support systems and available legal assistance.</span>
+                                <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">${window.t('whoWeAre.point3.title')}</strong>
+                                <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">${window.t('whoWeAre.point3.desc')}</span>
                             </div>
                         </li>
                         <li style="display: flex; gap: 1rem; align-items: flex-start;">
                             <span style="font-weight: 700; color: var(--color-text-white); background: var(--color-bronze); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; font-size: 0.95rem;">4</span>
                             <div>
-                                <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">Social Awareness & Empowerment</strong>
-                                <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">Starting conversations around issues affecting Muslim women and creating platforms where their voices, experiences and achievements can be recognised.</span>
+                                <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">${window.t('whoWeAre.point4.title')}</strong>
+                                <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">${window.t('whoWeAre.point4.desc')}</span>
                             </div>
                         </li>
                     </ul>
-                    <a href="#/about" class="btn btn-secondary">Read Our Full Story &rarr;</a>
+                    <a href="#/about" class="btn btn-secondary">${window.t('whoWeAre.btn')}</a>
                 </div>
                 <div>
                     <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&q=80&w=800" alt="Empowered Community Gathering" style="border: 1px solid rgba(142, 112, 79, 0.2); padding: 8px; background: var(--color-cream);" loading="lazy">
@@ -881,8 +863,8 @@ function getHomeHtml() {
         <section class="banner-slider-section bg-beige-section">
             <div class="container">
                 <div class="section-header text-center" style="margin-bottom: 2rem;">
-                    <span class="section-tag">SOCIAL MEDIA FEED</span>
-                    <h2 class="section-title">Latest Updates & Posts</h2>
+                    <span class="section-tag">${window.t('social.tag')}</span>
+                    <h2 class="section-title">${window.t('social.title')}</h2>
                 </div>
                 
                 <div class="slider-wrapper" style="position: relative; max-width: 1200px; margin: 0 auto; overflow: hidden; padding: 1rem 0;">
@@ -940,28 +922,28 @@ function getHomeHtml() {
         <!-- Three Core Work Verticals -->
         <section class="container">
             <div class="section-header">
-                <span class="section-tag">OUR WORK AREAS</span>
-                <h2 class="section-title">What We Do</h2>
-                <p class="section-subtitle">Three pillars focused on safety, education, advocacy and legal assistance pathways.</p>
+                <span class="section-tag">${window.t('home.whatWeDo.tag')}</span>
+                <h2 class="section-title">${window.t('home.whatWeDo.title')}</h2>
+                <p class="section-subtitle">${window.t('home.whatWeDo.subtitle')}</p>
             </div>
             <div class="grid-3">
                 <div class="card">
                     <div class="card-icon">&sect;</div>
-                    <h3 class="card-title">Support Services</h3>
-                    <p class="card-text">Confidential legal aid referrals, emotional counselling channels, and safety advice directories for women seeking safety.</p>
-                    <a href="#/our-work/support-services" class="card-link">Explore Support &rarr;</a>
+                    <h3 class="card-title">${window.t('home.whatWeDo.card1.title')}</h3>
+                    <p class="card-text">${window.t('home.whatWeDo.card1.desc')}</p>
+                    <a href="#/our-work/support-services" class="card-link">${window.t('home.whatWeDo.card1.btn')} &rarr;</a>
                 </div>
                 <div class="card">
                     <div class="card-icon">&amp;</div>
-                    <h3 class="card-title">Community Initiatives</h3>
-                    <p class="card-text">Local legal awareness workshops, education programs, and community-led mutual support systems.</p>
-                    <a href="#/our-work/community-initiatives" class="card-link">Explore Initiatives &rarr;</a>
+                    <h3 class="card-title">${window.t('home.whatWeDo.card2.title')}</h3>
+                    <p class="card-text">${window.t('home.whatWeDo.card2.desc')}</p>
+                    <a href="#/our-work/community-initiatives" class="card-link">${window.t('home.whatWeDo.card2.btn')} &rarr;</a>
                 </div>
                 <div class="card">
                     <div class="card-icon">&#9878;</div>
-                    <h3 class="card-title">Advocacy & Reforms</h3>
-                    <p class="card-text">Campaigning for women's legal protection, advocating for fair family law interpretations, and conducting rights research.</p>
-                    <a href="#/our-work/advocacy" class="card-link">Explore Advocacy &rarr;</a>
+                    <h3 class="card-title">${window.t('home.whatWeDo.card3.title')}</h3>
+                    <p class="card-text">${window.t('home.whatWeDo.card3.desc')}</p>
+                    <a href="#/our-work/advocacy" class="card-link">${window.t('home.whatWeDo.card3.btn')} &rarr;</a>
                 </div>
             </div>
         </section>
@@ -969,11 +951,11 @@ function getHomeHtml() {
         <!-- Support emergency notice CTA banner -->
         <section class="cta-banner bg-charcoal-section">
             <div class="cta-banner-content">
-                <h2 class="text-gold">Need support or rights resources?</h2>
-                <p>Access our community helpline directory, download educational manuals, or connect with our intake coordinators.</p>
+                <h2 class="text-gold">${window.t('forms.contact.title')}</h2>
+                <p>${window.t('forms.contact.desc')}</p>
                 <div class="cta-banner-actions">
-                    <a href="#/our-work" class="btn btn-outline-gold">Helplines Directory</a>
-                    <a href="#/resources" class="btn btn-primary" style="background-color: var(--color-bronze); color: white;">Rights Library</a>
+                    <a href="#/our-work" class="btn btn-outline-gold">${window.t('forms.contact.helplines')}</a>
+                    <a href="#/resources" class="btn btn-primary" style="background-color: var(--color-bronze); color: white;">${window.t('forms.contact.library')}</a>
                 </div>
             </div>
         </section>
@@ -981,9 +963,9 @@ function getHomeHtml() {
         <!-- Featured Campaigns -->
         <section class="container">
             <div class="section-header">
-                <span class="section-tag">ACTIVE CAMPAIGNS</span>
-                <h2 class="section-title">Current Advocacy Campaigns</h2>
-                <p class="section-subtitle">Discover our active community programs focused on legal education and social support.</p>
+                <span class="section-tag">${window.t('campaigns.tag')}</span>
+                <h2 class="section-title">${window.t('campaigns.title')}</h2>
+                <p class="section-subtitle">${window.t('campaigns.subtitle')}</p>
             </div>
             <div class="grid-3">
                 ${campaignsHtml}
@@ -994,15 +976,15 @@ function getHomeHtml() {
         <section class="bg-beige-section">
             <div class="container">
                 <div class="section-header">
-                    <span class="section-tag">RESOURCES & GUIDES</span>
-                    <h2 class="section-title">Featured Legal & Jurisprudential Guides</h2>
-                    <p class="section-subtitle">Education is empowerment. Access clear, reviewed guides concerning your rights.</p>
+                    <span class="section-tag">${window.t('home.resources.tag')}</span>
+                    <h2 class="section-title">${window.t('home.resources.title')}</h2>
+                    <p class="section-subtitle">${window.t('home.resources.subtitle')}</p>
                 </div>
                 <div class="grid-3">
                     ${recentResourcesHtml}
                 </div>
                 <div class="text-center" style="margin-top: 3.5rem;">
-                    <a href="#/resources" class="btn btn-primary">Browse All Resources</a>
+                    <a href="#/resources" class="btn btn-primary">${window.t('home.resources.btn')}</a>
                 </div>
             </div>
         </section>
@@ -1010,18 +992,18 @@ function getHomeHtml() {
         <!-- Homepage Events Section -->
         <section class="container">
             <div class="section-header">
-                <span class="section-tag">UPCOMING PROGRAMS</span>
-                <h2 class="section-title">Events & Seminars</h2>
-                <p class="section-subtitle">Join our active workshops and webinars to learn about constitutional protections and community solidarity.</p>
+                <span class="section-tag">${window.t('events.tag')}</span>
+                <h2 class="section-title">${window.t('events.title')}</h2>
+                <p class="section-subtitle">${window.t('events.desc')}</p>
             </div>
             <div class="grid-2">
                 ${DEHLIZ_DATA.events.map(e => `
                     <div class="card">
                         <span class="card-meta">${e.date}</span>
                         <h3 class="card-title">${e.title}</h3>
-                        <div style="font-size: 0.85rem; color: var(--color-bronze); font-weight: 700; margin-bottom: 1.0rem;">Location: ${e.location}</div>
+                        <div style="font-size: 0.85rem; color: var(--color-bronze); font-weight: 700; margin-bottom: 1.0rem;">${window.t('events.location', {loc: e.location})}</div>
                         <p class="card-text">${e.description}</p>
-                        <a href="#/join-us" class="card-link" onclick="focusVolunteerForm('${e.title}')">Register Attendance &rarr;</a>
+                        <a href="#/join-us" class="card-link" onclick="focusVolunteerForm('${e.title}')">${window.t('events.register')}</a>
                     </div>
                 `).join('')}
             </div>
@@ -1034,13 +1016,13 @@ function getHomeHtml() {
                     <div class="whatsapp-qr-area">
                         <div style="text-align: center;">
                             <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">&#128225;</span>
-                            <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--color-bronze);">[DEHLIZ WHATSAPP QR]</span>
+                            <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--color-bronze);">${window.t('whatsapp.badge')}</span>
                         </div>
                     </div>
                     <div class="whatsapp-content-area">
-                        <h3 class="whatsapp-title">Join Our Community Updates Channel</h3>
-                        <p style="font-size: 0.95rem; margin-bottom: 1.5rem;">Get instant notices regarding legal aid schedules, publication drops, and regional workshops directly on your mobile device.</p>
-                        <a href="https://www.instagram.com/dehlizindia/" target="_blank" class="btn btn-support">Open WhatsApp Channel</a>
+                        <h3 class="whatsapp-title">${window.t('whatsapp.title')}</h3>
+                        <p style="font-size: 0.95rem; margin-bottom: 1.5rem;">${window.t('whatsapp.desc')}</p>
+                        <a href="https://www.instagram.com/dehlizindia/" target="_blank" class="btn btn-support">${window.t('whatsapp.title')}</a>
                     </div>
                 </div>
             </div>
@@ -1466,9 +1448,9 @@ function getResourcesHtml() {
     return `
         <section class="bg-beige-section">
             <div class="container" style="max-width: 800px; text-align: center;">
-                <span class="section-tag">LIBRARY & RESEARCH</span>
-                <h1 class="section-title" style="font-size: 3.5rem;">Education & Resource Library</h1>
-                <p style="font-size: 1.25rem; line-height: 1.8;">Search and filter our articles, publications, legal manuals and educational guides.</p>
+                <span class="section-tag">${window.t('resources.tag')}</span>
+                <h1 class="section-title" style="font-size: 3.5rem;">${window.t('resources.title')}</h1>
+                <p style="font-size: 1.25rem; line-height: 1.8;">${window.t('resources.desc')}</p>
             </div>
         </section>
 
@@ -1476,15 +1458,14 @@ function getResourcesHtml() {
         <section class="container">
             <div class="resource-controls">
                 <div class="search-bar-container">
-                    <input type="text" id="resource-search" class="search-input" placeholder="Search resources, topics, keyword, or law code...">
+                    <input type="text" id="resource-search" class="search-input" placeholder="${window.t('resources.search')}">
                 </div>
                 <div class="filter-row">
-                    <span class="filter-label">Filter by Topic:</span>
-                    <button class="filter-btn active" data-category="All">All Topics</button>
-                    <button class="filter-btn" data-category="Rights in Islam">Rights in Islam</button>
-                    <button class="filter-btn" data-category="Indian Law">Indian Law</button>
-                    <button class="filter-btn" data-category="Publications">Publications</button>
-                    <button class="filter-btn" data-category="Blog">Blog</button>
+                    <span class="filter-label">${window.t('resources.filter')}</span>
+                    <button class="filter-btn active" data-category="All">${window.t('resources.all')}</button>
+                    <button class="filter-btn" data-category="Rights in Islam">${window.t('footer.rights')}</button>
+                    <button class="filter-btn" data-category="Indian Law Protections">${window.t('footer.law')}</button>
+                    <button class="filter-btn" data-category="Research & Briefs">${window.t('footer.briefs')}</button>
                 </div>
             </div>
 
@@ -1495,8 +1476,8 @@ function getResourcesHtml() {
 
             <!-- Empty State -->
             <div id="resource-empty-state" class="text-center" style="display: none; padding: 4rem; background: var(--color-beige); border: 1px dashed rgba(142,112,79,0.3);">
-                <h4>No resources match your search or filter criteria.</h4>
-                <p>Try searching for general keywords like "Inheritance", "Marriage", "Law", or "Report".</p>
+                <h4>${window.t('resources.emptyTitle')}</h4>
+                <p>${window.t('resources.emptyDesc')}</p>
             </div>
 
             <!-- Reusable Pagination -->
@@ -1557,10 +1538,10 @@ function setupResourcesInteractions() {
                     <h3 class="card-title">${r.title}</h3>
                     <p class="card-text">${r.summary}</p>
                     <div style="display: flex; gap: 10px; margin-top: 1rem; align-items: center; flex-wrap: wrap;">
-                        <a href="#/resources" class="card-link" onclick="openResourceModal('${r.id}')" style="margin-top: 0;">Read Full Guide &rarr;</a>
+                        <a href="#/resources" class="card-link" onclick="openResourceModal('${r.id}')" style="margin-top: 0;">${window.t('common.readGuide')}</a>
                         ${r.pdfUrl ? `
-                            <a href="${r.pdfUrl}" target="_blank" class="card-link" style="margin-top: 0; color: var(--color-gold);">View PDF</a>
-                            <a href="${r.pdfUrl}" download class="card-link" style="margin-top: 0; color: var(--color-bronze);">Download PDF</a>
+                            <a href="${r.pdfUrl}" target="_blank" class="card-link" style="margin-top: 0; color: var(--color-gold);">${window.t('common.view')}</a>
+                            <a href="${r.pdfUrl}" download class="card-link" style="margin-top: 0; color: var(--color-bronze);">${window.t('common.download')}</a>
                         ` : ''}
                     </div>
                 </div>

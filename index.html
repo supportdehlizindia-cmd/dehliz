@@ -36,16 +36,23 @@
 
             <!-- Navigation Links -->
             <ul class="nav-menu">
-                <li><a href="#/" class="nav-link active">Home</a></li>
-                <li><a href="#/about" class="nav-link">About Us</a></li>
-                <li><a href="#/our-work" class="nav-link">Our Work</a></li>
-                <li><a href="#/resources" class="nav-link">Resources</a></li>
-                <li><a href="#/join-us" class="nav-link">Join Us</a></li>
+                <li><a href="#/" class="nav-link active" data-i18n="nav.home">Home</a></li>
+                <li><a href="#/about" class="nav-link" data-i18n="nav.about">About Us</a></li>
+                <li><a href="#/our-work" class="nav-link" data-i18n="nav.work">Our Work</a></li>
+                <li><a href="#/resources" class="nav-link" data-i18n="nav.resources">Resources</a></li>
+                <li><a href="#/join-us" class="nav-link" data-i18n="nav.join">Join Us</a></li>
                 <li class="nav-ctas">
-                    <a href="#/donate" class="btn btn-primary btn-sm">Donate</a>
-                    <a href="#/contact" class="btn btn-support btn-sm">Get Support</a>
+                    <a href="#/donate" class="btn btn-primary btn-sm" data-i18n="nav.donate">Donate</a>
+                    <a href="#/contact" class="btn btn-support btn-sm" data-i18n="nav.support">Get Support</a>
                 </li>
             </ul>
+
+            <!-- Language Switcher Panel -->
+            <div class="lang-switcher">
+                <button onclick="setLanguage('en')" class="lang-btn" data-lang="en">EN</button>
+                <button onclick="setLanguage('hi')" class="lang-btn" data-lang="hi">हिंदी</button>
+                <button onclick="setLanguage('mr')" class="lang-btn" data-lang="mr">मराठी</button>
+            </div>
 
             <!-- Mobile menu hamburger -->
             <button class="hamburger" aria-label="Toggle Navigation menu">
@@ -66,7 +73,7 @@
         <div class="footer-top container">
             <div class="footer-logo-area">
                 <h3>DEHLIZ</h3>
-                <p>Empowering communities, safeguarding constitutional protections, and providing transparent legal and spiritual resource networks for safer, dignified futures.</p>
+                <p data-i18n="footer.desc">Empowering communities, safeguarding constitutional protections, and providing transparent legal and spiritual resource networks for safer, dignified futures.</p>
                 <div style="margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.8;">
                     <div>Email: <a href="mailto:support.dehlizindia.com@gmail.com" style="color: var(--color-gold); font-weight: 600;">support.dehlizindia.com@gmail.com</a></div>
                     <div>Instagram: <a href="https://www.instagram.com/dehlizindia?igsi=bXprYzk0d2ttNTE3" target="_blank" style="color: var(--color-gold); font-weight: 600;">@dehlizindia</a></div>
@@ -109,53 +116,53 @@
             </div>
             
             <div class="footer-col">
-                <h4>Explore</h4>
+                <h4 data-i18n="footer.explore">Explore</h4>
                 <ul>
-                    <li><a href="#/">Home</a></li>
-                    <li><a href="#/about">About Us</a></li>
-                    <li><a href="#/our-work">Our Work</a></li>
-                    <li><a href="#/resources">Resources Library</a></li>
-                    <li><a href="#/join-us">Join Our Team</a></li>
+                    <li><a href="#/" data-i18n="nav.home">Home</a></li>
+                    <li><a href="#/about" data-i18n="nav.about">About Us</a></li>
+                    <li><a href="#/our-work" data-i18n="nav.work">Our Work</a></li>
+                    <li><a href="#/resources" data-i18n="footer.briefs">Resources Library</a></li>
+                    <li><a href="#/join-us" data-i18n="nav.join">Join Our Team</a></li>
                 </ul>
             </div>
-
+ 
             <div class="footer-col">
-                <h4>Support</h4>
+                <h4 data-i18n="footer.support">Support</h4>
                 <ul>
-                    <li><a href="#/contact">Get Support Referral</a></li>
-                    <li><a href="#/our-work">Crisis Helplines</a></li>
-                    <li><a href="#/donate">Contribute Funds</a></li>
-                    <li><a href="#/join-us">Apply to Volunteer</a></li>
-                    <li><a href="#/admin" style="opacity: 0.6; font-size: 0.85rem;">Admin Portal</a></li>
+                    <li><a href="#/contact" data-i18n="footer.helpline">Get Support Referral</a></li>
+                    <li><a href="#/our-work" data-i18n="footer.crisis">Crisis Helplines</a></li>
+                    <li><a href="#/donate" data-i18n="footer.funds">Contribute Funds</a></li>
+                    <li><a href="#/join-us" data-i18n="footer.volunteer">Apply to Volunteer</a></li>
+                    <li><a href="#/admin" style="opacity: 0.6; font-size: 0.85rem;" data-i18n="footer.admin">Admin Portal</a></li>
                 </ul>
             </div>
-
+ 
             <div class="footer-col">
-                <h4>Resource Categories</h4>
+                <h4 data-i18n="footer.categories">Resource Categories</h4>
                 <ul>
-                    <li><a href="#/resources/islamic-rights">Rights in Islam</a></li>
-                    <li><a href="#/resources/indian-law">Indian Law Protections</a></li>
-                    <li><a href="#/resources/publications">Research & Briefs</a></li>
+                    <li><a href="#/resources/islamic-rights" data-i18n="footer.rights">Rights in Islam</a></li>
+                    <li><a href="#/resources/indian-law" data-i18n="footer.law">Indian Law Protections</a></li>
+                    <li><a href="#/resources/publications" data-i18n="footer.briefs">Research & Briefs</a></li>
                 </ul>
             </div>
         </div>
-
+ 
         <div class="footer-bottom container">
-            <div class="copyright">
+            <div class="copyright" data-i18n="footer.copyright">
                 Copyright &copy; 2026 DEHLIZ. All Rights Reserved.
             </div>
             <div class="footer-bottom-links">
-                <a href="#/about">Privacy Policy</a>
-                <a href="#/about">Terms of Service</a>
-                <a href="#/about">Accessibility Statement</a>
+                <a href="#/about" data-i18n="footer.privacy">Privacy Policy</a>
+                <a href="#/about" data-i18n="footer.terms">Terms of Service</a>
+                <a href="#/about" data-i18n="footer.accessibility">Accessibility Statement</a>
             </div>
         </div>
     </footer>
-
+ 
     <!-- Official Legal Content Disclaimer -->
     <div class="disclaimer-banner">
         <div class="container">
-            <strong>Legal Disclaimer:</strong> The legal and regulatory information provided on this platform is for general educational and informational purposes only. It does not constitute formal legal advice. Visitors should consult verified legal professionals or local protection agencies regarding specific situations.
+            <strong data-i18n="disclaimer.strong">Legal Disclaimer:</strong> <span data-i18n="disclaimer.text">The legal and regulatory information provided on this platform is for general educational and informational purposes only. It does not constitute formal legal advice. Visitors should consult verified legal professionals or local protection agencies regarding specific situations.</span>
         </div>
     </div>
 

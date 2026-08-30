@@ -1833,3 +1833,46 @@ footer {
         font-size: 0.9rem !important;
     }
 }
+
+/* ----------------------------------------------------
+   LANGUAGE SWITCHER STYLING
+   ---------------------------------------------------- */
+.lang-switcher {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    margin-left: 1.5rem;
+}
+
+.lang-btn {
+    background: transparent;
+    border: 1px solid rgba(142, 112, 79, 0.3);
+    color: var(--color-charcoal);
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-family: var(--font-body);
+}
+
+.lang-btn:hover {
+    background: rgba(142, 112, 79, 0.1);
+    border-color: var(--color-bronze);
+}
+
+.lang-btn.active {
+    background: var(--color-bronze);
+    color: white;
+    border-color: var(--color-bronze);
+}
+
+@media (max-width: 768px) {
+    .lang-switcher {
+        margin-left: 0;
+        margin-top: 1.5rem;
+        width: 100%;
+        justify-content: center;
+    }
+}
