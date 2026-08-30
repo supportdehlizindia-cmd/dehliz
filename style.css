@@ -3,38 +3,48 @@
 
 :root {
     /* Color Palette */
-    --color-charcoal: #2B2E33; /* Primary Text & Structure */
+    --color-charcoal: #2B2E33;
+    /* Primary Text & Structure */
     --color-charcoal-light: #3A3D42;
     --color-charcoal-rgb: 43, 46, 51;
-    --color-cream: #F3ECE5; /* Base Neutral / Main Background */
-    --color-beige: #E6DDD5; /* Soft background variation */
+    --color-cream: #F3ECE5;
+    /* Base Neutral / Main Background */
+    --color-beige: #E6DDD5;
+    /* Soft background variation */
     --color-beige-dark: #D4C9BF;
-    --color-bronze: #1E3A8A; /* Primary Accent */
-    --color-gold: #7C98C1; /* Tertiary Soft Accent */
-    --color-text-dark: #2B2E33; /* Primary Text & Structure */
+    --color-bronze: #1E3A8A;
+    /* Primary Accent */
+    --color-gold: #7C98C1;
+    /* Tertiary Soft Accent */
+    --color-text-dark: #2B2E33;
+    /* Primary Text & Structure */
     --color-text-light: #5A5F66;
     --color-text-white: #F3ECE5;
     --color-error: #B00020;
     --color-success: #2E7D32;
-    
+
     /* New Client Soft Accents */
-    --color-soft-pink: #F2A2AA; /* Soft Accent */
-    --color-soft-blue: #AED4E6; /* Secondary Soft Accent */
-    --color-soft-slate: #7C98C1; /* Tertiary Soft Accent */
-    
+    --color-soft-pink: #F2A2AA;
+    /* Soft Accent */
+    --color-soft-blue: #AED4E6;
+    /* Secondary Soft Accent */
+    --color-soft-slate: #7C98C1;
+    /* Tertiary Soft Accent */
+
     /* Typography */
     --font-heading: 'Playfair Display', Georgia, serif;
     --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     --font-logo: 'Bodoni Moda', 'Playfair Display', serif;
-    
+
     /* Transitions */
     --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    
+
     /* Spacing */
     --section-padding: 6.5rem 2rem;
     --container-max-width: 1200px;
-    --border-radius: 8px; /* Clean, premium look */
+    --border-radius: 8px;
+    /* Clean, premium look */
 }
 
 /* Base Styles */
@@ -62,7 +72,12 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-heading);
     color: var(--color-charcoal);
     font-weight: 700;
@@ -96,24 +111,62 @@ img {
     padding: 0 1.5rem;
 }
 
-.text-center { text-align: center; }
-.text-gold { color: var(--color-gold); }
-.text-bronze { color: var(--color-bronze); }
-.bg-beige-section { background-color: var(--color-beige); }
-.bg-charcoal-section { background-color: var(--color-charcoal); color: var(--color-text-white); }
-.bg-charcoal-section h2, .bg-charcoal-section h3 { color: var(--color-text-white); }
-.bg-charcoal-section p { color: #A6A097; }
+.text-center {
+    text-align: center;
+}
+
+.text-gold {
+    color: var(--color-gold);
+}
+
+.text-bronze {
+    color: var(--color-bronze);
+}
+
+.bg-beige-section {
+    background-color: var(--color-beige);
+}
+
+.bg-charcoal-section {
+    background-color: var(--color-charcoal);
+    color: var(--color-text-white);
+}
+
+.bg-charcoal-section h2,
+.bg-charcoal-section h3 {
+    color: var(--color-text-white);
+}
+
+.bg-charcoal-section p {
+    color: #A6A097;
+}
 
 /* Grid systems */
-.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; align-items: center; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+    align-items: center;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
 
 header {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: rgba(243, 236, 229, 0.95); /* Base Neutral #F3ECE5 */
+    background-color: rgba(243, 236, 229, 0.95);
+    /* Base Neutral #F3ECE5 */
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(43, 46, 51, 0.1);
     transition: var(--transition-smooth);
@@ -143,12 +196,14 @@ header {
 }
 
 .logo-text {
-    font-family: var(--font-logo); /* Bodoni Moda matches the sharp Didone style of the logo */
+    font-family: var(--font-logo);
+    /* Bodoni Moda matches the sharp Didone style of the logo */
     font-size: 1.9rem;
     font-weight: 700;
     color: var(--color-charcoal);
     letter-spacing: -0.5px;
-    text-transform: lowercase; /* Lowercase matching the logo mark */
+    text-transform: lowercase;
+    /* Lowercase matching the logo mark */
     line-height: 0.95;
 }
 
@@ -156,10 +211,12 @@ header {
     font-weight: 600;
     font-size: 0.72rem;
     display: block;
-    font-family: var(--font-body); /* Plus Jakarta Sans */
+    font-family: var(--font-body);
+    /* Plus Jakarta Sans */
     color: var(--color-bronze);
     letter-spacing: 2.5px;
-    text-transform: lowercase; /* Lowercase matching the logo mark */
+    text-transform: lowercase;
+    /* Lowercase matching the logo mark */
     margin-top: 1px;
 }
 
@@ -196,7 +253,8 @@ header {
 .nav-link {
     font-size: 0.95rem;
     font-weight: 500;
-    color: var(--color-text-dark); /* Reverted to dark charcoal text */
+    color: var(--color-text-dark);
+    /* Reverted to dark charcoal text */
     position: relative;
     padding: 0.5rem 0;
 }
@@ -208,7 +266,8 @@ header {
     left: 0;
     width: 0;
     height: 3px;
-    background-color: var(--color-bronze); /* #1E3A8A */
+    background-color: var(--color-bronze);
+    /* #1E3A8A */
     transition: var(--transition-smooth);
 }
 
@@ -219,7 +278,8 @@ header {
 
 .nav-link:hover,
 .nav-link.active {
-    color: var(--color-bronze); /* Reverted to bronze hover state */
+    color: var(--color-bronze);
+    /* Reverted to bronze hover state */
 }
 
 .nav-ctas {
@@ -244,19 +304,22 @@ header {
 }
 
 .btn-primary {
-    background-color: var(--color-bronze); /* Primary Accent #1E3A8A */
+    background-color: var(--color-bronze);
+    /* Primary Accent #1E3A8A */
     color: #FFFFFF;
 }
 
 .btn-primary:hover {
-    background-color: var(--color-charcoal); /* Hover matches Primary Text & Structure #2B2E33 */
+    background-color: var(--color-charcoal);
+    /* Hover matches Primary Text & Structure #2B2E33 */
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
 }
 
 .btn-secondary {
     background-color: transparent;
-    color: var(--color-bronze); /* #1E3A8A */
+    color: var(--color-bronze);
+    /* #1E3A8A */
     border: 1.5px solid var(--color-bronze);
 }
 
@@ -314,7 +377,8 @@ header {
     display: block;
     width: 25px;
     height: 2px;
-    background-color: var(--color-charcoal); /* Reverted to charcoal toggle lines */
+    background-color: var(--color-charcoal);
+    /* Reverted to charcoal toggle lines */
     margin: 5px 0;
     transition: var(--transition-smooth);
 }
@@ -661,7 +725,7 @@ section {
 .team-avatar img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .team-name {
@@ -826,7 +890,8 @@ section {
     transition: var(--transition-smooth);
 }
 
-.pagination-btn:hover, .pagination-btn.active {
+.pagination-btn:hover,
+.pagination-btn.active {
     background-color: var(--color-bronze);
     color: var(--color-text-white);
     border-color: var(--color-bronze);
@@ -897,12 +962,14 @@ textarea.form-control {
     font-size: 0.95rem;
     display: none;
 }
+
 .form-alert.success {
     display: block;
     background-color: rgba(46, 125, 50, 0.1);
     color: var(--color-success);
     border: 1px solid rgba(46, 125, 50, 0.2);
 }
+
 .form-alert.error {
     display: block;
     background-color: rgba(176, 0, 32, 0.1);
@@ -927,8 +994,13 @@ textarea.form-control {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Donation interactive structure */
@@ -1057,7 +1129,7 @@ textarea.form-control {
     justify-content: center;
     border: 1px solid rgba(142, 112, 79, 0.2);
     padding: 10px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
 }
 
 .whatsapp-content-area {
@@ -1071,9 +1143,11 @@ textarea.form-control {
 
 /* Footer Grid */
 footer {
-    background-color: var(--color-beige-dark); /* Match UI Example Footer Left background */
+    background-color: var(--color-beige-dark);
+    /* Match UI Example Footer Left background */
     color: var(--color-charcoal);
-    padding: 5rem 2rem 0rem 2rem; /* reduced bottom padding since footer-bottom is full width */
+    padding: 5rem 2rem 0rem 2rem;
+    /* reduced bottom padding since footer-bottom is full width */
     border-top: 1px solid rgba(43, 46, 51, 0.1);
 }
 
@@ -1122,7 +1196,8 @@ footer {
 }
 
 .footer-col h4 {
-    color: var(--color-bronze); /* Primary Accent #1E3A8A */
+    color: var(--color-bronze);
+    /* Primary Accent #1E3A8A */
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -1150,11 +1225,14 @@ footer {
 }
 
 .footer-bottom {
-    background-color: var(--color-cream); /* Base Neutral #F3ECE5 */
-    margin: 3rem -2rem 0 -2rem; /* Stretch full footer width */
+    background-color: var(--color-cream);
+    /* Base Neutral #F3ECE5 */
+    margin: 3rem -2rem 0 -2rem;
+    /* Stretch full footer width */
     padding: 1.5rem 2rem;
     display: flex;
-    justify-content: center; /* Center-align text like the UI Example */
+    justify-content: center;
+    /* Center-align text like the UI Example */
     align-items: center;
     font-size: 0.85rem;
     color: var(--color-text-dark);
@@ -1162,7 +1240,8 @@ footer {
 }
 
 .footer-bottom-links {
-    display: none; /* Hide bottom links if they clutter, or center them alongside copyright. Let's make it clean and simple */
+    display: none;
+    /* Hide bottom links if they clutter, or center them alongside copyright. Let's make it clean and simple */
 }
 
 .disclaimer-banner {
@@ -1197,6 +1276,7 @@ footer {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1216,7 +1296,8 @@ footer {
 .video-wrapper {
     position: relative;
     width: 100%;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    padding-top: 56.25%;
+    /* 16:9 Aspect Ratio */
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 15px 35px rgba(30, 58, 138, 0.15);
@@ -1255,7 +1336,8 @@ footer {
 .video-title {
     font-family: var(--font-heading);
     font-size: 2.2rem;
-    color: #8E2F2F; /* Warm premium red-brown title text color, matching the client's first reference */
+    color: #8E2F2F;
+    /* Warm premium red-brown title text color, matching the client's first reference */
     margin-bottom: 1.25rem;
     line-height: 1.35;
     font-weight: 700;
@@ -1273,23 +1355,29 @@ footer {
     :root {
         --section-padding: 4.5rem 1.5rem;
     }
+
     .hero-title {
         font-size: 3rem;
     }
+
     .grid-3 {
         grid-template-columns: repeat(2, 1fr);
         gap: 2rem;
     }
+
     .grid-4 {
         grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
     }
+
     .hero-image-container {
         width: 38%;
     }
+
     .team-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
     .footer-top {
         grid-template-columns: 2fr 1fr 1fr;
         gap: 2.5rem;
@@ -1300,8 +1388,10 @@ footer {
     header {
         position: relative;
     }
+
     .nav-menu {
-        display: none; /* Controlled by JS mobile menu toggle */
+        display: none;
+        /* Controlled by JS mobile menu toggle */
         position: absolute;
         top: 80px;
         left: 0;
@@ -1311,50 +1401,61 @@ footer {
         padding: 2rem;
         gap: 1.5rem;
         border-bottom: 1px solid rgba(142, 112, 79, 0.15);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     }
+
     .nav-menu.mobile-open {
         display: flex;
     }
+
     .nav-ctas {
         display: none;
     }
+
     .nav-menu.mobile-open .nav-ctas {
         display: flex;
         flex-direction: column;
         width: 100%;
         margin-top: 1rem;
     }
+
     .nav-menu.mobile-open .nav-ctas .btn {
         width: 100%;
         text-align: center;
     }
+
     .hamburger {
         display: block;
     }
+
     .hamburger.active span:nth-child(1) {
         transform: rotate(45deg) translate(5px, 5px);
     }
+
     .hamburger.active span:nth-child(2) {
         opacity: 0;
     }
+
     .hamburger.active span:nth-child(3) {
         transform: rotate(-45deg) translate(5px, -5px);
     }
-    
+
     .grid-2 {
         grid-template-columns: 1fr;
         gap: 2.5rem;
     }
+
     .hero {
         min-height: auto;
         padding: 3rem 1rem;
         flex-direction: column;
     }
+
     .hero-content {
         max-width: 100%;
         margin-bottom: 3rem;
     }
+
     .hero-image-container {
         position: static;
         width: 100%;
@@ -1362,49 +1463,61 @@ footer {
         clip-path: none;
         margin-top: 2rem;
     }
+
     .hero-img-wrapper {
         width: 90%;
         height: 90%;
     }
+
     .stories-container {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
+
     .story-card {
         flex-direction: column;
     }
+
     .story-img-area {
         width: 100%;
         height: 250px;
     }
+
     .story-content-area {
         width: 100%;
         padding: 2rem;
     }
+
     .helpline-grid {
         grid-template-columns: 1fr;
     }
+
     .whatsapp-community-card {
         flex-direction: column;
         text-align: center;
         gap: 2rem;
     }
+
     .whatsapp-qr-area {
         margin: 0 auto;
     }
+
     .footer-top {
         grid-template-columns: 1fr;
         gap: 3rem;
     }
+
     .footer-bottom {
         flex-direction: column;
         gap: 1.5rem;
         text-align: center;
     }
+
     .footer-bottom-links {
         flex-direction: column;
         gap: 0.75rem;
     }
+
     .donation-amounts-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1414,26 +1527,35 @@ footer {
     :root {
         --section-padding: 3.5rem 1rem;
     }
+
     .hero-title {
         font-size: 2.3rem;
     }
+
     .section-title {
         font-size: 1.9rem;
     }
-    .grid-3, .grid-4, .team-grid {
+
+    .grid-3,
+    .grid-4,
+    .team-grid {
         grid-template-columns: 1fr;
     }
+
     .hero-actions {
         flex-direction: column;
         gap: 1rem;
     }
+
     .hero-actions .btn {
         width: 100%;
         text-align: center;
     }
+
     .donation-amounts-grid {
         grid-template-columns: 1fr;
     }
+
     .form-card {
         padding: 2rem 1.25rem;
     }
@@ -1470,16 +1592,20 @@ footer {
         opacity: 1;
         filter: brightness(1) blur(0);
     }
+
     70% {
-        transform: translate(14px, -32px) scale(0.42); /* Walks away towards the blue door and shrinks */
+        transform: translate(14px, -32px) scale(0.42);
+        /* Walks away towards the blue door and shrinks */
         opacity: 0.1;
         filter: brightness(2) blur(1px);
     }
+
     90% {
         transform: translate(14px, -32px) scale(0.42);
         opacity: 0;
         filter: brightness(2) blur(2px);
     }
+
     100% {
         transform: translate(0, 0) scale(1);
         opacity: 0;
@@ -1663,3 +1789,47 @@ footer {
     color: var(--color-bronze);
 }
 
+/* ----------------------------------------------------
+   SOCIAL MEDIA SLIDESHOW BANNER
+   ---------------------------------------------------- */
+.banner-slider-section {
+    padding: 5rem 2rem;
+    overflow: hidden;
+}
+
+.slider-wrapper:hover .slider-btn {
+    opacity: 1 !important;
+}
+
+.slider-btn {
+    opacity: 0;
+}
+
+.social-card-slide:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    border-color: var(--color-bronze) !important;
+}
+
+@media (max-width: 1024px) {
+    .social-card-slide {
+        flex: 0 0 calc(50% - 0.75rem) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .banner-slider-section {
+        padding: 3rem 1rem !important;
+    }
+    
+    .social-card-slide {
+        flex: 0 0 100% !important;
+    }
+    
+    .slider-btn {
+        opacity: 0.8 !important;
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.9rem !important;
+    }
+}

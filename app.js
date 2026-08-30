@@ -4,7 +4,7 @@
  * Resource Search/Filter, Donation Calculations, and Form State Controls.
  */
 // Supabase Database Connection Credentials (Placeholder configurations)
-const SUPABASE_URL = window.SUPABASE_URL || 'https://gkaniaerppgrwiyfznvb.supabase.co'; 
+const SUPABASE_URL = window.SUPABASE_URL || 'https://gkaniaerppgrwiyfznvb.supabase.co';
 const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'sb_publishable_SyyEq_lqVRprAfdsJSwtrg_BIXbaZXm';
 
 let supabase = null;
@@ -25,12 +25,63 @@ const EMAILJS_PUBLIC_KEY = window.EMAILJS_PUBLIC_KEY || 'HhuTy78N1KyLZkrJ9';
 
 // CMS-Ready Data Architecture (No Fabricated Stats, Clean Structures)
 const DEHLIZ_DATA = {
+    // Curated Social Media Posts (X, Instagram, Facebook) for Home Page Multi-Card Slider
+    socialPosts: [
+        {
+            platform: 'instagram',
+            id: 'DcodADXjJ1S',
+            url: 'https://www.instagram.com/dehlizindia/p/DcodADXjJ1S/',
+            text: 'Empowering local community leaders with legal and digital resources to create primary safety blocks.',
+            image: '/community_networks.png',
+            date: 'August 30, 2026'
+        },
+        {
+            platform: 'twitter',
+            id: 'x1',
+            url: 'https://x.com/dehlizindia',
+            text: 'Understanding your constitutional and family rights is the first step towards safety. Read our latest guide on Protection of Women from Domestic Violence Act, 2005.',
+            image: '/legal_guidance.jpg',
+            date: 'August 28, 2026'
+        },
+        {
+            platform: 'facebook',
+            id: 'fb1',
+            url: 'https://www.facebook.com/dehlizindia',
+            text: 'Dehliz works closely with legal scholars and social researchers to verify and catalog rights under both Indian Law and Islamic traditional jurisprudence.',
+            image: '/community_support.png',
+            date: 'August 25, 2026'
+        },
+        {
+            platform: 'instagram',
+            id: 'DcoOwQ6DGuz',
+            url: 'https://www.instagram.com/dehlizindia/p/DcoOwQ6DGuz/',
+            text: 'Dignified boundary between struggle and empowerment. Helping families walk into secure lives.',
+            image: 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&q=80&w=800',
+            date: 'August 22, 2026'
+        },
+        {
+            platform: 'twitter',
+            id: 'x2',
+            url: 'https://x.com/dehlizindia',
+            text: 'Livelihoods and Skill Building: We support block-level workshops teaching basic economic skills and local resources.',
+            image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600',
+            date: 'August 19, 2026'
+        },
+        {
+            platform: 'instagram',
+            id: 'Dcn6lycjG2m',
+            url: 'https://www.instagram.com/dehlizindia/p/Dcn6lycjG2m/',
+            text: 'Advocating for educational block access and rights security awareness. Seminars held in regional communities.',
+            image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
+            date: 'August 15, 2026'
+        }
+    ],
     // Featured YouTube Video config (Client episode 8)
     featuredVideo: {
-        title: "You must give more of your mind than money | S.D. Shibulal and Kumari Shibulal | Give it a Go |",
-        tag: "ep. 08 — Give It A Go",
-        embedUrl: "https://www.youtube.com/embed/iyJa_0g4iNE",
-        description: "In conversation with S.D. Shibulal (Co-Founder & Trustee, Shibulal Family Philanthropic Initiatives & Former CEO of Infosys) and Kumari Shibulal (Founder & Chairperson, Shibulal Family Philanthropic Initiatives). Hosted by Naghma Mulla, CEO of EdelGive Foundation."
+        title: "Dehliz India - Ek Umeed",
+        tag: "About Our Mission",
+        embedUrl: "https://www.youtube.com/embed/UJo3ItcQtD4?playlist=UJo3ItcQtD4",
+        description: "An overview of Dehliz India's efforts in building legal awareness, supporting communities, and empowering individuals."
     },
 
     // Campaigns Data
@@ -53,7 +104,7 @@ const DEHLIZ_DATA = {
             description: 'Support network enhancement providing safe shelters and counselling assistance pathways for vulnerable individuals.',
             progress: 'Capacity Building',
             status: 'Ongoing',
-            image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=800'
+            image: '/community_support.png'
         },
         {
             id: 'c3',
@@ -72,6 +123,7 @@ const DEHLIZ_DATA = {
         {
             id: 's1',
             badge: 'Legal Guidance',
+            image: '/legal_guidance.jpg',
             quote: '"The support and clarity I received regarding my legal status changed my trajectory. I learned to stand strong and speak for myself."',
             author: 'A. Rahmani (Name changed for privacy)',
             result: 'Assisted with domestic rights counselling'
@@ -79,9 +131,18 @@ const DEHLIZ_DATA = {
         {
             id: 's2',
             badge: 'Community Network',
+            image: '/community_networks.png',
             quote: '"Finding a supportive community that did not judge me, but rather empowered me with legal and spiritual awareness, was a turning point."',
             author: 'S. Fatima (Name changed for privacy)',
             result: 'Supported through local outreach workshops'
+        },
+        {
+            id: 's3',
+            badge: 'Community Support',
+            image: '/community_support.png',
+            quote: '"DEHLIZ provided me with immediate guidance and safety resources. The community support network helped us navigate our most difficult times."',
+            author: 'R. Begum (Name changed for privacy)',
+            result: 'Helped with emergency community support referrals'
         }
     ],
 
@@ -140,6 +201,146 @@ const DEHLIZ_DATA = {
             date: '2026-02-12',
             summary: 'Practical overview of how Family Courts operate in India, procedure timelines, and what to expect during legal proceedings.',
             content: 'Navigating family courts can be overwhelming. This guide breaks down legal representation rules, reconciliation processes, and rights pertaining to custody and support.'
+        },
+        {
+            id: 'r7',
+            title: 'Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013',
+            category: 'Indian Law',
+            type: 'Act / PDF',
+            date: '2013-12-09',
+            summary: 'The official POSH Act, 2013 outlining prevention, prohibition, and redressal mechanisms against sexual harassment at the workplace.',
+            content: 'The Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013 is a legislative act in India that seeks to protect women from sexual harassment at their place of work. It was passed by the Lok Sabha on 3 September 2012, by the Rajya Sabha on 26 February 2013, and received the assent of the President on 22 April 2013.',
+            pdfUrl: 'https://share.google/n4bQOWPBErWlcscRs'
+        },
+        {
+            id: 'r8',
+            title: 'The National Commission For Minorities Act, 1992',
+            category: 'Indian Law',
+            type: 'Act / PDF',
+            date: '1992-05-17',
+            summary: 'The legal framework establishing the National Commission for Minorities to safeguard the rights and interests of minority communities in India.',
+            content: 'An Act to constitute a National Commission for Minorities and to provide for matters connected therewith or incidental thereto. It mandates the evaluation of progress of minority development under the Union and States.',
+            pdfUrl: 'https://share.google/WuhPq9Xr9EYqQq7TI'
+        },
+        {
+            id: 'r9',
+            title: 'Case Comment: TMA Pai Foundation Vs State of Karnataka, 2002',
+            category: 'Indian Law',
+            type: 'Case Comment / PDF',
+            date: '2002-10-31',
+            summary: 'Analysis of the landmark Supreme Court judgment on the rights of minorities to establish and administer educational institutions under Article 30(1).',
+            content: 'T.M.A. Pai Foundation v. State of Karnataka is a landmark decision of the Supreme Court of India. The Court ruled on the scope of right of minorities to establish and administer educational institutions of their choice under Article 30(1) and Article 19(1)(g) of the Constitution of India.',
+            pdfUrl: 'https://share.google/XjXij4ZRHszOn1pjl'
+        },
+        {
+            id: 'r10',
+            title: 'Islamic Academy Of Education And Others vs State Of Karnataka And Others, 2003',
+            category: 'Indian Law',
+            type: 'Judgment / PDF',
+            date: '2003-08-14',
+            summary: 'Supreme Court judgment clarifying the implementation guidelines of the TMA Pai Foundation verdict on minority institution rights.',
+            content: 'This judgment clarification deals with the regulation of fee structures, admission processes, and seat allocations in minority and non-minority educational institutions under Article 30 of the Constitution.',
+            pdfUrl: 'https://share.google/wdpIqKbsphD8dksoi'
+        },
+        {
+            id: 'r11',
+            title: 'Fatima Sheikh - Wikipedia',
+            category: 'Indian Law',
+            type: 'Biography / PDF',
+            date: '2026-08-30',
+            summary: 'The life and legacy of Fatima Sheikh, one of India\'s first Muslim woman teachers and social reformers working alongside Savitribai Phule.',
+            content: 'Fatima Sheikh was an Indian educator and social reformer, who was a colleague of the social reformers Jyotirao Phule and Savitribai Phule. She is widely regarded as the first Muslim woman teacher in modern India.',
+            pdfUrl: 'https://share.google/HZpPVBarPbXeP2R0q'
+        },
+        {
+            id: 'r12',
+            title: 'Shabnam Hashmi vs. Union of India & Ors. (2014)',
+            category: 'Indian Law',
+            type: 'Judgment / PDF',
+            date: '2014-02-19',
+            summary: 'Supreme Court ruling establishing the right to adopt children under the Juvenile Justice Act as a fundamental right transcending personal laws.',
+            content: 'In this landmark case, the Supreme Court of India held that prospective adoptive parents have the right to adopt a child under the Juvenile Justice (Care and Protection of Children) Act, 2000, irrespective of their personal laws.',
+            pdfUrl: 'https://share.google/Sofdo8MabPzQso44x'
+        },
+        {
+            id: 'r13',
+            title: 'Women & The Law: Legal Awareness Programme',
+            category: 'Indian Law',
+            type: 'Act / PDF',
+            date: '2026-08-30',
+            summary: 'A comprehensive NALSA and NCW training module on constitutional rights, personal laws, labour laws, criminal laws, and reproductive rights for women.',
+            content: 'This training module was created for NALSA resource persons in collaboration with the National Commission for Women (NCW) and All India Reporter. It covers Fundamental Rights, Directive Principles, Family Laws, Labour Laws, and Criminal Law protections.',
+            pdfUrl: 'public/nalsa_women_and_law.pdf'
+        },
+        {
+            id: 'r14',
+            title: 'The Protection of Women from Domestic Violence Act, 2005',
+            category: 'Indian Law',
+            type: 'Act / PDF',
+            date: '2005-09-13',
+            summary: 'The full official text of the Protection of Women from Domestic Violence Act, 2005 outlining legal remedies, duties, and procedures for seeking relief.',
+            content: 'An Act to provide for more effective protection of the rights of women guaranteed under the Constitution who are victims of violence of any kind occurring within the family and for matters connected therewith or incidental thereto.',
+            pdfUrl: 'public/domestic_violence_act_2005.pdf'
+        },
+        {
+            id: 'r15',
+            title: 'Post-Matric Scholarship Scheme for Minority Communities',
+            category: 'Publications',
+            type: 'Act / PDF',
+            date: '2026-08-30',
+            summary: 'Official guidelines and eligibility criteria of the Post-Matric Scholarship scheme for students belonging to minority communities.',
+            content: 'This scheme provides financial assistance for higher secondary, college, and university level studies to students belonging to notified minority communities (Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains). Features 30% earmarking for girl students.',
+            pdfUrl: 'public/post_matric_scholarship.pdf'
+        },
+        {
+            id: 'r16',
+            title: 'Summary of the Sachar Committee Report',
+            category: 'Publications',
+            type: 'Report / PDF',
+            date: '2006-11-30',
+            summary: 'A concise summary of the Prime Minister\'s High Level Committee Report on the social, economic, and educational status of the Muslim community in India.',
+            content: 'Chaired by Justice Rajindar Sachar, this report examines the development deficits among Muslims in India, including literacy rates, employment shares in public sectors, and bank credit access.',
+            pdfUrl: 'public/sachar_committee_report.pdf'
+        },
+        {
+            id: 'r17',
+            title: 'The Bharatiya Nyaya Sanhita, 2023',
+            category: 'Indian Law',
+            type: 'Act / PDF',
+            date: '2023-12-25',
+            summary: 'The official gazetted text of the Bharatiya Nyaya Sanhita, 2023 consolidating and amending general criminal code provisions in India.',
+            content: 'An Act to consolidate and amend the provisions relating to offences and for matters connected therewith or incidental thereto, replacing the Indian Penal Code (IPC). It includes chapters on offences against women and children.',
+            pdfUrl: 'public/bharatiya_nyaya_sanhita_2023.pdf'
+        },
+        {
+            id: 'r18',
+            title: 'Shamim Ara vs State of U.P. & Anr (2002)',
+            category: 'Indian Law',
+            type: 'Judgment / PDF',
+            date: '2002-10-01',
+            summary: 'Landmark Supreme Court of India judgment clarifying the legal requirements and validity of Talaq (divorce) under Muslim Personal Law.',
+            content: 'In this decision, the Supreme Court ruled that a mere plea of previous divorce in a written statement or an affidavit does not by itself dissolve a marriage. For a divorce to be legally valid and effective, the pronouncement of Talaq must be proved with reasonable cause and preceded by attempts at reconciliation.',
+            pdfUrl: 'public/shamim_ara_v_state_of_up.pdf'
+        },
+        {
+            id: 'r19',
+            title: 'Guidelines for "Nai Roshni" Scheme (2017)',
+            category: 'Publications',
+            type: 'Scheme Guidelines / PDF',
+            date: '2017-09-23',
+            summary: 'Official guidelines for the "Nai Roshni" scheme, focused on leadership development, confidence building, and economic empowerment of minority women.',
+            content: 'Implemented by the Ministry of Minority Affairs, the Nai Roshni scheme aims to empower and instill confidence among minority women, including their neighbours, by providing training, tools, and knowledge to interact with government systems, banks, and other institutions.',
+            pdfUrl: 'public/nai_roshni_guidelines.pdf'
+        },
+        {
+            id: 'r20',
+            title: 'Legal Frame Work and Constitutionalism of Wakf (Amendment) Act, 2025',
+            category: 'Indian Law',
+            type: 'Research Paper / PDF',
+            date: '2025-05-01',
+            summary: 'An academic research paper exploring the legal, constitutional, and socio-political dimensions of the Waqf (Amendment) Act, 2025.',
+            content: 'This paper analyzes the principal provisions of the 2025 Waqf Amendment, including the inclusion of non-Muslim members, deletion of the "Waqf by User" provision, increased government oversight, and constitutional concerns regarding religious autonomy under Articles 25 and 26.',
+            pdfUrl: 'public/wakf_amendment_act_2025.pdf'
         }
     ],
 
@@ -177,22 +378,28 @@ const DEHLIZ_DATA = {
     // Team Directory
     team: [
         {
-            name: '[ORGANIZATION TO PROVIDE]',
-            role: 'Founder / Trustee',
-            bio: 'Leadership profile, educational background, and institutional vision for community reform to be provided by the organization.',
-            image: ''
+            name: 'Nazia Sayed',
+            role: 'Founder & Director',
+            bio: 'Investigative Journalist, Author, and Communications Professional with 15+ years of experience in conflict reporting, corporate communications, and public affairs. Founder and Editor-in-Chief of Ground Zero Monitor.',
+            image: 'public/nazia_sayed.jpg'
         },
         {
-            name: '[ORGANIZATION TO PROVIDE]',
-            role: 'Head of Legal Support',
-            bio: 'Qualifications and profile details concerning advocate networks and rights education initiatives.',
-            image: ''
+            name: 'Aman Khan',
+            role: 'Director / Head of Research, Strategies & Communication',
+            bio: 'Director at Dehliz and Head of Research, Strategies & Communication. Leads institutional research, policy strategy, and communication channels to drive social development and support networks.',
+            image: 'public/aman_khan.png'
         },
         {
-            name: '[ORGANIZATION TO PROVIDE]',
-            role: 'Community Programs Coordinator',
-            bio: 'Management profile detailing volunteer systems and local outreach events.',
-            image: ''
+            name: 'Naziya',
+            role: 'Head of Marketing & Branding',
+            bio: 'Entrepreneur and freelance hairstylist with a passion for digital communication, content creation, and brand storytelling. Leads digital marketing and strategic communication to amplify women\'s education, employment, and empowerment initiatives.',
+            image: 'public/naziya.jpg'
+        },
+        {
+            name: 'Ayyan Chougle',
+            role: 'Programme Coordinator & Research',
+            bio: 'Mechanical Engineering graduate and Political Science researcher. Specializes in policy analysis, digital media initiatives, and translating complex socio-political data into clear, impactful narratives for women\'s development.',
+            image: 'public/ayyan_chougle.png'
         }
     ],
 
@@ -246,7 +453,7 @@ async function initDatabaseData() {
         console.log("Supabase URL or Anon key is missing. Running in fallback/placeholder mode.");
         return;
     }
-    
+
     try {
         // 1. Fetch campaigns
         const { data: campaignsData, error: campaignsError } = await supabase
@@ -255,16 +462,24 @@ async function initDatabaseData() {
             .eq('is_published', true)
             .order('display_order', { ascending: true });
         if (!campaignsError && campaignsData && campaignsData.length > 0) {
-            DEHLIZ_DATA.campaigns = campaignsData.map(c => ({
-                id: c.id,
-                title: c.title,
-                category: c.category,
-                date: c.start_date ? new Date(c.start_date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : '',
-                description: c.short_description || c.description,
-                progress: c.progress || c.status,
-                status: c.status,
-                image: c.cover_image_url || 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&q=80&w=800'
-            }));
+            DEHLIZ_DATA.campaigns = campaignsData.map(c => {
+                let img = c.cover_image_url || 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&q=80&w=800';
+                if (!c.cover_image_url || c.cover_image_url.includes('unsplash.com/photo-1544025162-d76694265947') || c.cover_image_url.includes('photo-1544025162')) {
+                    if (c.category === 'Community Support') {
+                        img = '/community_support.png';
+                    }
+                }
+                return {
+                    id: c.id,
+                    title: c.title,
+                    category: c.category,
+                    date: c.start_date ? new Date(c.start_date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : '',
+                    description: c.short_description || c.description,
+                    progress: c.progress || c.status,
+                    status: c.status,
+                    image: img
+                };
+            });
         }
 
         // 2. Fetch events
@@ -289,15 +504,23 @@ async function initDatabaseData() {
             .select('*')
             .eq('is_published', true);
         if (!resourcesError && resourcesData && resourcesData.length > 0) {
-            DEHLIZ_DATA.resources = resourcesData.map(r => ({
+            const dbResources = resourcesData.map(r => ({
                 id: r.id,
                 title: r.title,
                 category: r.category,
                 type: r.resource_type || 'Guide',
                 date: r.published_at ? r.published_at.split('T')[0] : r.created_at.split('T')[0],
                 summary: r.description,
-                content: r.content
+                content: r.content,
+                pdfUrl: r.pdf_url || r.pdfUrl || null
             }));
+            // Append database resources ensuring we keep our local pre-defined items intact
+            const localResourceIds = ['r7', 'r8', 'r9', 'r10', 'r11', 'r12', 'r13', 'r14', 'r15', 'r16', 'r17', 'r18', 'r19', 'r20'];
+            const localItems = DEHLIZ_DATA.resources.filter(lr => localResourceIds.includes(lr.id));
+
+            // Filter out duplicates if database happens to have same ids
+            const filteredDbResources = dbResources.filter(dbr => !localResourceIds.includes(dbr.id));
+            DEHLIZ_DATA.resources = [...filteredDbResources, ...localItems];
         }
 
         // 4. Fetch success stories
@@ -306,13 +529,26 @@ async function initDatabaseData() {
             .select('*')
             .eq('is_published', true);
         if (!successError && successData && successData.length > 0) {
-            DEHLIZ_DATA.successStories = successData.map(s => ({
-                id: s.id,
-                badge: s.category || 'Success Story',
-                quote: s.summary || s.story,
-                author: s.title,
-                result: s.summary
-            }));
+            DEHLIZ_DATA.successStories = successData.map(s => {
+                let img = s.cover_image_url || '';
+                if (!img || img.includes('unsplash.com/photo-1542838132-92c53300491e') || img.includes('photo-1542838132')) {
+                    if (s.category === 'Legal Guidance') {
+                        img = '/legal_guidance.jpg';
+                    } else if (s.category === 'Community Network') {
+                        img = '/community_networks.png';
+                    } else if (s.category === 'Community Support') {
+                        img = '/community_support.png';
+                    }
+                }
+                return {
+                    id: s.id,
+                    badge: s.category || 'Success Story',
+                    image: img,
+                    quote: s.summary || s.story,
+                    author: s.title,
+                    result: s.summary
+                };
+            });
         }
 
         // 5. Fetch team members
@@ -322,12 +558,22 @@ async function initDatabaseData() {
             .eq('is_active', true)
             .order('display_order', { ascending: true });
         if (!teamError && teamData && teamData.length > 0) {
-            DEHLIZ_DATA.team = teamData.map(t => ({
+            const dbTeam = teamData.map(t => ({
                 name: t.name,
                 role: t.role,
                 bio: t.biography || '',
                 image: t.photo_url || ''
             }));
+            // Discard default placeholder rows from database
+            const filteredDbTeam = dbTeam.filter(t => t.name !== 'Founder Name' && t.name !== 'Legal Advisor Name');
+
+            // Keep local team members intact
+            const localNames = ['Nazia Sayed', 'Ayyan Chougle', 'Naziya', 'Aman Khan'];
+            const localItems = DEHLIZ_DATA.team.filter(lt => localNames.includes(lt.name));
+
+            // Combine local items and unique database entries
+            const uniqueDbItems = filteredDbTeam.filter(dbt => !localNames.includes(dbt.name));
+            DEHLIZ_DATA.team = [...localItems, ...uniqueDbItems];
         }
 
         // 6. Fetch helplines
@@ -371,7 +617,7 @@ function initRouter() {
         if (!path.startsWith('/')) {
             path = '/' + path;
         }
-        
+
         currentRoute = path;
         renderPage(path);
         updateActiveNavLinks(hash);
@@ -417,7 +663,7 @@ function setupGlobalEvents() {
 function renderPage(path) {
     const appContent = document.getElementById('app-content');
     appContent.className = 'page-transition'; // Trigger fade animation
-    
+
     // Simple base routing logic
     if (path === '/' || path === '/home') {
         appContent.innerHTML = getHomeHtml();
@@ -484,7 +730,7 @@ function getHomeHtml() {
     const storiesHtml = DEHLIZ_DATA.successStories.map(s => `
         <div class="story-card fade-in-section">
             <div class="story-img-area">
-                <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600" alt="Support Space" loading="lazy">
+                <img src="${s.image || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600'}" alt="${s.badge}" loading="lazy" style="object-fit: cover; width: 100%; height: 100%;">
             </div>
             <div class="story-content-area">
                 <span class="story-badge">${s.badge}</span>
@@ -503,6 +749,53 @@ function getHomeHtml() {
             <p class="card-text">${r.summary}</p>
             <a href="#/resources" class="card-link">Read Guide &rarr;</a>
         </div>
+    `).join('');
+
+    // Generate Social slide cards markup (shows 3 on desktop, 2 on tablet, 1 on mobile)
+    const socialSlidesHtml = DEHLIZ_DATA.socialPosts.map((p, index) => {
+        let platformIcon = '📸';
+        let platformColor = '#E1306C';
+        let platformName = 'Instagram';
+        if (p.platform === 'twitter') {
+            platformIcon = '🐦';
+            platformColor = '#1DA1F2';
+            platformName = 'X (Twitter)';
+        } else if (p.platform === 'facebook') {
+            platformIcon = '📘';
+            platformColor = '#1877F2';
+            platformName = 'Facebook';
+        }
+
+        return `
+            <div class="social-card-slide" style="flex: 0 0 calc(33.333% - 1rem); min-width: 280px; box-sizing: border-box; background: white; border-radius: 12px; overflow: hidden; border: 1px solid rgba(142, 112, 79, 0.15); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: all 0.3s ease;">
+                <div style="padding: 1rem; border-bottom: 1px solid rgba(142,112,79,0.08); display: flex; align-items: center; gap: 0.75rem; background: var(--color-cream);">
+                    <span style="font-size: 1.25rem;">${platformIcon}</span>
+                    <div style="line-height: 1.2;">
+                        <div style="font-weight: 700; font-size: 0.9rem; color: var(--color-charcoal);">@dehlizindia</div>
+                        <span style="font-size: 0.75rem; color: ${platformColor}; font-weight: 600;">${platformName}</span>
+                    </div>
+                </div>
+                ${p.image ? `
+                <div style="width: 100%; height: 180px; overflow: hidden;">
+                    <img src="${p.image}" alt="Post image" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                ` : ''}
+                <div style="padding: 1.25rem; display: flex; flex-direction: column; flex-grow: 1;">
+                    <p style="font-size: 0.95rem; line-height: 1.5; color: var(--color-text-dark); margin-bottom: 1.5rem; flex-grow: 1; min-height: 70px;">
+                        ${p.text}
+                    </p>
+                    <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(142,112,79,0.08); padding-top: 0.75rem; margin-top: auto;">
+                        <span style="font-size: 0.75rem; color: var(--color-text-light); font-weight: 500;">${p.date}</span>
+                        <a href="${p.url}" target="_blank" style="font-size: 0.8rem; font-weight: 700; color: var(--color-bronze); text-decoration: none; display: flex; align-items: center; gap: 4px;">View Post &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // Generate slider dots markup
+    const socialDotsHtml = DEHLIZ_DATA.socialPosts.map((_, index) => `
+        <span class="dot ${index === 0 ? 'active' : ''}" data-slide="${index}" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(142, 112, 79, 0.3); cursor: pointer; transition: all 0.3s ease;"></span>
     `).join('');
 
     return `
@@ -580,6 +873,31 @@ function getHomeHtml() {
                 </div>
                 <div>
                     <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&q=80&w=800" alt="Empowered Community Gathering" style="border: 1px solid rgba(142, 112, 79, 0.2); padding: 8px; background: var(--color-cream);" loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Media Posts Slideshow Banner -->
+        <section class="banner-slider-section bg-beige-section">
+            <div class="container">
+                <div class="section-header text-center" style="margin-bottom: 2rem;">
+                    <span class="section-tag">SOCIAL MEDIA FEED</span>
+                    <h2 class="section-title">Latest Updates & Posts</h2>
+                </div>
+                
+                <div class="slider-wrapper" style="position: relative; max-width: 1200px; margin: 0 auto; overflow: hidden; padding: 1rem 0;">
+                    <div class="slider-container" id="homeSlider" style="display: flex; transition: transform 0.5s ease-in-out; gap: 1.5rem; width: 100%;">
+                        ${socialSlidesHtml}
+                    </div>
+                    
+                    <!-- Slider Controls -->
+                    <button class="slider-btn prev-btn" id="prevSlideBtn" aria-label="Previous Slide" style="position: absolute; top: 50%; left: 0px; transform: translateY(-50%); background: white; border: 1px solid rgba(142, 112, 79, 0.3); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; color: var(--color-charcoal); z-index: 10; box-shadow: var(--shadow-sm); transition: all 0.3s ease;">&#10094;</button>
+                    <button class="slider-btn next-btn" id="nextSlideBtn" aria-label="Next Slide" style="position: absolute; top: 50%; right: 0px; transform: translateY(-50%); background: white; border: 1px solid rgba(142, 112, 79, 0.3); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; color: var(--color-charcoal); z-index: 10; box-shadow: var(--shadow-sm); transition: all 0.3s ease;">&#10095;</button>
+                    
+                    <!-- Slider Dots -->
+                    <div class="slider-dots" id="sliderDots" style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
+                        ${socialDotsHtml}
+                    </div>
                 </div>
             </div>
         </section>
@@ -773,14 +1091,122 @@ function getHomeHtml() {
 }
 
 function setupHomeInteractions() {
-    // Scroll triggers or any special landing effects
+    const slider = document.getElementById('homeSlider');
+    if (!slider) return;
+
+    const slides = slider.querySelectorAll('.social-card-slide');
+    const dots = document.querySelectorAll('#sliderDots .dot');
+    const prevBtn = document.getElementById('prevSlideBtn');
+    const nextBtn = document.getElementById('nextSlideBtn');
+    let currentSlide = 0;
+    let slideInterval;
+
+    function getVisibleCardsCount() {
+        if (window.innerWidth <= 768) return 1;
+        if (window.innerWidth <= 1024) return 2;
+        return 3;
+    }
+
+    function showSlide(index) {
+        const visibleCards = getVisibleCardsCount();
+        const maxSlideIndex = Math.max(0, slides.length - visibleCards);
+        
+        currentSlide = index;
+        if (currentSlide > maxSlideIndex) {
+            currentSlide = 0;
+        } else if (currentSlide < 0) {
+            currentSlide = maxSlideIndex;
+        }
+
+        // Shifting slides offset dynamically
+        const offsetPercent = currentSlide * (100 / visibleCards);
+        slider.style.transform = `translateX(-${offsetPercent}%)`;
+
+        // Update dots status
+        dots.forEach((dot, idx) => {
+            if (idx === currentSlide) {
+                dot.classList.add('active');
+                dot.style.background = 'var(--color-bronze)';
+                dot.style.width = '20px';
+                dot.style.borderRadius = '10px';
+            } else {
+                dot.classList.remove('active');
+                dot.style.background = 'rgba(142, 112, 79, 0.3)';
+                dot.style.width = '8px';
+                dot.style.borderRadius = '50%';
+            }
+        });
+    }
+
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+        showSlide(currentSlide - 1);
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            resetTimer();
+        });
+        prevBtn.addEventListener('mouseenter', () => {
+            prevBtn.style.background = 'var(--color-bronze)';
+            prevBtn.style.color = 'white';
+        });
+        prevBtn.addEventListener('mouseleave', () => {
+            prevBtn.style.background = 'white';
+            prevBtn.style.color = 'var(--color-charcoal)';
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            resetTimer();
+        });
+        nextBtn.addEventListener('mouseenter', () => {
+            nextBtn.style.background = 'var(--color-bronze)';
+            nextBtn.style.color = 'white';
+        });
+        nextBtn.addEventListener('mouseleave', () => {
+            nextBtn.style.background = 'white';
+            nextBtn.style.color = 'var(--color-charcoal)';
+        });
+    }
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            const index = parseInt(e.target.getAttribute('data-slide'));
+            showSlide(index);
+            resetTimer();
+        });
+    });
+
+    function startTimer() {
+        slideInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    }
+
+    function resetTimer() {
+        clearInterval(slideInterval);
+        startTimer();
+    }
+
+    window.addEventListener('resize', () => {
+        showSlide(currentSlide);
+    });
+
+    // Initialize styling for active dot on load
+    showSlide(0);
+    startTimer();
 }
 
 function getAboutHtml() {
     const teamHtml = DEHLIZ_DATA.team.map(member => `
         <div class="team-card">
             <div class="team-avatar">
-                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400" alt="Team Member Profile Placeholder" style="filter: grayscale(1); opacity: 0.85;">
+                <img src="${member.image || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400'}" alt="${member.name} Profile" style="object-fit: cover; width: 100%; height: 100%;">
             </div>
             <div class="team-name">${member.name}</div>
             <div class="team-role">${member.role}</div>
@@ -938,7 +1364,7 @@ function getOurWorkHtml() {
                     <a href="#/contact" class="btn btn-primary">Connect with Intake Advisor</a>
                 </div>
                 <div>
-                    <img src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80&w=800" alt="Counseling meeting context" style="border: 1px solid rgba(142, 112, 79, 0.2); padding: 8px; background: var(--color-cream);">
+                    <img src="/community_support.png" alt="Counseling meeting context" style="border: 1px solid rgba(142, 112, 79, 0.2); padding: 8px; background: var(--color-cream); max-height: 380px; width: 100%; object-fit: cover;">
                 </div>
             </div>
 
@@ -955,7 +1381,7 @@ function getOurWorkHtml() {
         <section class="bg-beige-section" id="community-initiatives">
             <div class="container grid-2">
                 <div>
-                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800" alt="Community Seminar" style="border: 1px solid rgba(142, 112, 79, 0.2); padding: 8px; background: var(--color-cream);">
+                    <img src="/community_networks.png" alt="Community Seminar" style="border: 1px solid rgba(142, 112, 79, 0.2); padding: 8px; background: var(--color-cream); max-height: 380px; width: 100%; object-fit: cover;">
                 </div>
                 <div>
                     <span class="section-tag">VERTICAL B</span>
@@ -979,7 +1405,7 @@ function getOurWorkHtml() {
                     <p style="margin-top: 1.5rem;">We advocate for legislative enforcement of marital safety provisions and work with legal aid groups to handle strategic case filings in high courts.</p>
                 </div>
                 <div>
-                    <img src="https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=800" alt="Legal Brief Documents" style="border: 1px solid rgba(142, 112, 79, 0.2); padding: 8px; background: var(--color-cream);">
+                    <img src="/legal_guidance.jpg" alt="Legal Brief Documents" style="border: 1px solid rgba(142, 112, 79, 0.2); padding: 8px; background: var(--color-cream); max-height: 380px; width: 100%; object-fit: cover;">
                 </div>
             </div>
         </section>
@@ -1087,6 +1513,9 @@ function setupResourcesInteractions() {
     const searchInput = document.getElementById('resource-search');
     const filterBtns = document.querySelectorAll('.filter-btn');
 
+    let currentPage = 1;
+    const itemsPerPage = 6;
+
     const updateGrid = () => {
         const query = searchInput.value.toLowerCase().trim();
         const category = resourceFilters.category;
@@ -1105,20 +1534,57 @@ function setupResourcesInteractions() {
 
         const grid = document.getElementById('resource-grid');
         const emptyState = document.getElementById('resource-empty-state');
+        const paginationContainer = document.querySelector('.pagination');
 
         if (filtered.length === 0) {
             grid.innerHTML = '';
             emptyState.style.display = 'block';
+            if (paginationContainer) paginationContainer.innerHTML = '';
         } else {
             emptyState.style.display = 'none';
-            grid.innerHTML = filtered.map(r => `
+
+            // Calculate pagination bounds
+            const totalPages = Math.ceil(filtered.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = totalPages || 1;
+
+            const startIdx = (currentPage - 1) * itemsPerPage;
+            const endIdx = startIdx + itemsPerPage;
+            const paginatedItems = filtered.slice(startIdx, endIdx);
+
+            grid.innerHTML = paginatedItems.map(r => `
                 <div class="card page-transition">
                     <span class="card-meta">${r.category} &bull; ${r.type}</span>
                     <h3 class="card-title">${r.title}</h3>
                     <p class="card-text">${r.summary}</p>
-                    <a href="#/resources" class="card-link" onclick="openResourceModal('${r.id}')">Read Full Guide &rarr;</a>
+                    <div style="display: flex; gap: 10px; margin-top: 1rem; align-items: center; flex-wrap: wrap;">
+                        <a href="#/resources" class="card-link" onclick="openResourceModal('${r.id}')" style="margin-top: 0;">Read Full Guide &rarr;</a>
+                        ${r.pdfUrl ? `
+                            <a href="${r.pdfUrl}" target="_blank" class="card-link" style="margin-top: 0; color: var(--color-gold);">View PDF</a>
+                            <a href="${r.pdfUrl}" download class="card-link" style="margin-top: 0; color: var(--color-bronze);">Download PDF</a>
+                        ` : ''}
+                    </div>
                 </div>
             `).join('');
+
+            // Render Pagination Buttons
+            if (paginationContainer) {
+                let paginationHtml = '';
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationHtml += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+                }
+                paginationContainer.innerHTML = paginationHtml;
+
+                // Add click events to pagination buttons
+                paginationContainer.querySelectorAll('.pagination-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        currentPage = parseInt(btn.getAttribute('data-page'));
+                        updateGrid();
+                        // Scroll to top of resources controls so user sees new items
+                        const controls = document.querySelector('.resource-controls');
+                        if (controls) controls.scrollIntoView({ behavior: 'smooth' });
+                    });
+                });
+            }
         }
     };
 
@@ -1128,12 +1594,14 @@ function setupResourcesInteractions() {
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             resourceFilters.category = btn.getAttribute('data-category');
+            currentPage = 1; // Reset to page 1 on filter change
             updateGrid();
         });
     });
 
     // Search input handler
     searchInput.addEventListener('input', () => {
+        currentPage = 1; // Reset to page 1 on search change
         updateGrid();
     });
 
@@ -1142,7 +1610,7 @@ function setupResourcesInteractions() {
 }
 
 // Modal view helper for resource details
-window.openResourceModal = function(id) {
+window.openResourceModal = function (id) {
     const r = DEHLIZ_DATA.resources.find(item => item.id === id);
     if (!r) return;
 
@@ -1177,6 +1645,10 @@ window.openResourceModal = function(id) {
         <h2 style="font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 1.5rem; line-height: 1.3;">${r.title}</h2>
         <p style="font-size: 0.9rem; color: var(--color-bronze); margin-bottom: 1.5rem;">Published: ${r.date}</p>
         <p style="font-weight: 500; font-size: 1.05rem; margin-bottom: 2rem; color: var(--color-text-dark);">${r.summary}</p>
+        ${r.pdfUrl ? `<div style="margin-bottom: 2rem; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <a href="${r.pdfUrl}" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> View PDF</a>
+            <a href="${r.pdfUrl}" download class="btn btn-support" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download PDF</a>
+        </div>` : ''}
         <div style="font-size: 0.95rem; line-height: 1.8; color: var(--color-text-light); border-top: 1px solid rgba(142, 112, 79, 0.15); padding-top: 1.5rem;">
             ${r.content}
         </div>
@@ -1186,7 +1658,7 @@ window.openResourceModal = function(id) {
     document.body.appendChild(modalOverlay);
 };
 
-window.closeResourceModal = function(btn) {
+window.closeResourceModal = function (btn) {
     const overlay = btn.closest('div').parentElement;
     overlay.remove();
 };
@@ -1198,7 +1670,13 @@ function getResourcesSubpageHtml(category) {
             <span class="card-meta">${r.type}</span>
             <h3 class="card-title">${r.title}</h3>
             <p class="card-text">${r.summary}</p>
-            <a href="#/resources" class="card-link" onclick="openResourceModal('${r.id}')">Read Full Guide &rarr;</a>
+            <div style="display: flex; gap: 10px; margin-top: 1rem; align-items: center; flex-wrap: wrap;">
+                <a href="#/resources" class="card-link" onclick="openResourceModal('${r.id}')" style="margin-top: 0;">Read Full Guide &rarr;</a>
+                ${r.pdfUrl ? `
+                    <a href="${r.pdfUrl}" target="_blank" class="card-link" style="margin-top: 0; color: var(--color-gold);">View PDF</a>
+                    <a href="${r.pdfUrl}" download class="card-link" style="margin-top: 0; color: var(--color-bronze);">Download PDF</a>
+                ` : ''}
+            </div>
         </div>
     `).join('');
 
@@ -1216,38 +1694,12 @@ function getResourcesSubpageHtml(category) {
 }
 
 function getJoinUsHtml() {
-    const eventsHtml = DEHLIZ_DATA.events.map(e => `
-        <div class="card">
-            <span class="card-meta">${e.date}</span>
-            <h3 class="card-title">${e.title}</h3>
-            <div style="font-size: 0.85rem; color: var(--color-bronze); font-weight: 700; margin-bottom: 1rem;">Location: ${e.location}</div>
-            <p class="card-text">${e.description}</p>
-            <a href="#/join-us" class="btn btn-support" onclick="focusVolunteerForm('${e.title}')">Register Attendance &rarr;</a>
-        </div>
-    `).join('');
-
     return `
         <section class="bg-beige-section">
             <div class="container" style="max-width: 800px; text-align: center;">
                 <span class="section-tag">COMMUNITY ENGAGEMENT</span>
                 <h1 class="section-title" style="font-size: 3.5rem;">Join Us</h1>
-                <p style="font-size: 1.25rem; line-height: 1.8;">Volunteer your time, register as a community member, or attend one of our upcoming rights awareness events.</p>
-            </div>
-        </section>
-
-
-
-        <!-- Upcoming Events section -->
-        <section class="bg-beige-section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-tag">OUTREACH SCHEDULE</span>
-                    <h2 class="section-title">Upcoming Awareness Events</h2>
-                    <p class="section-subtitle">Reserve a seat or attend online to expand your legal and spiritual rights knowledge.</p>
-                </div>
-                <div class="grid-2">
-                    ${eventsHtml}
-                </div>
+                <p style="font-size: 1.25rem; line-height: 1.8;">Volunteer your time, skills, or design/legal expertise, or register as a registered community member to help build safer futures.</p>
             </div>
         </section>
 
@@ -1305,7 +1757,7 @@ function getJoinUsHtml() {
     `;
 }
 
-window.focusVolunteerForm = function(subject) {
+window.focusVolunteerForm = function (subject) {
     const el = document.getElementById('volunteer-section');
     if (el) {
         el.scrollIntoView({ behavior: 'smooth' });
@@ -1350,12 +1802,12 @@ async function sendConfirmationEmail(volunteer) {
     }
 }
 
-window.handleVolunteerSubmit = async function(event) {
+window.handleVolunteerSubmit = async function (event) {
     event.preventDefault();
     const alertBox = document.getElementById('volunteer-alert');
     const spinner = document.getElementById('volunteer-spinner');
     const form = document.getElementById('volunteer-form');
-    
+
     alertBox.className = 'form-alert';
     alertBox.style.display = 'none';
     spinner.style.display = 'block';
@@ -1380,7 +1832,7 @@ window.handleVolunteerSubmit = async function(event) {
             .from('volunteer_applications')
             .insert([{ name, email, phone, area_of_interest, message }])
             .select();
-        
+
         if (error) {
             spinner.style.display = 'none';
             window.showFeedbackModal('Submission Failed', 'Database error during submission: ' + error.message, false);
@@ -1400,14 +1852,14 @@ window.handleVolunteerSubmit = async function(event) {
         }
 
         spinner.style.display = 'none';
-        
+
         let successHtml = '';
         if (emailSent) {
             successHtml = `Thank you for joining Dehliz! Your volunteer registration has been successfully submitted. You will receive your unique Volunteer ID via email shortly.`;
         } else {
             successHtml = `Thank you for joining Dehliz! Your volunteer registration has been successfully submitted.<br><br>Your unique Volunteer ID is:<br><strong style="font-size: 1.6rem; color: var(--color-bronze); display: block; margin: 1rem 0; padding: 0.8rem; background: var(--color-beige); border-radius: 4px; border-left: 5px solid var(--color-bronze); font-family: monospace; letter-spacing: 1px;">${volId}</strong><span style="font-size: 0.85rem; color: #8C2F2F; font-weight: 600; display: block; margin-top: 0.5rem;">Note: Registration saved successfully, but email dispatch failed. Please note down your Volunteer ID.</span>`;
         }
-        
+
         window.showFeedbackModal('Application Submitted', successHtml, true);
         form.reset();
     } catch (err) {
@@ -1430,7 +1882,7 @@ function setupJoinUsInteractions() {
     }
 }
 
-window.showFeedbackModal = function(title, htmlContent, isSuccess) {
+window.showFeedbackModal = function (title, htmlContent, isSuccess) {
     const modalOverlay = document.createElement('div');
     modalOverlay.style.position = 'fixed';
     modalOverlay.style.top = '0';
@@ -1557,7 +2009,7 @@ function setupDonateInteractions() {
 function renderDonationAmounts() {
     const list = DEHLIZ_DATA.donationImpacts[activeDonationType];
     const container = document.getElementById('amounts-container');
-    
+
     container.innerHTML = list.map(item => `
         <button class="amount-btn ${item.amount === selectedDonationAmount ? 'active' : ''}" 
                 onclick="selectDonationAmount(${item.amount})">
@@ -1568,23 +2020,23 @@ function renderDonationAmounts() {
     updateImpactText();
 }
 
-window.toggleDonationType = function(type) {
+window.toggleDonationType = function (type) {
     activeDonationType = type;
     document.getElementById('btn-toggle-onetime').className = `donation-toggle-btn ${type === 'oneTime' ? 'active' : ''}`;
     document.getElementById('btn-toggle-monthly').className = `donation-toggle-btn ${type === 'monthly' ? 'active' : ''}`;
-    
+
     // Reset selection defaults for each type
     selectedDonationAmount = DEHLIZ_DATA.donationImpacts[type][1].amount; // default second item
-    
+
     const customInput = document.getElementById('custom-amount');
     if (customInput) customInput.value = '';
 
     renderDonationAmounts();
 };
 
-window.selectDonationAmount = function(amount) {
+window.selectDonationAmount = function (amount) {
     selectedDonationAmount = amount;
-    
+
     // Highlight buttons
     const btns = document.querySelectorAll('.amount-btn');
     btns.forEach(btn => {
@@ -1601,9 +2053,9 @@ window.selectDonationAmount = function(amount) {
     updateImpactText();
 };
 
-window.handleCustomAmountInput = function(input) {
+window.handleCustomAmountInput = function (input) {
     const val = parseInt(input.value);
-    
+
     // Remove active state from preset buttons
     const btns = document.querySelectorAll('.amount-btn');
     btns.forEach(btn => btn.classList.remove('active'));
@@ -1637,7 +2089,7 @@ function updateImpactText(isCustom = false) {
     }
 }
 
-window.triggerFakePayment = async function() {
+window.triggerFakePayment = async function () {
     if (!supabase) {
         alert(`Payment Gateway Integration Required\n\nTotal Selected: \u20B9${selectedDonationAmount} (${activeDonationType === 'oneTime' ? 'One-Time' : 'Monthly'}).\n\nDirect bank transfer instructions are available, but online card/UPI payment processing is currently offline.`);
         return;
@@ -1646,19 +2098,19 @@ window.triggerFakePayment = async function() {
     // Insert pending donation record securely
     try {
         const donor_name = "Anonymous Donor"; // Or query from inputs if logged
-        const donor_email = "donor@example.com"; 
+        const donor_email = "donor@example.com";
         const { data, error } = await supabase
             .from('donations')
-            .insert([{ 
-                donor_name, 
-                donor_email, 
-                amount: selectedDonationAmount, 
-                currency: 'INR', 
-                donation_type: activeDonationType, 
-                payment_status: 'Pending' 
+            .insert([{
+                donor_name,
+                donor_email,
+                amount: selectedDonationAmount,
+                currency: 'INR',
+                donation_type: activeDonationType,
+                payment_status: 'Pending'
             }])
             .select();
-        
+
         if (error) {
             alert("Database Error setting up payment record: " + error.message);
         } else {
@@ -1780,12 +2232,12 @@ function setupContactInteractions() {
     // Scroll coordinates or event handles
 }
 
-window.handleContactSubmit = async function(event) {
+window.handleContactSubmit = async function (event) {
     event.preventDefault();
     const alertBox = document.getElementById('contact-alert');
     const spinner = document.getElementById('contact-spinner');
     const form = document.getElementById('contact-form');
-    
+
     alertBox.className = 'form-alert';
     alertBox.style.display = 'none';
     spinner.style.display = 'block';
@@ -1809,7 +2261,7 @@ window.handleContactSubmit = async function(event) {
         const { error } = await supabase
             .from('contact_messages')
             .insert([{ name, email, enquiry_type, subject, message }]);
-        
+
         spinner.style.display = 'none';
         if (error) {
             alertBox.className = 'form-alert error';
@@ -1839,7 +2291,7 @@ let adminData = {
 };
 
 // Returns Admin HTML based on auth state
-window.getAdminPageHtml = function() {
+window.getAdminPageHtml = function () {
     if (!isAdminLoggedIn) {
         return `
             <section class="admin-login-section">
@@ -1915,7 +2367,7 @@ window.getAdminPageHtml = function() {
 };
 
 // Handle login validation
-window.handleAdminLogin = function(event) {
+window.handleAdminLogin = function (event) {
     event.preventDefault();
     const emailInput = document.getElementById('admin-email').value.trim();
     const passwordInput = document.getElementById('admin-password').value;
@@ -1934,19 +2386,19 @@ window.handleAdminLogin = function(event) {
 };
 
 // Handle logout
-window.handleAdminLogout = function() {
+window.handleAdminLogout = function () {
     isAdminLoggedIn = false;
     sessionStorage.removeItem('dehliz_admin_auth');
     renderPage('/admin');
 };
 
 // Initialize Admin Actions & Fetch Data
-window.setupAdminInteractions = async function() {
+window.setupAdminInteractions = async function () {
     if (!isAdminLoggedIn) return;
 
     const loader = document.getElementById('admin-table-loader');
     const tableDiv = document.getElementById('admin-table-content');
-    
+
     if (loader) loader.style.display = 'block';
     if (tableDiv) tableDiv.style.display = 'none';
 
@@ -2009,14 +2461,14 @@ function updateMetricsDisplay() {
 }
 
 // Switch current tab view
-window.switchAdminTab = function(tab) {
+window.switchAdminTab = function (tab) {
     activeAdminTab = tab;
-    
+
     // Toggle active class on buttons
     document.querySelectorAll('.admin-tab-btn').forEach(btn => {
         btn.classList.remove('active');
     });
-    
+
     const activeBtn = document.getElementById(`tab-${tab}`);
     if (activeBtn) activeBtn.classList.add('active');
 
