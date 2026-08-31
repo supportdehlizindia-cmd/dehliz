@@ -1008,26 +1008,6 @@ function getHomeHtml() {
             </div>
         </section>
 
-        <!-- Homepage Events Section -->
-        <section class="container">
-            <div class="section-header">
-                <span class="section-tag">${window.t('events.tag')}</span>
-                <h2 class="section-title">${window.t('events.title')}</h2>
-                <p class="section-subtitle">${window.t('events.desc')}</p>
-            </div>
-            <div class="grid-2">
-                ${DEHLIZ_DATA.events.map(e => `
-                    <div class="card">
-                        <span class="card-meta">${e.date}</span>
-                        <h3 class="card-title">${e.title}</h3>
-                        <div style="font-size: 0.85rem; color: var(--color-bronze); font-weight: 700; margin-bottom: 1.0rem;">${window.t('events.location', {loc: e.location})}</div>
-                        <p class="card-text">${e.description}</p>
-                        <a href="#/join-us" class="card-link" onclick="focusVolunteerForm('${e.title}')">${window.t('events.register')}</a>
-                    </div>
-                `).join('')}
-            </div>
-        </section>
-
         <!-- WhatsApp QR Section on Homepage -->
         <section class="bg-beige-section">
             <div class="container">
@@ -1928,7 +1908,7 @@ function getDonateHtml() {
         </section>
 
         <!-- Donation Interactive Panel & Impact -->
-        <section class="container grid-2">
+        <section class="container" style="max-width: 700px;">
             <div>
                 <span class="section-tag">${window.t('donatePage.tag')}</span>
                 <h2 class="section-title">${window.t('home.donation.title')}</h2>
@@ -1969,29 +1949,6 @@ function getDonateHtml() {
                     </div>
                     
                     <button class="btn btn-primary" style="width: 100%; text-align: center;" onclick="triggerFakePayment()">${window.t('donatePage.btnProceed')}</button>
-                </div>
-            </div>
-
-            <!-- Transparency / Where your support goes -->
-            <div>
-                <h2 style="font-size: 2.2rem; margin-bottom: 1.5rem; font-family: var(--font-heading);">${window.t('donatePage.transparency')}</h2>
-                <p style="margin-bottom: 2.5rem;">${window.t('donatePage.transparencyDesc')}</p>
-                
-                <div style="margin-bottom: 2rem;">
-                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-text-dark); font-family: var(--font-body); font-weight: 700;">${window.t('donatePage.w1')}</h4>
-                    <p style="font-size: 0.9rem;">${window.t('donatePage.w1Desc')}</p>
-                </div>
-                <div style="margin-bottom: 2rem;">
-                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-text-dark); font-family: var(--font-body); font-weight: 700;">${window.t('donatePage.w2')}</h4>
-                    <p style="font-size: 0.9rem;">${window.t('donatePage.w2Desc')}</p>
-                </div>
-                <div style="margin-bottom: 2rem;">
-                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-text-dark); font-family: var(--font-body); font-weight: 700;">${window.t('donatePage.w3')}</h4>
-                    <p style="font-size: 0.9rem;">${window.t('donatePage.w3Desc')}</p>
-                </div>
-                <div>
-                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-text-dark); font-family: var(--font-body); font-weight: 700;">${window.t('donatePage.w4')}</h4>
-                    <p style="font-size: 0.9rem;">${window.t('donatePage.w4Desc')}</p>
                 </div>
             </div>
         </section>
