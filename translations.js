@@ -11,8 +11,8 @@ export const translations = {
                     btn: "Explore Support &rarr;"
                 },
                 card2: {
-                    title: "Community Initiatives",
-                    desc: "Local legal awareness workshops, education programs, and community-led mutual support systems.",
+                    title: "Muslim Women Initiatives",
+                    desc: "Local legal awareness workshops, education programs, and Muslim Women-led mutual support systems.",
                     btn: "Explore Initiatives &rarr;"
                 },
                 card3: {
@@ -29,7 +29,7 @@ export const translations = {
             },
             donation: {
                 title: "Contribute to Our Mission",
-                desc: "Your support enables us to translate legal texts, run community awareness workshops, and maintain verified resource helplines.",
+                desc: "Your support enables us to translate legal texts, run Muslim Women awareness workshops, and maintain verified resource helplines.",
                 oneTime: "One-time Donation",
                 monthly: "Monthly Donation"
             }
@@ -44,7 +44,7 @@ export const translations = {
             support: "Get Support"
         },
         footer: {
-            desc: "Empowering communities, safeguarding constitutional protections, and providing transparent legal and spiritual resource networks for safer, dignified futures.",
+            desc: "Empowering Muslim Women, safeguarding constitutional protections, and providing transparent legal and spiritual resource networks for safer, dignified futures.",
             explore: "Explore",
             support: "Support",
             categories: "Resource Categories",
@@ -61,7 +61,7 @@ export const translations = {
             terms: "Terms of Service",
             accessibility: "Accessibility Statement",
             join: "Join Us",
-            joinDesc: "Join our network of volunteers, legal professionals, and community advocates to help empower women with access to justice and safety."
+            joinDesc: "Join our network of volunteers, legal professionals, and Muslim Women advocates to help empower women with access to justice and safety."
         },
         disclaimer: {
             strong: "Legal Disclaimer:",
@@ -106,19 +106,19 @@ export const translations = {
         events: {
             tag: "UPCOMING PROGRAMS",
             title: "Events & Seminars",
-            desc: "Join our active workshops and webinars to learn about constitutional protections and community solidarity.",
+            desc: "Join our active workshops and webinars to learn about constitutional protections and Muslim Women solidarity.",
             location: "Location: {{loc}}",
             register: "Register Attendance &rarr;"
         },
         whatsapp: {
-            title: "Join Our WhatsApp Community",
+            title: "Join Our WhatsApp Muslim Women",
             desc: "Stay updated with verified information, resources, and event updates.",
             badge: "Direct Support Network"
         },
         stories: {
             tag: "IMPACT & STORIES",
             title: "Support & Success Stories",
-            subtitle: "Real community impact. Identites and detailed elements are protected to preserve safety and human dignity.",
+            subtitle: "Real Muslim Women impact. Identites and detailed elements are protected to preserve safety and human dignity.",
             s1: {
                 badge: "Legal Guidance",
                 quote: "\"The support and clarity I received regarding my legal status changed my trajectory. I learned to stand strong and speak for myself.\"",
@@ -126,30 +126,30 @@ export const translations = {
                 result: "Assisted with domestic rights counselling"
             },
             s2: {
-                badge: "Community Network",
-                quote: "\"Finding a supportive community that did not judge me, but rather empowered me with legal and spiritual awareness, was a turning point.\"",
+                badge: "Muslim Women Network",
+                quote: "\"Finding a supportive Muslim Women that did not judge me, but rather empowered me with legal and spiritual awareness, was a turning point.\"",
                 author: "S. Fatima (Name changed for privacy)",
                 result: "Supported through local outreach workshops"
             },
             s3: {
-                badge: "Community Support",
-                quote: "\"DEHLIZ provided me with immediate guidance and safety resources. The community support network helped us navigate our most difficult times.\"",
+                badge: "Muslim Women Support",
+                quote: "\"DEHLIZ provided me with immediate guidance and safety resources. The Muslim Women support network helped us navigate our most difficult times.\"",
                 author: "R. Begum (Name changed for privacy)",
-                result: "Helped with emergency community support referrals"
+                result: "Helped with emergency Muslim Women support referrals"
             }
         },
         campaigns: {
             tag: "ACTIVE CAMPAIGNS",
             title: "Current Advocacy Campaigns",
-            subtitle: "Discover our active community programs focused on legal education and social support.",
+            subtitle: "Discover our active Muslim Women programs focused on legal education and social support.",
             c1: {
                 title: "Empower Her Rights",
                 category: "Legal Awareness",
-                desc: "A nationwide campaign focused on spreading awareness about constitutional and personal legal rights of women in local communities."
+                desc: "A nationwide campaign focused on spreading awareness about constitutional and personal legal rights of women in local Muslim Women."
             },
             c2: {
                 title: "Dignified Spaces",
-                category: "Community Support",
+                category: "Muslim Women Support",
                 desc: "Support network enhancement providing safe shelters and counselling assistance pathways for vulnerable individuals."
             },
             c3: {
@@ -183,9 +183,9 @@ export const translations = {
             valuesDesc: "Our values are simple:<br><strong>Educate. Empower. Enable. Inspire.</strong>",
             approachTag: "METHODOLOGY",
             approachTitle: "Our Strategic Approach",
-            approachDesc: "How we combine education, community advocacy, and referral-based support networks to drive impact.",
+            approachDesc: "How we combine education, Muslim Women advocacy, and referral-based support networks to drive impact.",
             approach1Title: "1. Ground-Up Legal Education",
-            approach1Desc: "We believe legal empowerment starts locally. We translate complex legal definitions (e.g. inheritance laws, domestic safety acts) into clear, multi-lingual guides and community workshops.",
+            approach1Desc: "We believe legal empowerment starts locally. We translate complex legal definitions (e.g. inheritance laws, domestic safety acts) into clear, multi-lingual guides and Muslim Women workshops.",
             approach2Title: "2. Islamic Rights Clarification",
             approach2Desc: "Distorting traditional values often isolates women from seeking civil remedies. We offer resources explaining the strong property, consent, and marital rights guaranteed to women within traditional Islamic jurisprudence.",
             approach3Title: "3. Safe Directory Referrals",
@@ -199,14 +199,14 @@ export const translations = {
         workPage: {
             tag: "ACTIVITIES",
             title: "Our Work",
-            desc: "Learn how we build awareness, support communities, and advocate for constitutional safety networks across the country.",
+            desc: "Learn how we build awareness, support Muslim Women, and advocate for constitutional safety networks across the country.",
             v1Tag: "SUPPORT SERVICES",
             v1Title: "Confidential Counselling & Referrals",
             v1Desc: "We provide crisis resources, legal advice pathways, and mental health referrals. If you or someone you know is facing violence, isolation, or rights violations, connect with our vetted network.",
             v1Btn: "Find Crisis Helplines &rarr;",
-            v2Tag: "COMMUNITY INITIATIVES",
+            v2Tag: "Muslim Women INITIATIVES",
             v2Title: "Workshops & Capacity Building",
-            v2Desc: "We host local outreach classes, legal literacy workshops, and leadership development programs. These sessions simplify legal processes and build mutual community support networks.",
+            v2Desc: "We host local outreach classes, legal literacy workshops, and leadership development programs. These sessions simplify legal processes and build mutual Muslim Women support networks.",
             v2Btn: "Apply to Attend Workshop &rarr;",
             v3Tag: "ADVOCACY & RESEARCH",
             v3Title: "Islamic Jurisprudence & Family Rights",
@@ -222,7 +222,7 @@ export const translations = {
         donatePage: {
             tag: "CONTRIBUTE",
             title: "Support Dehliz",
-            desc: "Your contributions directly fund legal aid manuals, educational workshops, and community assistance directories.",
+            desc: "Your contributions directly fund legal aid manuals, educational workshops, and Muslim Women assistance directories.",
             bankDetails: "Direct Bank Transfer Details",
             bankName: "Bank Name:",
             accNumber: "Account Number:",
@@ -230,9 +230,9 @@ export const translations = {
             holder: "Account Holder:",
             branch: "Branch:",
             transparency: "Where Your Support Goes",
-            transparencyDesc: "We prioritize direct community intervention. Our administrative costs are minimized, supported largely by volunteer efforts.",
+            transparencyDesc: "We prioritize direct Muslim Women intervention. Our administrative costs are minimized, supported largely by volunteer efforts.",
             w1: "Rights Workshops (40%)",
-            w1Desc: "Printing guidebooks, reserving local community centers, and coordinating logistics for legal seminars.",
+            w1Desc: "Printing guidebooks, reserving local Muslim Women centers, and coordinating logistics for legal seminars.",
             w2: "Legal Assistance Referral Network (30%)",
             w2Desc: "Supporting administrative logistics to verify public lawyers and counseling contacts.",
             w3: "Resource Research & Publications (20%)",
@@ -243,13 +243,13 @@ export const translations = {
             btnProceed: "Proceed to Support",
             customLabel: "Custom Contribution Amount (INR)",
             customPlaceholder: "Enter other amount",
-            impactLabel: "Provides informative rights booklets and legal guide booklets to 5 community workshop participants.",
+            impactLabel: "Provides informative rights booklets and legal guide booklets to 5 Muslim Women workshop participants.",
             impactTitle: "Educational Materials"
         },
         contactPage: {
             tag: "GET IN TOUCH",
             title: "Contact Dehliz",
-            desc: "Reach out for assistance referrals, partnership queries, general questions, or community updates.",
+            desc: "Reach out for assistance referrals, partnership queries, general questions, or Muslim Women updates.",
             formTitle: "Send a Secure Inquiry",
             selectOption: "Select option...",
             opt1: "Ask a general inquiry",
@@ -289,7 +289,7 @@ export const translations = {
                 selectInterest: "Select interest area...",
                 interest1: "Legal Awareness Seminars",
                 interest2: "Administrative & Operations Support",
-                interest3: "Outreach & Community Building",
+                interest3: "Outreach & Muslim Women Building",
                 interest4: "Content Development & Design",
                 submitBtn: "Submit Application",
                 successTitle: "Application Submitted",
@@ -298,7 +298,7 @@ export const translations = {
             },
             contact: {
                 title: "Need support or rights resources?",
-                desc: "Access our community helpline directory, download educational manuals, or connect with our intake coordinators.",
+                desc: "Access our Muslim Women helpline directory, download educational manuals, or connect with our intake coordinators.",
                 helplines: "Helplines Directory",
                 library: "Rights Library",
                 formHeader: "Send us a Message",

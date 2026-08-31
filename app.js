@@ -48,15 +48,12 @@ window.localizeDOM = function() {
         }
     });
 
-    // Update active language switcher UI
+    // Update active language switcher UI select dropdown
     const currentLang = localStorage.getItem('dehliz_lang') || 'en';
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        if (btn.getAttribute('data-lang') === currentLang) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
+    const langSelect = document.getElementById('lang-select');
+    if (langSelect) {
+        langSelect.value = currentLang;
+    }
 
     // Set HTML lang attribute
     document.documentElement.lang = currentLang;
@@ -135,7 +132,7 @@ const DEHLIZ_DATA = {
             platform: 'instagram',
             id: 'Dcn6lycjG2m',
             url: 'https://www.instagram.com/dehlizindia/p/Dcn6lycjG2m/',
-            text: 'Advocating for educational block access and rights security awareness. Seminars held in regional communities.',
+            text: 'Advocating for educational block access and rights security awareness. Seminars held in regional Muslim Women.',
             image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
             date: 'August 15, 2026'
         }
@@ -145,7 +142,7 @@ const DEHLIZ_DATA = {
         title: "Dehliz India - Ek Umeed",
         tag: "About Our Mission",
         embedUrl: "https://www.youtube.com/embed/UJo3ItcQtD4?playlist=UJo3ItcQtD4",
-        description: "An overview of Dehliz India's efforts in building legal awareness, supporting communities, and empowering individuals."
+        description: "An overview of Dehliz India's efforts in building legal awareness, supporting Muslim Women, and empowering individuals."
     },
 
     // Campaigns Data
@@ -155,7 +152,7 @@ const DEHLIZ_DATA = {
             title: 'Empower Her Rights',
             category: 'Legal Awareness',
             date: 'August 2026',
-            description: 'A nationwide campaign focused on spreading awareness about constitutional and personal legal rights of women in local communities.',
+            description: 'A nationwide campaign focused on spreading awareness about constitutional and personal legal rights of women in local Muslim Women.',
             progress: 'Initial Phase',
             status: 'Ongoing',
             image: 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&q=80&w=800'
@@ -268,8 +265,8 @@ const DEHLIZ_DATA = {
             category: 'Research & Briefs',
             type: 'Scheme Guidelines / PDF',
             date: '2026-08-30',
-            summary: 'Official guidelines and eligibility criteria of the Post-Matric Scholarship scheme for students belonging to minority communities.',
-            content: 'This scheme provides financial assistance for higher secondary, college, and university level studies to students belonging to notified minority communities (Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains). Features 30% earmarking for girl students.',
+            summary: 'Official guidelines and eligibility criteria of the Post-Matric Scholarship scheme for students belonging to minority Muslim Women.',
+            content: 'This scheme provides financial assistance for higher secondary, college, and university level studies to students belonging to notified minority Muslim Women (Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains). Features 30% earmarking for girl students.',
             pdfUrl: '/pdfs/SCHEME-OF-POST-MATRIC-SCHOLARSHIP-FOR-STUDENTS-BELONGING-TO-MINORITY-COMMUNITY_copy.pdf'
         },
         {
@@ -374,12 +371,6 @@ const DEHLIZ_DATA = {
             image: '/nazia_sayed.jpg'
         },
         {
-            name: 'Aman Khan',
-            role: 'Head of Research, Strategies & Communication',
-            bio: 'Head of Research, Strategies & Communication. Leads institutional research, policy strategy, and communication channels to drive social development and support networks.',
-            image: '/aman_khan.png'
-        },
-        {
             name: 'Naziya',
             role: 'Head of Marketing & Branding',
             bio: 'Entrepreneur and freelance hairstylist with a passion for digital communication, content creation, and brand storytelling. Leads digital marketing and strategic communication to amplify women\'s education, employment, and empowerment initiatives.',
@@ -390,6 +381,12 @@ const DEHLIZ_DATA = {
             role: 'Programme Coordinator & Research',
             bio: 'Mechanical Engineering graduate and Political Science researcher. Specializes in policy analysis, digital media initiatives, and translating complex socio-political data into clear, impactful narratives for women\'s development.',
             image: '/ayyan_chougle.png'
+        },
+        {
+            name: 'Aman Khan',
+            role: 'Head of Research, Strategies & Communication',
+            bio: 'Head of Research, Strategies & Communication. Leads institutional research, policy strategy, and communication channels to drive social development and support networks.',
+            image: '/public/aman_khan.jpg'
         }
     ],
 
@@ -558,8 +555,8 @@ async function initDatabaseData() {
             const filteredDbTeam = dbTeam.filter(t => t.name !== 'Founder Name' && t.name !== 'Legal Advisor Name');
 
             // Keep local team members intact
-            const localNames = ['Nazia Sayed', 'Ayyan Chougle', 'Naziya', 'Aman Khan'];
-            const localItems = DEHLIZ_DATA.team.filter(lt => localNames.includes(lt.name));
+            const localNames = ['Nazia Sayed', 'Naziya', 'Ayyan Chougle', 'Aman Khan'];
+            const localItems = localNames.map(name => DEHLIZ_DATA.team.find(lt => lt.name === name)).filter(Boolean);
 
             // Combine local items and unique database entries
             const uniqueDbItems = filteredDbTeam.filter(dbt => !localNames.includes(dbt.name));
@@ -1036,10 +1033,7 @@ function getHomeHtml() {
             <div class="container">
                 <div class="whatsapp-community-card">
                     <div class="whatsapp-qr-area">
-                        <div style="text-align: center;">
-                            <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">&#128225;</span>
-                            <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--color-bronze);">${window.t('whatsapp.badge')}</span>
-                        </div>
+                        <img src="/public/whatsapp_qr.png" alt="WhatsApp QR Code" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                     <div class="whatsapp-content-area">
                         <h3 class="whatsapp-title">${window.t('whatsapp.title')}</h3>
@@ -2241,11 +2235,7 @@ function getContactHtml() {
                 <!-- WhatsApp QR Area -->
                 <div class="whatsapp-community-card">
                     <div class="whatsapp-qr-area">
-                        <!-- Standard mock representation for QR code container -->
-                        <div style="text-align: center;">
-                            <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">&#128225;</span>
-                            <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--color-bronze);">${window.t('whatsapp.badge')}</span>
-                        </div>
+                        <img src="/public/whatsapp_qr.png" alt="WhatsApp QR Code" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                     <div class="whatsapp-content-area">
                         <h3 class="whatsapp-title">${window.t('whatsapp.title')}</h3>

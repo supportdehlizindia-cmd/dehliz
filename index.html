@@ -8,7 +8,7 @@
     
     <!-- Open Graph SEO Metadata -->
     <meta property="og:title" content="DEHLIZ — Safety, Dignity & Community Empowerment">
-    <meta property="og:description" content="Empowering communities, protecting constitutional rights under Indian law and Islamic jurisprudence.">
+    <meta property="og:description" content="Empowering Muslim Women, protecting constitutional rights under Indian law and Islamic jurisprudence.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://dehlizindia.org/">
     <meta property="og:image" content="logo.png">
@@ -43,11 +43,13 @@
                 </li>
             </ul>
 
-            <!-- Language Switcher Panel -->
+            <!-- Language Switcher Select Dropdown -->
             <div class="lang-switcher">
-                <button onclick="setLanguage('en')" class="lang-btn" data-lang="en">EN</button>
-                <button onclick="setLanguage('hi')" class="lang-btn" data-lang="hi">हिंदी</button>
-                <button onclick="setLanguage('mr')" class="lang-btn" data-lang="mr">मराठी</button>
+                <select onchange="setLanguage(this.value)" id="lang-select" class="lang-dropdown">
+                    <option value="en">EN</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="mr">मराठी</option>
+                </select>
             </div>
 
             <!-- Mobile menu hamburger -->
@@ -72,7 +74,7 @@
                     <img src="/logo.png" alt="DEHLIZ Logo" style="height: 72px; width: auto; object-fit: contain;">
                     <img src="/logo2.png?v=3" alt="dehliz ek umeed" style="height: 52px; width: auto; object-fit: contain;">
                 </div>
-                <p data-i18n="footer.desc">Empowering communities, safeguarding constitutional protections, and providing transparent legal and spiritual resource networks for safer, dignified futures.</p>
+                <p data-i18n="footer.desc">Empowering Muslim Women, safeguarding constitutional protections, and providing transparent legal and spiritual resource networks for safer, dignified futures.</p>
                 <div style="margin: 1.5rem 0; font-size: 0.9rem; line-height: 1.8;">
                     <div>Email: <a href="mailto:support.dehlizindia.com@gmail.com" style="color: var(--color-gold); font-weight: 600;">support.dehlizindia.com@gmail.com</a></div>
                     <div>Instagram: <a href="https://www.instagram.com/dehlizindia?igsi=bXprYzk0d2ttNTE3" target="_blank" style="color: var(--color-gold); font-weight: 600;">@dehlizindia</a></div>
