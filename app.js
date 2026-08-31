@@ -1,7 +1,7 @@
 import { translations } from './translations.js';
 
 // Setup i18n
-window.t = function(key, params = {}) {
+window.t = function(key, params = {}, fallback = null) {
     const lang = localStorage.getItem('dehliz_lang') || 'en';
     const keys = key.split('.');
     let translation = translations[lang];
@@ -9,14 +9,16 @@ window.t = function(key, params = {}) {
         if (translation) {
             translation = translation[k];
         } else {
-            return key; // Fallback to key itself
+            return fallback !== null ? fallback : key; // Fallback to provided fallback
         }
     }
-    if (!translation) return key;
+    if (!translation) return fallback !== null ? fallback : key;
     
     // Replace placeholders like {{name}}
     Object.keys(params).forEach(pKey => {
-        translation = translation.replace(new RegExp(`{{${pKey}}}`, 'g'), params[pKey]);
+        if (typeof translation === 'string') {
+            translation = translation.replace(new RegExp(`{{${pKey}}}`, 'g'), params[pKey]);
+        }
     });
     return translation;
 };
@@ -309,6 +311,26 @@ const DEHLIZ_DATA = {
             summary: 'The full official text of the Protection of Women from Domestic Violence Act, 2005 outlining legal remedies, duties, and procedures for seeking relief.',
             content: 'An Act to provide for more effective protection of the rights of women guaranteed under the Constitution who are victims of violence of any kind occurring within the family and for matters connected therewith or incidental thereto.',
             pdfUrl: '/pdfs/protection_of_women_from_domestic_violence_act,_2005_copy.pdf'
+        },
+        {
+            id: 'r11',
+            title: 'Protection of Women from Domestic Violence Act, 2005 (Hindi Copy)',
+            category: 'Indian Law Protections',
+            type: 'Act / PDF',
+            date: '2005-09-13',
+            summary: 'The official text of the Protection of Women from Domestic Violence Act, 2005 in Hindi translation outlining legal remedies, duties, and procedures.',
+            content: 'घरेलू हिंसा से महिलाओं का संरक्षण अधिनियम, 2005 - महिलाओं को परिवार के भीतर होने वाली किसी भी प्रकार की हिंसा से बचाने के लिए अधिक प्रभावी संरक्षण प्रदान करने वाला अधिनियम।',
+            pdfUrl: '/pdfs/protection_of_women_from_domestic_violence_act,_2005_copy (1).pdf'
+        },
+        {
+            id: 'r12',
+            title: 'Protection of Women from Domestic Violence Act, 2005 (Marathi Copy)',
+            category: 'Indian Law Protections',
+            type: 'Act / PDF',
+            date: '2005-09-13',
+            summary: 'The official text of the Protection of Women from Domestic Violence Act, 2005 in Marathi translation outlining legal remedies, duties, and procedures.',
+            content: 'कौटुंबिक हिंसेपासून महिलांचे संरक्षण अधिनियम, २००५ - कुटुंबात घडणाऱ्या कोणत्याही प्रकारच्या हिंसेला बळी पडलेल्या महिलांच्या हक्कांचे अधिक प्रभावी संरक्षण सुनिश्चित करणारे नियम।',
+            pdfUrl: '/pdfs/protection_of_women_from_domestic_violence_act,_2005_copy (2).pdf'
         }
     ],
 
@@ -349,25 +371,25 @@ const DEHLIZ_DATA = {
             name: 'Nazia Sayed',
             role: 'Founder & Director',
             bio: 'Investigative Journalist, Author, and Communications Professional with 15+ years of experience in conflict reporting, corporate communications, and public affairs. Founder and Editor-in-Chief of Ground Zero Monitor.',
-            image: 'public/nazia_sayed.jpg'
+            image: '/nazia_sayed.jpg'
         },
         {
             name: 'Aman Khan',
-            role: 'Director / Head of Research, Strategies & Communication',
-            bio: 'Director at Dehliz and Head of Research, Strategies & Communication. Leads institutional research, policy strategy, and communication channels to drive social development and support networks.',
-            image: 'public/aman_khan.png'
+            role: 'Head of Research, Strategies & Communication',
+            bio: 'Head of Research, Strategies & Communication. Leads institutional research, policy strategy, and communication channels to drive social development and support networks.',
+            image: '/aman_khan.png'
         },
         {
             name: 'Naziya',
             role: 'Head of Marketing & Branding',
             bio: 'Entrepreneur and freelance hairstylist with a passion for digital communication, content creation, and brand storytelling. Leads digital marketing and strategic communication to amplify women\'s education, employment, and empowerment initiatives.',
-            image: 'public/naziya.jpg'
+            image: '/naziya.jpg'
         },
         {
             name: 'Ayyan Chougle',
             role: 'Programme Coordinator & Research',
             bio: 'Mechanical Engineering graduate and Political Science researcher. Specializes in policy analysis, digital media initiatives, and translating complex socio-political data into clear, impactful narratives for women\'s development.',
-            image: 'public/ayyan_chougle.png'
+            image: '/ayyan_chougle.png'
         }
     ],
 
@@ -483,7 +505,7 @@ async function initDatabaseData() {
                 pdfUrl: r.pdf_url || r.pdfUrl || null
             }));
             // Append database resources ensuring we keep our local pre-defined items intact
-            const localResourceIds = ['r7', 'r8', 'r9', 'r10', 'r11', 'r12', 'r13', 'r14', 'r15', 'r16', 'r17', 'r18', 'r19', 'r20'];
+            const localResourceIds = ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7', 'r8', 'r9', 'r10', 'r11', 'r12', 'r13', 'r14', 'r15', 'r16', 'r17', 'r18', 'r19', 'r20'];
             const localItems = DEHLIZ_DATA.resources.filter(lr => localResourceIds.includes(lr.id));
 
             // Filter out duplicates if database happens to have same ids
@@ -1185,59 +1207,64 @@ function setupHomeInteractions() {
 }
 
 function getAboutHtml() {
-    const teamHtml = DEHLIZ_DATA.team.map(member => `
+    const teamHtml = DEHLIZ_DATA.team.map(member => {
+        const id = member.name.toLowerCase().replace(/\s+/g, '_');
+        const role = window.t(`team.${id}.role`, {}, member.role);
+        const bio = window.t(`team.${id}.bio`, {}, member.bio);
+        return `
         <div class="team-card">
             <div class="team-avatar">
                 <img src="${member.image || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400'}" alt="${member.name} Profile" style="object-fit: cover; width: 100%; height: 100%;">
             </div>
             <div class="team-name">${member.name}</div>
-            <div class="team-role">${member.role}</div>
-            <div class="team-bio">${member.bio}</div>
+            <div class="team-role">${role}</div>
+            <div class="team-bio">${bio}</div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 
     return `
         <section class="bg-beige-section">
             <div class="container" style="max-width: 800px; text-align: center;">
-                <span class="section-tag">ABOUT US</span>
-                <h1 class="section-title" style="font-size: 3.5rem;">Who We Are</h1>
-                <p style="font-size: 1.25rem; line-height: 1.8;"><strong>Dehliz - Ek Umeed</strong> is an initiative committed to creating a more informed, empowered and inclusive society where muslim women have the knowledge, opportunities and confidence to shape their own futures.</p>
+                <span class="section-tag">${window.t('nav.about')}</span>
+                <h1 class="section-title" style="font-size: 3.5rem;">${window.t('aboutPage.title')}</h1>
+                <p style="font-size: 1.25rem; line-height: 1.8;">${window.t('aboutPage.desc')}</p>
             </div>
         </section>
 
         <!-- Our Story & Foundations -->
         <section class="container grid-2">
             <div>
-                <h2 style="font-size: 2.2rem; margin-bottom: 1.5rem; font-family: var(--font-heading);">Our Focus & Belief</h2>
-                <p style="margin-bottom: 1.5rem; font-size: 1.1rem; font-weight: 500; line-height: 1.7;">Our work focuses on turning awareness into action through four key areas:</p>
+                <h2 style="font-size: 2.2rem; margin-bottom: 1.5rem; font-family: var(--font-heading);">${window.t('aboutPage.focusTitle')}</h2>
+                <p style="margin-bottom: 1.5rem; font-size: 1.1rem; font-weight: 500; line-height: 1.7;">${window.t('whoWeAre.subtitle')}</p>
                 
                 <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0; display: flex; flex-direction: column; gap: 1.25rem;">
                     <li style="display: flex; gap: 1rem; align-items: flex-start;">
                         <span style="font-weight: 700; color: var(--color-text-white); background: var(--color-bronze); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; font-size: 0.95rem;">1</span>
                         <div>
-                            <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">Education & Literacy</strong>
-                            <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">Promoting access to education, digital literacy and learning opportunities for Muslim girls and women.</span>
+                            <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">${window.t('whoWeAre.point1.title')}</strong>
+                            <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">${window.t('whoWeAre.point1.desc')}</span>
                         </div>
                     </li>
                     <li style="display: flex; gap: 1rem; align-items: flex-start;">
                         <span style="font-weight: 700; color: var(--color-text-white); background: var(--color-bronze); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; font-size: 0.95rem;">2</span>
                         <div>
-                            <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">Livelihoods & Employment</strong>
-                            <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">Supporting Muslim women with skills, employment opportunities, entrepreneurship and pathways towards economic independence.</span>
+                            <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">${window.t('whoWeAre.point2.title')}</strong>
+                            <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">${window.t('whoWeAre.point2.desc')}</span>
                         </div>
                     </li>
                     <li style="display: flex; gap: 1rem; align-items: flex-start;">
                         <span style="font-weight: 700; color: var(--color-text-white); background: var(--color-bronze); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; font-size: 0.95rem;">3</span>
                         <div>
-                            <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">Legal Literacy & Access to Justice</strong>
-                            <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">Creating awareness about constitutional rights, laws, government support systems and available legal assistance.</span>
+                            <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">${window.t('whoWeAre.point3.title')}</strong>
+                            <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">${window.t('whoWeAre.point3.desc')}</span>
                         </div>
                     </li>
                     <li style="display: flex; gap: 1rem; align-items: flex-start;">
                         <span style="font-weight: 700; color: var(--color-text-white); background: var(--color-bronze); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 1; font-size: 0.95rem;">4</span>
                         <div>
-                            <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">Social Awareness & Empowerment</strong>
-                            <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">Starting conversations around issues affecting Muslim women and creating platforms where their voices, experiences and achievements can be recognised.</span>
+                            <strong style="color: var(--color-charcoal); display: block; font-size: 1.05rem; margin-bottom: 0.15rem;">${window.t('whoWeAre.point4.title')}</strong>
+                            <span style="font-size: 0.95rem; color: var(--color-text-light); display: block; line-height: 1.5;">${window.t('whoWeAre.point4.desc')}</span>
                         </div>
                     </li>
                 </ul>
@@ -1251,19 +1278,16 @@ function getAboutHtml() {
         <section class="bg-beige-section">
             <div class="container grid-3">
                 <div class="card">
-                    <h3 class="card-title" style="color: var(--color-bronze);">Our Mission</h3>
-                    <p class="card-text">To empower Muslim women with knowledge, skills, opportunities and awareness of their rights, enabling them to make informed decisions, achieve greater independence and participate equally in society.</p>
+                    <h3 class="card-title" style="color: var(--color-bronze);">${window.t('aboutPage.missionTitle')}</h3>
+                    <p class="card-text">${window.t('aboutPage.missionDesc')}</p>
                 </div>
                 <div class="card">
-                    <h3 class="card-title" style="color: var(--color-bronze);">Our Vision</h3>
-                    <p class="card-text">A society where every Muslim woman has the knowledge, opportunity, freedom and confidence to shape her own future. We envision a society where Muslim women can access education, build sustainable livelihoods, understand and exercise their rights, participate in decision-making and live with equality, safety and dignity.</p>
+                    <h3 class="card-title" style="color: var(--color-bronze);">${window.t('aboutPage.visionTitle')}</h3>
+                    <p class="card-text">${window.t('aboutPage.visionDesc')}</p>
                 </div>
                 <div class="card">
-                    <h3 class="card-title" style="color: var(--color-bronze);">Our Values</h3>
-                    <p class="card-text" style="font-size: 1.1rem; line-height: 1.8; color: var(--color-charcoal);">
-                        Our values are simple:<br>
-                        <strong>Educate. Empower. Enable. Inspire.</strong>
-                    </p>
+                    <h3 class="card-title" style="color: var(--color-bronze);">${window.t('aboutPage.valuesTitle')}</h3>
+                    <p class="card-text" style="font-size: 1.1rem; line-height: 1.8; color: var(--color-charcoal);">${window.t('aboutPage.valuesDesc')}</p>
                 </div>
             </div>
         </section>
@@ -1271,25 +1295,25 @@ function getAboutHtml() {
         <!-- Our Approach -->
         <section class="container">
             <div class="section-header">
-                <span class="section-tag">METHODOLOGY</span>
-                <h2 class="section-title">Our Strategic Approach</h2>
-                <p class="section-subtitle">How we combine education, community advocacy, and referral-based support networks to drive impact.</p>
+                <span class="section-tag">${window.t('aboutPage.approachTag')}</span>
+                <h2 class="section-title">${window.t('aboutPage.approachTitle')}</h2>
+                <p class="section-subtitle">${window.t('aboutPage.approachDesc')}</p>
             </div>
             
             <div class="grid-2">
                 <div>
-                    <h3 style="font-size: 1.6rem; margin-bottom: 1rem;">1. Ground-Up Legal Education</h3>
-                    <p style="margin-bottom: 1.5rem;">We believe legal empowerment starts locally. We translate complex legal definitions (e.g. inheritance laws, domestic safety acts) into clear, multi-lingual guides and community workshops.</p>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 1rem;">${window.t('aboutPage.approach1Title')}</h3>
+                    <p style="margin-bottom: 1.5rem;">${window.t('aboutPage.approach1Desc')}</p>
                     
-                    <h3 style="font-size: 1.6rem; margin-bottom: 1rem;">2. Islamic Rights Clarification</h3>
-                    <p style="margin-bottom: 1.5rem;">Distorting traditional values often isolates women from seeking civil remedies. We offer resources explaining the strong property, consent, and marital rights guaranteed to women within traditional Islamic jurisprudence.</p>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 1rem;">${window.t('aboutPage.approach2Title')}</h3>
+                    <p style="margin-bottom: 1.5rem;">${window.t('aboutPage.approach2Desc')}</p>
                 </div>
                 <div>
-                    <h3 style="font-size: 1.6rem; margin-bottom: 1rem;">3. Safe Directory Referrals</h3>
-                    <p style="margin-bottom: 1.5rem;">We do not replace state agencies or emergency portals. Instead, we catalog, verify, and guide individuals to established public helplines, safe shelters, legal aid attorneys, and professional counselors.</p>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 1rem;">${window.t('aboutPage.approach3Title')}</h3>
+                    <p style="margin-bottom: 1.5rem;">${window.t('aboutPage.approach3Desc')}</p>
                     
-                    <h3 style="font-size: 1.6rem; margin-bottom: 1rem;">4. Public Policy Advocacy</h3>
-                    <p>Through research papers, publications, and campaigns, we advocate for fair legal interpretations and structural gender reforms that guarantee dignity for women.</p>
+                    <h3 style="font-size: 1.6rem; margin-bottom: 1rem;">${window.t('aboutPage.approach4Title')}</h3>
+                    <p>${window.t('aboutPage.approach4Desc')}</p>
                 </div>
             </div>
         </section>
@@ -1298,9 +1322,9 @@ function getAboutHtml() {
         <section class="bg-beige-section">
             <div class="container">
                 <div class="section-header">
-                    <span class="section-tag">LEADERSHIP & TRUSTEES</span>
-                    <h2 class="section-title">Our Team & Advisers</h2>
-                    <p class="section-subtitle">Organized by CMS structures. Authentic team biographies are maintained directly by the board.</p>
+                    <span class="section-tag">${window.t('aboutPage.teamTag')}</span>
+                    <h2 class="section-title">${window.t('aboutPage.teamTitle')}</h2>
+                    <p class="section-subtitle">${window.t('aboutPage.teamDesc')}</p>
                 </div>
                 <div class="team-grid">
                     ${teamHtml}
@@ -1312,26 +1336,32 @@ function getAboutHtml() {
 
 function getOurWorkHtml() {
     // Generate verified helplines list
-    const helplineRows = DEHLIZ_DATA.helplines.map(h => `
+    const helplineRows = DEHLIZ_DATA.helplines.map(h => {
+        const id = h.organization.toLowerCase().replace(/[^a-z0-9]/g, '_');
+        const org = window.t(`helpline.${id}.org`, {}, h.organization);
+        const svc = window.t(`helpline.${id}.svc`, {}, h.service);
+        const desc = window.t(`helpline.${id}.desc`, {}, h.description);
+        return `
         <div class="helpline-card">
-            <div class="helpline-title">${h.organization}</div>
-            <div style="font-size: 0.9rem; color: var(--color-bronze); font-weight: 600;">${h.service}</div>
+            <div class="helpline-title">${org}</div>
+            <div style="font-size: 0.9rem; color: var(--color-bronze); font-weight: 600;">${svc}</div>
             <div class="helpline-number">${h.phone}</div>
             <div class="helpline-meta-row">
-                <div class="helpline-meta-item">Location: <span>${h.location}</span></div>
-                <div class="helpline-meta-item">Hours: <span>${h.availability}</span></div>
+                <div class="helpline-meta-item">${window.t('workPage.locLabel', {loc: h.location})}</div>
+                <div class="helpline-meta-item">${window.t('workPage.hoursLabel', {hours: h.availability})}</div>
             </div>
-            <p style="font-size: 0.9rem; flex-grow: 1;">${h.description}</p>
-            ${h.website !== 'N/A' && !h.website.includes('[') ? `<a href="https://${h.website}" target="_blank" style="margin-top: 1rem; font-size: 0.85rem; font-weight: 700; color: var(--color-charcoal); text-decoration: underline;">Visit Web Platform &rarr;</a>` : ''}
+            <p style="font-size: 0.9rem; flex-grow: 1;">${desc}</p>
+            ${h.website !== 'N/A' && !h.website.includes('[') ? `<a href="https://${h.website}" target="_blank" style="margin-top: 1rem; font-size: 0.85rem; font-weight: 700; color: var(--color-charcoal); text-decoration: underline;">${window.t('workPage.visitWeb')}</a>` : ''}
         </div>
-    `).join('');
+        `;
+    }).join('');
 
     return `
         <section class="bg-beige-section">
             <div class="container" style="max-width: 800px; text-align: center;">
-                <span class="section-tag">ACTIVITIES</span>
-                <h1 class="section-title" style="font-size: 3.5rem;">Our Work</h1>
-                <p style="font-size: 1.25rem; line-height: 1.8;">Learn how we build awareness, support communities, and advocate for constitutional safety networks across the country.</p>
+                <span class="section-tag">${window.t('workPage.tag')}</span>
+                <h1 class="section-title" style="font-size: 3.5rem;">${window.t('workPage.title')}</h1>
+                <p style="font-size: 1.25rem; line-height: 1.8;">${window.t('workPage.desc')}</p>
             </div>
         </section>
 
@@ -1339,11 +1369,10 @@ function getOurWorkHtml() {
         <section class="container" id="support-services">
             <div class="grid-2">
                 <div>
-                    <span class="section-tag">VERTICAL A</span>
-                    <h2 class="section-title">Support Services & Referral Networks</h2>
-                    <p style="margin-bottom: 1.2rem;">DEHLIZ facilitates direct access to public resources. We catalog verified legal support channels, trauma counseling centers, and shelter locations.</p>
-                    <p style="margin-bottom: 2rem;">If you or someone you know requires legal assistance or domestic support, refer to the verified public directories below. We encourage contacting these national resources directly for immediate emergency support.</p>
-                    <a href="#/contact" class="btn btn-primary">Connect with Intake Advisor</a>
+                    <span class="section-tag">${window.t('workPage.v1Tag')}</span>
+                    <h2 class="section-title">${window.t('workPage.v1Title')}</h2>
+                    <p style="margin-bottom: 1.2rem;">${window.t('workPage.v1Desc')}</p>
+                    <a href="#/contact" class="btn btn-primary">${window.t('home.hero.actions.getSupport')}</a>
                 </div>
                 <div>
                     <img src="/community_support.png" alt="Counseling meeting context" style="border: 1px solid rgba(142, 112, 79, 0.2); padding: 8px; background: var(--color-cream); max-height: 380px; width: 100%; object-fit: cover;">
@@ -1352,7 +1381,7 @@ function getOurWorkHtml() {
 
             <!-- Helplines Sub-directory -->
             <div style="margin-top: 5rem;">
-                <h3 style="font-size: 1.8rem; border-bottom: 1px solid rgba(142, 112, 79, 0.15); padding-bottom: 1rem;">Verified Helpline Directory</h3>
+                <h3 style="font-size: 1.8rem; border-bottom: 1px solid rgba(142, 112, 79, 0.15); padding-bottom: 1rem;">${window.t('workPage.helplinesTitle')}</h3>
                 <div class="helpline-grid">
                     ${helplineRows}
                 </div>
@@ -1366,12 +1395,10 @@ function getOurWorkHtml() {
                     <img src="/community_networks.png" alt="Community Seminar" style="border: 1px solid rgba(142, 112, 79, 0.2); padding: 8px; background: var(--color-cream); max-height: 380px; width: 100%; object-fit: cover;">
                 </div>
                 <div>
-                    <span class="section-tag">VERTICAL B</span>
-                    <h2 class="section-title">Community Initiatives & Training</h2>
-                    <p style="margin-bottom: 1.2rem;">Through local partnerships, we host educational rights workshops. Our programs focus on domestic safety laws, personal inheritance, marital contract provisions, and counseling pathways.</p>
-                    <p style="margin-bottom: 1.5rem;"><strong>Workshops:</strong> Guided by lawyers and social advocates to explain legal processes in clear Urdu, Hindi, and English.</p>
-                    <p style="margin-bottom: 2rem;"><strong>Education Hubs:</strong> Equipping local female leaders with knowledge to act as primary safety guides within their municipal blocks.</p>
-                    <a href="#/join-us" class="btn btn-secondary">Request a Workshop in Your Area</a>
+                    <span class="section-tag">${window.t('workPage.v2Tag')}</span>
+                    <h2 class="section-title">${window.t('workPage.v2Title')}</h2>
+                    <p style="margin-bottom: 1.2rem;">${window.t('workPage.v2Desc')}</p>
+                    <a href="#/join-us" class="btn btn-secondary">${window.t('workPage.v2Btn')}</a>
                 </div>
             </div>
         </section>
@@ -1380,11 +1407,9 @@ function getOurWorkHtml() {
         <section class="container" id="advocacy-reforms">
             <div class="grid-2">
                 <div>
-                    <span class="section-tag">VERTICAL C</span>
-                    <h2 class="section-title">Advocacy & Legal Reforms</h2>
-                    <p style="margin-bottom: 1.2rem;">DEHLIZ works with jurists, legal scholars, and social researchers to examine family laws and policy frameworks.</p>
-                    <p style="margin-bottom: 1.2rem;">We draft research briefs clarifying gender justice principles within Islamic jurisprudence, refuting regressive cultural practices that deny women their lawful inheritance, consent, or safety.</p>
-                    <p style="margin-top: 1.5rem;">We advocate for legislative enforcement of marital safety provisions and work with legal aid groups to handle strategic case filings in high courts.</p>
+                    <span class="section-tag">${window.t('workPage.v3Tag')}</span>
+                    <h2 class="section-title">${window.t('workPage.v3Title')}</h2>
+                    <p style="margin-bottom: 1.2rem;">${window.t('workPage.v3Desc')}</p>
                 </div>
                 <div>
                     <img src="/legal_guidance.jpg" alt="Legal Brief Documents" style="border: 1px solid rgba(142, 112, 79, 0.2); padding: 8px; background: var(--color-cream); max-height: 380px; width: 100%; object-fit: cover;">
@@ -1398,48 +1423,48 @@ function getOurWorkSubpageHtml(vertical) {
     if (vertical === 'support') {
         return `
             <section class="container" style="max-width: 800px; padding-top: 5rem; padding-bottom: 5rem;">
-                <span class="section-tag">VERTICAL DETAILED</span>
-                <h1 class="section-title">Support Services Overview</h1>
-                <p style="margin-bottom: 2rem; font-size: 1.15rem;">DEHLIZ provides direct linkage to institutional, legal, and counseling services.</p>
+                <span class="section-tag">${window.t('subpages.tag', {}, 'VERTICAL DETAILED')}</span>
+                <h1 class="section-title">${window.t('subpages.support.title', {}, 'Support Services Overview')}</h1>
+                <p style="margin-bottom: 2rem; font-size: 1.15rem;">${window.t('subpages.support.desc', {}, 'DEHLIZ provides direct linkage to institutional, legal, and counseling services.')}</p>
                 <div style="background: var(--color-beige); padding: 2rem; border-left: 4px solid var(--color-bronze); margin-bottom: 3rem;">
-                    <h4 style="margin-bottom: 0.5rem;">Privacy & Safety Statement</h4>
-                    <p style="font-size: 0.9rem;">We protect the safety of all seekers. We do not store sensitive details, abuse descriptions, or tracking markers. Your query remains confidential and anonymous upon request.</p>
+                    <h4 style="margin-bottom: 0.5rem;">${window.t('subpages.support.privacyTitle', {}, 'Privacy & Safety Statement')}</h4>
+                    <p style="font-size: 0.9rem;">${window.t('subpages.support.privacyDesc', {}, 'We protect the safety of all seekers. We do not store sensitive details, abuse descriptions, or tracking markers. Your query remains confidential and anonymous upon request.')}</p>
                 </div>
-                <h3 style="margin-bottom: 1rem;">Available Support Verticals</h3>
+                <h3 style="margin-bottom: 1rem;">${window.t('subpages.support.listTitle', {}, 'Available Support Verticals')}</h3>
                 <ul style="margin-left: 2rem; margin-bottom: 3rem; line-height: 2;">
-                    <li>Referral networks to domestic violence shelter spaces.</li>
-                    <li>Linkages to legal aid counsel representing municipal family courts.</li>
-                    <li>Trauma-informed guidance counselling counselors.</li>
-                    <li>Helpline routing directories.</li>
+                    <li>${window.t('subpages.support.list1', {}, 'Referral networks to domestic violence shelter spaces.')}</li>
+                    <li>${window.t('subpages.support.list2', {}, 'Linkages to legal aid counsel representing municipal family courts.')}</li>
+                    <li>${window.t('subpages.support.list3', {}, 'Trauma-informed guidance counselling counselors.')}</li>
+                    <li>${window.t('subpages.support.list4', {}, 'Helpline routing directories.')}</li>
                 </ul>
-                <a href="#/our-work" class="btn btn-primary">Back to Directory</a>
+                <a href="#/our-work" class="btn btn-primary">${window.t('subpages.backToDir', {}, 'Back to Directory')}</a>
             </section>
         `;
     }
     if (vertical === 'community') {
         return `
             <section class="container" style="max-width: 800px; padding-top: 5rem; padding-bottom: 5rem;">
-                <span class="section-tag">VERTICAL DETAILED</span>
-                <h1 class="section-title">Community Initiatives Detailed</h1>
-                <p style="margin-bottom: 2rem; font-size: 1.15rem;">Building capacity inside neighborhoods to ensure rights awareness is accessible.</p>
-                <h3 style="margin-bottom: 1rem;">Primary Initiatives</h3>
-                <p style="margin-bottom: 1.5rem;"><strong>Legal Literacy Workshops:</strong> Interactive seminars providing booklets and step-by-step guides on marriage contracts, inheritance, and personal protection filings.</p>
-                <p style="margin-bottom: 1.5rem;"><strong>Advocacy Circles:</strong> Monthly group discussions in safe municipal spaces for women to share advice, counseling contacts, and mutual encouragement.</p>
-                <p style="margin-bottom: 3rem;"><strong>Volunteers Network:</strong> Law students, activists, and graphic creators collaborating to translate complex legal articles into simple visual graphics.</p>
-                <a href="#/join-us" class="btn btn-primary">Become a Volunteer</a>
+                <span class="section-tag">${window.t('subpages.tag', {}, 'VERTICAL DETAILED')}</span>
+                <h1 class="section-title">${window.t('subpages.community.title', {}, 'Community Initiatives Detailed')}</h1>
+                <p style="margin-bottom: 2rem; font-size: 1.15rem;">${window.t('subpages.community.desc', {}, 'Building capacity inside neighborhoods to ensure rights awareness is accessible.')}</p>
+                <h3 style="margin-bottom: 1rem;">${window.t('subpages.community.subtitle', {}, 'Primary Initiatives')}</h3>
+                <p style="margin-bottom: 1.5rem;"><strong>${window.t('subpages.community.item1Title', {}, 'Legal Literacy Workshops')}:</strong> ${window.t('subpages.community.item1Desc', {}, 'Interactive seminars providing booklets and step-by-step guides on marriage contracts, inheritance, and personal protection filings.')}</p>
+                <p style="margin-bottom: 1.5rem;"><strong>${window.t('subpages.community.item2Title', {}, 'Advocacy Circles')}:</strong> ${window.t('subpages.community.item2Desc', {}, 'Monthly group discussions in safe municipal spaces for women to share advice, counseling contacts, and mutual encouragement.')}</p>
+                <p style="margin-bottom: 3rem;"><strong>${window.t('subpages.community.item3Title', {}, 'Volunteers Network')}:</strong> ${window.t('subpages.community.item3Desc', {}, 'Law students, activists, and graphic creators collaborating to translate complex legal articles into simple visual graphics.')}</p>
+                <a href="#/join-us" class="btn btn-primary">${window.t('subpages.becomeVolunteer', {}, 'Become a Volunteer')}</a>
             </section>
         `;
     }
     return `
         <section class="container" style="max-width: 800px; padding-top: 5rem; padding-bottom: 5rem;">
-            <span class="section-tag">VERTICAL DETAILED</span>
-            <h1 class="section-title">Advocacy & Family Law Reform</h1>
-            <p style="margin-bottom: 2rem; font-size: 1.15rem;">We challenge systemic injustice by aligning Islamic jurisprudence with constitutional protections.</p>
-            <h3 style="margin-bottom: 1rem;">Key Areas of Research</h3>
-            <p style="margin-bottom: 1.5rem;"><strong>Dower & Financial Rights:</strong> Advocating for immediate enforcement of Mehr and post-divorce maintenance rights of women under personal laws.</p>
-            <p style="margin-bottom: 1.5rem;"><strong>Property Share Rights:</strong> Educating and legally supporting female family members claiming lawful inheritance divisions without coercion.</p>
-            <p style="margin-bottom: 3rem;"><strong>Consent & Safety Protections:</strong> Promoting policy briefs detailing the strict prohibitions against forced marriages and physical abuse within theological contexts.</p>
-            <a href="#/resources" class="btn btn-primary">View Advocacy Publications</a>
+            <span class="section-tag">${window.t('subpages.tag', {}, 'VERTICAL DETAILED')}</span>
+            <h1 class="section-title">${window.t('subpages.advocacy.title', {}, 'Advocacy & Family Law Reform')}</h1>
+            <p style="margin-bottom: 2rem; font-size: 1.15rem;">${window.t('subpages.advocacy.desc', {}, 'We challenge systemic injustice by aligning Islamic jurisprudence with constitutional protections.')}</p>
+            <h3 style="margin-bottom: 1rem;">${window.t('subpages.advocacy.subtitle', {}, 'Key Areas of Research')}</h3>
+            <p style="margin-bottom: 1.5rem;"><strong>${window.t('subpages.advocacy.item1Title', {}, 'Dower & Financial Rights')}:</strong> ${window.t('subpages.advocacy.item1Desc', {}, 'Advocating for immediate enforcement of Mehr and post-divorce maintenance rights of women under personal laws.')}</p>
+            <p style="margin-bottom: 1.5rem;"><strong>${window.t('subpages.advocacy.item2Title', {}, 'Property Share Rights')}:</strong> ${window.t('subpages.advocacy.item2Desc', {}, 'Educating and legally supporting female family members claiming lawful inheritance divisions without coercion.')}</p>
+            <p style="margin-bottom: 3rem;"><strong>${window.t('subpages.advocacy.item3Title', {}, 'Consent & Safety Protections')}:</strong> ${window.t('subpages.advocacy.item3Desc', {}, 'Promoting policy briefs detailing the strict prohibitions against forced marriages and physical abuse within theological contexts.')}</p>
+            <a href="#/resources" class="btn btn-primary">${window.t('subpages.viewPubs', {}, 'View Advocacy Publications')}</a>
         </section>
     `;
 }
@@ -1495,7 +1520,7 @@ function setupResourcesInteractions() {
     const filterBtns = document.querySelectorAll('.filter-btn');
 
     let currentPage = 1;
-    const itemsPerPage = 6;
+    const itemsPerPage = 20;
 
     const updateGrid = () => {
         const query = searchInput.value.toLowerCase().trim();
@@ -1532,20 +1557,27 @@ function setupResourcesInteractions() {
             const endIdx = startIdx + itemsPerPage;
             const paginatedItems = filtered.slice(startIdx, endIdx);
 
-            grid.innerHTML = paginatedItems.map(r => `
+            grid.innerHTML = paginatedItems.map(r => {
+                const id = r.id;
+                const category = window.t(`resource.${id}.category`, {}, r.category);
+                const type = window.t(`resource.${id}.type`, {}, r.type);
+                const title = window.t(`resource.${id}.title`, {}, r.title);
+                const summary = window.t(`resource.${id}.summary`, {}, r.summary);
+                return `
                 <div class="card page-transition">
-                    <span class="card-meta">${r.category} &bull; ${r.type}</span>
-                    <h3 class="card-title">${r.title}</h3>
-                    <p class="card-text">${r.summary}</p>
+                    <span class="card-meta">${category} &bull; ${type}</span>
+                    <h3 class="card-title">${title}</h3>
+                    <p class="card-text">${summary}</p>
                     <div style="display: flex; gap: 10px; margin-top: 1rem; align-items: center; flex-wrap: wrap;">
-                        <a href="#/resources" class="card-link" onclick="openResourceModal('${r.id}')" style="margin-top: 0;">${window.t('common.readGuide')}</a>
+                        <a href="#/resources" class="card-link" onclick="openResourceModal('${r.id}')" style="margin-top: 0;">${window.t('common.readGuide', {}, 'Read Full Guide &rarr;')}</a>
                         ${r.pdfUrl ? `
-                            <a href="${r.pdfUrl}" target="_blank" class="card-link" style="margin-top: 0; color: var(--color-gold);">${window.t('common.view')}</a>
-                            <a href="${r.pdfUrl}" download class="card-link" style="margin-top: 0; color: var(--color-bronze);">${window.t('common.download')}</a>
+                            <a href="${r.pdfUrl}" target="_blank" class="card-link" style="margin-top: 0; color: var(--color-gold);">${window.t('common.view', {}, 'View')}</a>
+                            <a href="${r.pdfUrl}" download class="card-link" style="margin-top: 0; color: var(--color-bronze);">${window.t('common.download', {}, 'Download')}</a>
                         ` : ''}
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
 
             // Render Pagination Buttons
             if (paginationContainer) {
@@ -1620,18 +1652,24 @@ window.openResourceModal = function (id) {
     modalContent.style.overflowY = 'auto';
     modalContent.style.position = 'relative';
 
+    const category = window.t(`resource.${r.id}.category`, {}, r.category);
+    const type = window.t(`resource.${r.id}.type`, {}, r.type);
+    const title = window.t(`resource.${r.id}.title`, {}, r.title);
+    const summary = window.t(`resource.${r.id}.summary`, {}, r.summary);
+    const content = window.t(`resource.${r.id}.content`, {}, r.content);
+
     modalContent.innerHTML = `
         <button style="position: absolute; right: 1.5rem; top: 1.5rem; background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--color-text-light);" onclick="closeResourceModal(this)">&times;</button>
-        <span class="section-tag">${r.category} &bull; ${r.type}</span>
-        <h2 style="font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 1.5rem; line-height: 1.3;">${r.title}</h2>
-        <p style="font-size: 0.9rem; color: var(--color-bronze); margin-bottom: 1.5rem;">Published: ${r.date}</p>
-        <p style="font-weight: 500; font-size: 1.05rem; margin-bottom: 2rem; color: var(--color-text-dark);">${r.summary}</p>
+        <span class="section-tag">${category} &bull; ${type}</span>
+        <h2 style="font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 1.5rem; line-height: 1.3;">${title}</h2>
+        <p style="font-size: 0.9rem; color: var(--color-bronze); margin-bottom: 1.5rem;">${window.t('common.published', {}, 'Published')}: ${r.date}</p>
+        <p style="font-weight: 500; font-size: 1.05rem; margin-bottom: 2rem; color: var(--color-text-dark);">${summary}</p>
         ${r.pdfUrl ? `<div style="margin-bottom: 2rem; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <a href="${r.pdfUrl}" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> View PDF</a>
-            <a href="${r.pdfUrl}" download class="btn btn-support" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download PDF</a>
+            <a href="${r.pdfUrl}" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> ${window.t('common.viewPdf', {}, 'View PDF')}</a>
+            <a href="${r.pdfUrl}" download class="btn btn-support" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> ${window.t('common.downloadPdf', {}, 'Download PDF')}</a>
         </div>` : ''}
         <div style="font-size: 0.95rem; line-height: 1.8; color: var(--color-text-light); border-top: 1px solid rgba(142, 112, 79, 0.15); padding-top: 1.5rem;">
-            ${r.content}
+            ${content}
         </div>
     `;
 
@@ -1646,30 +1684,37 @@ window.closeResourceModal = function (btn) {
 
 function getResourcesSubpageHtml(category) {
     const list = DEHLIZ_DATA.resources.filter(r => r.category === category);
-    const listHtml = list.map(r => `
+    const listHtml = list.map(r => {
+        const id = r.id;
+        const type = window.t(`resource.${id}.type`, {}, r.type);
+        const title = window.t(`resource.${id}.title`, {}, r.title);
+        const summary = window.t(`resource.${id}.summary`, {}, r.summary);
+        return `
         <div class="card" style="margin-bottom: 1.5rem;">
-            <span class="card-meta">${r.type}</span>
-            <h3 class="card-title">${r.title}</h3>
-            <p class="card-text">${r.summary}</p>
+            <span class="card-meta">${type}</span>
+            <h3 class="card-title">${title}</h3>
+            <p class="card-text">${summary}</p>
             <div style="display: flex; gap: 10px; margin-top: 1rem; align-items: center; flex-wrap: wrap;">
-                <a href="#/resources" class="card-link" onclick="openResourceModal('${r.id}')" style="margin-top: 0;">Read Full Guide &rarr;</a>
+                <a href="#/resources" class="card-link" onclick="openResourceModal('${r.id}')" style="margin-top: 0;">${window.t('common.readGuide', {}, 'Read Full Guide &rarr;')}</a>
                 ${r.pdfUrl ? `
-                    <a href="${r.pdfUrl}" target="_blank" class="card-link" style="margin-top: 0; color: var(--color-gold);">View PDF</a>
-                    <a href="${r.pdfUrl}" download class="card-link" style="margin-top: 0; color: var(--color-bronze);">Download PDF</a>
+                    <a href="${r.pdfUrl}" target="_blank" class="card-link" style="margin-top: 0; color: var(--color-gold);">${window.t('common.view', {}, 'View')}</a>
+                    <a href="${r.pdfUrl}" download class="card-link" style="margin-top: 0; color: var(--color-bronze);">${window.t('common.download', {}, 'Download')}</a>
                 ` : ''}
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 
+    const translatedCategory = window.t(`footer.${category.toLowerCase().replace(/[^a-z0-9]/g, '')}`, {}, category);
     return `
         <section class="container" style="max-width: 800px; padding-top: 5rem; padding-bottom: 5rem;">
-            <span class="section-tag">CATEGORY INDEX</span>
-            <h1 class="section-title">${category} Directory</h1>
-            <p style="margin-bottom: 3rem; font-size: 1.15rem;">Access educational publications and resources dedicated specifically to ${category.toLowerCase()} topics.</p>
+            <span class="section-tag">${window.t('subpages.categoryIndex', {}, 'CATEGORY INDEX')}</span>
+            <h1 class="section-title">${window.t('subpages.categoryDirTitle', {category: translatedCategory}, `${category} Directory`)}</h1>
+            <p style="margin-bottom: 3rem; font-size: 1.15rem;">${window.t('subpages.categoryDirDesc', {category: translatedCategory.toLowerCase()}, `Access educational publications and resources dedicated specifically to ${category.toLowerCase()} topics.`)}</p>
             <div>
-                ${listHtml.length > 0 ? listHtml : '<p>No specific entries in this index. Refer to our main resource controls.</p>'}
+                ${listHtml.length > 0 ? listHtml : `<p>${window.t('subpages.noEntries', {}, 'No specific entries in this index. Refer to our main resource controls.')}</p>`}
             </div>
-            <a href="#/resources" class="btn btn-primary" style="margin-top: 2rem;">Back to Library</a>
+            <a href="#/resources" class="btn btn-primary" style="margin-top: 2rem;">${window.t('subpages.backToLibrary', {}, 'Back to Library')}</a>
         </section>
     `;
 }
@@ -1678,9 +1723,9 @@ function getJoinUsHtml() {
     return `
         <section class="bg-beige-section">
             <div class="container" style="max-width: 800px; text-align: center;">
-                <span class="section-tag">COMMUNITY ENGAGEMENT</span>
-                <h1 class="section-title" style="font-size: 3.5rem;">Join Us</h1>
-                <p style="font-size: 1.25rem; line-height: 1.8;">Volunteer your time, skills, or design/legal expertise, or register as a registered community member to help build safer futures.</p>
+                <span class="section-tag">${window.t('footer.join')}</span>
+                <h1 class="section-title" style="font-size: 3.5rem;">${window.t('nav.join')}</h1>
+                <p style="font-size: 1.25rem; line-height: 1.8;">${window.t('footer.joinDesc')}</p>
             </div>
         </section>
 
@@ -1688,47 +1733,47 @@ function getJoinUsHtml() {
         <section class="container" id="volunteer-section">
             <div style="max-width: 700px; margin: 0 auto;">
                 <div class="form-card">
-                    <h2 class="form-title" id="volunteer-form-header">Apply to Volunteer / Join Us</h2>
+                    <h2 class="form-title" id="volunteer-form-header">${window.t('forms.volunteer.title')}</h2>
                     
                     <div id="volunteer-alert" class="form-alert"></div>
 
                     <form id="volunteer-form" onsubmit="handleVolunteerSubmit(event)">
                         <div class="form-group">
-                            <label class="form-label" for="v-name">Full Name</label>
-                            <input type="text" id="v-name" class="form-control" required placeholder="Enter your name">
+                            <label class="form-label" for="v-name">${window.t('forms.volunteer.name')}</label>
+                            <input type="text" id="v-name" class="form-control" required placeholder="${window.t('forms.volunteer.namePlaceholder')}">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="v-email">Email Address</label>
-                            <input type="email" id="v-email" class="form-control" required placeholder="name@domain.com">
+                            <label class="form-label" for="v-email">${window.t('forms.volunteer.email')}</label>
+                            <input type="email" id="v-email" class="form-control" required placeholder="${window.t('forms.volunteer.emailPlaceholder')}">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="v-phone">Phone Number</label>
-                            <input type="tel" id="v-phone" class="form-control" required placeholder="10-digit number">
+                            <label class="form-label" for="v-phone">${window.t('forms.volunteer.phone')}</label>
+                            <input type="tel" id="v-phone" class="form-control" required placeholder="${window.t('forms.volunteer.phonePlaceholder')}">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="v-role">Preferred Area of Contribution</label>
+                            <label class="form-label" for="v-role">${window.t('forms.volunteer.interest')}</label>
                             <select id="v-role" class="form-control" required>
-                                <option value="" disabled selected>Select an option...</option>
-                                <option value="Community Outreach">Community Outreach Workshops</option>
-                                <option value="Legal Research">Legal Research & Publications</option>
-                                <option value="Digital Media">Digital Media & Graphic Assets</option>
-                                <option value="Translation">Multi-lingual Translation</option>
-                                <option value="Event Support">Local Event Volunteers</option>
+                                <option value="" disabled selected>${window.t('forms.volunteer.selectInterest')}</option>
+                                <option value="Community Outreach">${window.t('forms.volunteer.interest1')}</option>
+                                <option value="Legal Research">${window.t('forms.volunteer.interest2')}</option>
+                                <option value="Digital Media">${window.t('forms.volunteer.interest3')}</option>
+                                <option value="Translation">${window.t('forms.volunteer.interest4')}</option>
+                                <option value="Event Support">${window.t('footer.join')}</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="v-notes">Additional Notes / Experience</label>
-                            <textarea id="v-notes" class="form-control" placeholder="Tell us briefly about your background or why you want to support DEHLIZ..."></textarea>
+                            <label class="form-label" for="v-notes">${window.t('forms.volunteer.msg')}</label>
+                            <textarea id="v-notes" class="form-control" placeholder="${window.t('forms.volunteer.msgPlaceholder')}"></textarea>
                         </div>
                         
                         <div style="background: var(--color-beige); padding: 1rem; border-left: 3px solid var(--color-bronze); margin-bottom: 1.5rem;">
                             <p style="font-size: 0.8rem; line-height: 1.4; color: var(--color-text-dark);">
-                                <strong>Safety Notice:</strong> We value your safety. We collect your contact details solely for application review. We will never share your personal information.
+                                <strong>${window.t('disclaimer.strong')}</strong> ${window.t('disclaimer.text')}
                             </p>
                         </div>
 
                         <div class="form-submit-row">
-                            <button type="submit" class="btn btn-primary">Submit Application</button>
+                            <button type="submit" class="btn btn-primary">${window.t('forms.volunteer.submitBtn')}</button>
                             <div class="form-loading-spinner" id="volunteer-spinner"></div>
                         </div>
                     </form>
@@ -1913,23 +1958,23 @@ function getDonateHtml() {
     return `
         <section class="bg-beige-section">
             <div class="container" style="max-width: 800px; text-align: center;">
-                <span class="section-tag">SUPPORT & STABILITY</span>
-                <h1 class="section-title" style="font-size: 3.5rem;">Donate to Dehliz</h1>
-                <p style="font-size: 1.25rem; line-height: 1.8;">Help us maintain resources, legal directories, workshops, and support counselling networks. Your trust is our core asset.</p>
+                <span class="section-tag">${window.t('donatePage.tag')}</span>
+                <h1 class="section-title" style="font-size: 3.5rem;">${window.t('nav.donate')}</h1>
+                <p style="font-size: 1.25rem; line-height: 1.8;">${window.t('donatePage.desc')}</p>
             </div>
         </section>
 
         <!-- Donation Interactive Panel & Impact -->
         <section class="container grid-2">
             <div>
-                <span class="section-tag">CONTRIBUTION OPTIONS</span>
-                <h2 class="section-title">Support Our Mission</h2>
-                <p style="margin-bottom: 2rem;">Every contribution helps us maintain resource hosting, coordinate volunteers, compile legal guides, and sustain advocacy operations. We operate with strict visual transparency.</p>
+                <span class="section-tag">${window.t('donatePage.tag')}</span>
+                <h2 class="section-title">${window.t('home.donation.title')}</h2>
+                <p style="margin-bottom: 2rem;">${window.t('home.donation.desc')}</p>
                 
                 <div class="donation-interactive">
                     <div class="donation-type-toggle">
-                        <button class="donation-toggle-btn active" id="btn-toggle-onetime" onclick="toggleDonationType('oneTime')">One-Time Contribution</button>
-                        <button class="donation-toggle-btn" id="btn-toggle-monthly" onclick="toggleDonationType('monthly')">Monthly Support</button>
+                        <button class="donation-toggle-btn active" id="btn-toggle-onetime" onclick="toggleDonationType('oneTime')">${window.t('home.donation.oneTime')}</button>
+                        <button class="donation-toggle-btn" id="btn-toggle-monthly" onclick="toggleDonationType('monthly')">${window.t('home.donation.monthly')}</button>
                     </div>
 
                     <div class="donation-amounts-grid" id="amounts-container">
@@ -1937,46 +1982,53 @@ function getDonateHtml() {
                     </div>
 
                     <div class="custom-amount-container">
-                        <label class="form-label">Custom Contribution Amount (INR)</label>
+                        <label class="form-label">${window.t('donatePage.customLabel')}</label>
                         <span class="custom-amount-symbol">&#8377;</span>
-                        <input type="number" id="custom-amount" class="form-control custom-amount-input" placeholder="Enter other amount" oninput="handleCustomAmountInput(this)">
+                        <input type="number" id="custom-amount" class="form-control custom-amount-input" placeholder="${window.t('donatePage.customPlaceholder')}" oninput="handleCustomAmountInput(this)">
                     </div>
 
                     <!-- Impact indicator text box -->
                     <div class="donation-impact-card">
-                        <div class="donation-impact-title" id="impact-title">Educational Materials</div>
-                        <div class="donation-impact-desc" id="impact-desc">Provides informative rights booklets and legal guide booklets to 5 community workshop participants.</div>
+                        <div class="donation-impact-title" id="impact-title">${window.t('donatePage.impactTitle')}</div>
+                        <div class="donation-impact-desc" id="impact-desc">${window.t('donatePage.impactLabel')}</div>
                     </div>
 
                     <!-- CTA payment structure placeholder -->
                     <div style="background: var(--color-beige); padding: 1.2rem; margin-bottom: 1.5rem; text-align: center; font-size: 0.85rem;">
-                        <strong>Direct Transfer Coordinates:</strong> [ORGANIZATION TO PROVIDE BANK details]
+                        <strong>${window.t('donatePage.bankCoords')}:</strong>
+                        <div style="margin-top: 0.5rem; text-align: left; display: inline-block;">
+                            <strong>${window.t('donatePage.holder')}</strong> XXXXX<br>
+                            <strong>${window.t('donatePage.bankName')}</strong> XXXXX<br>
+                            <strong>${window.t('donatePage.accNumber')}</strong> XXXXX<br>
+                            <strong>${window.t('donatePage.ifsc')}</strong> XXXXX<br>
+                            <strong>${window.t('donatePage.branch')}</strong> XXXXX
+                        </div>
                     </div>
                     
-                    <button class="btn btn-primary" style="width: 100%; text-align: center;" onclick="triggerFakePayment()">Proceed to Support</button>
+                    <button class="btn btn-primary" style="width: 100%; text-align: center;" onclick="triggerFakePayment()">${window.t('donatePage.btnProceed')}</button>
                 </div>
             </div>
 
             <!-- Transparency / Where your support goes -->
             <div>
-                <h2 style="font-size: 2.2rem; margin-bottom: 1.5rem; font-family: var(--font-heading);">Where Your Support Goes</h2>
-                <p style="margin-bottom: 2.5rem;">We prioritize direct community intervention. Our administrative costs are minimized, supported largely by volunteer efforts.</p>
+                <h2 style="font-size: 2.2rem; margin-bottom: 1.5rem; font-family: var(--font-heading);">${window.t('donatePage.transparency')}</h2>
+                <p style="margin-bottom: 2.5rem;">${window.t('donatePage.transparencyDesc')}</p>
                 
                 <div style="margin-bottom: 2rem;">
-                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-text-dark); font-family: var(--font-body); font-weight: 700;">Rights Workshops (40%)</h4>
-                    <p style="font-size: 0.9rem;">Printing guidebooks, reserving local community centers, and coordinating logistics for legal seminars.</p>
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-text-dark); font-family: var(--font-body); font-weight: 700;">${window.t('donatePage.w1')}</h4>
+                    <p style="font-size: 0.9rem;">${window.t('donatePage.w1Desc')}</p>
                 </div>
                 <div style="margin-bottom: 2rem;">
-                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-text-dark); font-family: var(--font-body); font-weight: 700;">Legal Assistance Referral Network (30%)</h4>
-                    <p style="font-size: 0.9rem;">Supporting administrative logistics to verify public lawyers and counseling contacts.</p>
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-text-dark); font-family: var(--font-body); font-weight: 700;">${window.t('donatePage.w2')}</h4>
+                    <p style="font-size: 0.9rem;">${window.t('donatePage.w2Desc')}</p>
                 </div>
                 <div style="margin-bottom: 2rem;">
-                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-text-dark); font-family: var(--font-body); font-weight: 700;">Resource Research & Publications (20%)</h4>
-                    <p style="font-size: 0.9rem;">Writing, updating, and translating legal/jurisprudential publications for distribution.</p>
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-text-dark); font-family: var(--font-body); font-weight: 700;">${window.t('donatePage.w3')}</h4>
+                    <p style="font-size: 0.9rem;">${window.t('donatePage.w3Desc')}</p>
                 </div>
                 <div>
-                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-text-dark); font-family: var(--font-body); font-weight: 700;">Operational Integrity (10%)</h4>
-                    <p style="font-size: 0.9rem;">Web platform maintenance, hosting fees, and data safety compliance audits.</p>
+                    <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--color-text-dark); font-family: var(--font-body); font-weight: 700;">${window.t('donatePage.w4')}</h4>
+                    <p style="font-size: 0.9rem;">${window.t('donatePage.w4Desc')}</p>
                 </div>
             </div>
         </section>
@@ -2106,9 +2158,9 @@ function getContactHtml() {
     return `
         <section class="bg-beige-section">
             <div class="container" style="max-width: 800px; text-align: center;">
-                <span class="section-tag">GET IN TOUCH</span>
-                <h1 class="section-title" style="font-size: 3.5rem;">Contact Dehliz</h1>
-                <p style="font-size: 1.25rem; line-height: 1.8;">Reach out for assistance referrals, partnership queries, general questions, or community updates.</p>
+                <span class="section-tag">${window.t('contactPage.tag')}</span>
+                <h1 class="section-title" style="font-size: 3.5rem;">${window.t('contactPage.title')}</h1>
+                <p style="font-size: 1.25rem; line-height: 1.8;">${window.t('contactPage.desc')}</p>
             </div>
         </section>
 
@@ -2116,42 +2168,44 @@ function getContactHtml() {
         <section class="container grid-2">
             <div>
                 <div class="form-card">
-                    <h2 class="form-title">Send a Secure Inquiry</h2>
+                    <h2 class="form-title">${window.t('contactPage.formTitle')}</h2>
                     
                     <div id="contact-alert" class="form-alert"></div>
 
                     <form id="contact-form" onsubmit="handleContactSubmit(event)">
                         <div class="form-group">
-                            <label class="form-label" for="c-name">Full Name</label>
-                            <input type="text" id="c-name" class="form-control" required placeholder="Enter name">
+                            <label class="form-label" for="c-name">${window.t('forms.volunteer.name')}</label>
+                            <input type="text" id="c-name" class="form-control" required placeholder="${window.t('forms.volunteer.namePlaceholder')}">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="c-email">Email Address</label>
-                            <input type="email" id="c-email" class="form-control" required placeholder="name@domain.com">
+                            <label class="form-label" for="c-email">${window.t('forms.volunteer.email')}</label>
+                            <input type="email" id="c-email" class="form-control" required placeholder="${window.t('forms.volunteer.emailPlaceholder')}">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="c-subject">I want to:</label>
+                            <label class="form-label" for="c-subject">${window.t('forms.volunteer.interest')}</label>
                             <select id="c-subject" class="form-control" required>
-                                <option value="" disabled selected>Select option...</option>
-                                <option value="General Inquiry">Ask a general inquiry</option>
-                                <option value="Request Support">Request legal rights resources & helplines</option>
-                                <option value="Partnership">Explore organizational partnership</option>
-                                <option value="Volunteering">Inquire about volunteer tasks</option>
+                                <option value="" disabled selected>${window.t('contactPage.selectOption')}</option>
+                                <option value="General Inquiry">${window.t('contactPage.opt1')}</option>
+                                <option value="Request Support">${window.t('contactPage.opt2')}</option>
+                                <option value="Medical Help">${window.t('contactPage.opt5', {}, 'Medical Help')}</option>
+                                <option value="Education Help">${window.t('contactPage.opt6', {}, 'Education Help')}</option>
+                                <option value="Partnership">${window.t('contactPage.opt3')}</option>
+                                <option value="Volunteering">${window.t('contactPage.opt4')}</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="c-message">Message</label>
-                            <textarea id="c-message" class="form-control" required placeholder="Write details here..."></textarea>
+                            <label class="form-label" for="c-message">${window.t('forms.contact.message')}</label>
+                            <textarea id="c-message" class="form-control" required placeholder="${window.t('forms.contact.messagePlaceholder')}"></textarea>
                         </div>
 
                         <div style="background: var(--color-beige); padding: 1rem; border-left: 3px solid var(--color-bronze); margin-bottom: 1.5rem;">
                             <p style="font-size: 0.8rem; line-height: 1.4; color: var(--color-text-dark);">
-                                <strong>Privacy Agreement:</strong> Do not send highly sensitive abuse files, documentation, or legal coordinates in this web form. All support discussions will be conducted securely with an intake officer.
+                                ${window.t('contactPage.privacy')}
                             </p>
                         </div>
 
                         <div class="form-submit-row">
-                            <button type="submit" class="btn btn-primary">Submit Inquiry</button>
+                            <button type="submit" class="btn btn-primary">${window.t('contactPage.submitBtn')}</button>
                             <div class="form-loading-spinner" id="contact-spinner"></div>
                         </div>
                     </form>
@@ -2160,15 +2214,15 @@ function getContactHtml() {
 
             <!-- Details, Socials, WhatsApp community QR -->
             <div>
-                <h2 style="font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 1.5rem;">Official Coordinates</h2>
+                <h2 style="font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 1.5rem;">${window.t('contactPage.coords')}</h2>
                 
                 <div style="margin-bottom: 2rem;">
-                    <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-bronze); margin-bottom: 0.25rem;">Email Channel</h4>
+                    <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-bronze); margin-bottom: 0.25rem;">${window.t('contactPage.emailChannel')}</h4>
                     <p style="font-size: 1.1rem; color: var(--color-text-dark); font-weight: 500;"><a href="mailto:support.dehlizindia.com@gmail.com" style="text-decoration: underline;">support.dehlizindia.com@gmail.com</a></p>
                 </div>
                 
                 <div style="margin-bottom: 2rem;">
-                    <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-bronze); margin-bottom: 0.25rem;">Contact Number</h4>
+                    <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-bronze); margin-bottom: 0.25rem;">${window.t('forms.volunteer.phone')}</h4>
                     <p style="font-size: 1.1rem; color: var(--color-text-dark); font-weight: 500; display: flex; align-items: center; gap: 0.6rem;">
                         <a href="tel:+919892208356" style="text-decoration: underline;">+91 98922 08356</a>
                         <a href="https://wa.me/919892208356" target="_blank" style="display: inline-flex; align-items: center; color: #25D366;" title="Chat on WhatsApp">
@@ -2178,30 +2232,25 @@ function getContactHtml() {
                         </a>
                     </p>
                 </div>
-
-                <div style="margin-bottom: 2rem;">
-                    <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-bronze); margin-bottom: 0.25rem;">Office Head Office</h4>
-                    <p style="font-size: 1.1rem; color: var(--color-text-dark); font-weight: 500;">Dehliz — India (Temporary Placeholder)</p>
-                </div>
-
+                
                 <div style="margin-bottom: 3rem;">
-                    <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-bronze); margin-bottom: 0.5rem;">Instagram Engagement</h4>
+                    <h4 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-bronze); margin-bottom: 0.5rem;">${window.t('contactPage.socialMedia')}</h4>
                     <a href="https://www.instagram.com/dehlizindia/" target="_blank" style="font-size: 1.1rem; color: var(--color-text-dark); font-weight: 500; text-decoration: underline;">@dehlizindia</a>
                 </div>
-
+                
                 <!-- WhatsApp QR Area -->
                 <div class="whatsapp-community-card">
                     <div class="whatsapp-qr-area">
                         <!-- Standard mock representation for QR code container -->
                         <div style="text-align: center;">
                             <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">&#128225;</span>
-                            <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--color-bronze);">[DEHLIZ WHATSAPP QR]</span>
+                            <span style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--color-bronze);">${window.t('whatsapp.badge')}</span>
                         </div>
                     </div>
                     <div class="whatsapp-content-area">
-                        <h3 class="whatsapp-title">Join Our Community</h3>
-                        <p style="font-size: 0.9rem; margin-bottom: 1.5rem;">Scan this QR to enter our official WhatsApp updates channel. Get notified on upcoming legal programs, guidebooks, and community circles directly.</p>
-                        <a href="https://wa.me/919892208356" target="_blank" class="btn btn-support">Open WhatsApp Link</a>
+                        <h3 class="whatsapp-title">${window.t('whatsapp.title')}</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 1.5rem;">${window.t('whatsapp.desc')}</p>
+                        <a href="https://wa.me/919892208356" target="_blank" class="btn btn-support">${window.t('whatsapp.title')}</a>
                     </div>
                 </div>
             </div>
