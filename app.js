@@ -1044,37 +1044,6 @@ function getHomeHtml() {
             </div>
         </section>
 
-        <!-- Homepage Donation CTA Section -->
-        <section class="container text-center" style="border-top: 1px solid rgba(142, 112, 79, 0.15); padding-top: 5rem; padding-bottom: 5rem;">
-            <div style="max-width: 800px; margin: 0 auto;">
-                <span class="section-tag">SUPPORT US</span>
-                <h2 style="font-size: 2.2rem; margin-bottom: 1rem; font-family: var(--font-heading);">Where Your Support Goes</h2>
-                <p style="margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Donations are allocated directly to legal guidelines development, workshop booklets, and community counseling references.</p>
-                <div class="grid-4" style="margin-top: 2rem; margin-bottom: 3rem; text-align: left;">
-                    <div style="background: var(--color-cream); padding: 1.5rem; border: 1px solid rgba(142,112,79,0.12);">
-                        <h4 style="font-family: var(--font-body); font-weight: 700; color: var(--color-bronze); margin-bottom: 0.5rem;">Workshops (40%)</h4>
-                        <p style="font-size: 0.85rem;">Funding print manuals and local hall logistics.</p>
-                    </div>
-                    <div style="background: var(--color-cream); padding: 1.5rem; border: 1px solid rgba(142,112,79,0.12);">
-                        <h4 style="font-family: var(--font-body); font-weight: 700; color: var(--color-bronze); margin-bottom: 0.5rem;">Referral Directory (30%)</h4>
-                        <p style="font-size: 0.85rem;">Maintaining verified legal aid directories.</p>
-                    </div>
-                    <div style="background: var(--color-cream); padding: 1.5rem; border: 1px solid rgba(142,112,79,0.12);">
-                        <h4 style="font-family: var(--font-body); font-weight: 700; color: var(--color-bronze); margin-bottom: 0.5rem;">Publications (20%)</h4>
-                        <p style="font-size: 0.85rem;">Researching and translating legal sheets.</p>
-                    </div>
-                    <div style="background: var(--color-cream); padding: 1.5rem; border: 1px solid rgba(142,112,79,0.12);">
-                        <h4 style="font-family: var(--font-body); font-weight: 700; color: var(--color-bronze); margin-bottom: 0.5rem;">Operations (10%)</h4>
-                        <p style="font-size: 0.85rem;">Digital workspace and data safety audits.</p>
-                    </div>
-                </div>
-                <div style="background: var(--color-beige); padding: 1rem; border-left: 3px solid var(--color-bronze); margin-bottom: 2rem; display: inline-block; font-size: 0.85rem;">
-                    <strong>Notice:</strong> Online Payment Gateway Integration is currently required. Directly support via manual bank transfer coordinates.
-                </div>
-                <br>
-                <a href="#/donate" class="btn btn-primary">Contribute Now</a>
-            </div>
-        </section>
 
         <!-- Join Us banner -->
         <section class="container text-center" style="padding-top: 5rem; padding-bottom: 5rem;">
