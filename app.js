@@ -386,7 +386,7 @@ const DEHLIZ_DATA = {
             name: 'Aman Khan',
             role: 'Head of Research, Strategies & Communication',
             bio: 'Head of Research, Strategies & Communication. Leads institutional research, policy strategy, and communication channels to drive social development and support networks.',
-            image: '/public/aman_khan.jpg'
+            image: '/aman_khan.jpg'
         }
     ],
 
@@ -1033,7 +1033,7 @@ function getHomeHtml() {
             <div class="container">
                 <div class="whatsapp-community-card">
                     <div class="whatsapp-qr-area">
-                        <img src="/public/whatsapp_qr.png" alt="WhatsApp QR Code" style="width: 100%; height: 100%; object-fit: contain;">
+                        <img src="/whatsapp_qr.png" alt="WhatsApp QR Code" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                     <div class="whatsapp-content-area">
                         <h3 class="whatsapp-title">${window.t('whatsapp.title')}</h3>
@@ -2235,7 +2235,7 @@ function getContactHtml() {
                 <!-- WhatsApp QR Area -->
                 <div class="whatsapp-community-card">
                     <div class="whatsapp-qr-area">
-                        <img src="/public/whatsapp_qr.png" alt="WhatsApp QR Code" style="width: 100%; height: 100%; object-fit: contain;">
+                        <img src="/whatsapp_qr.png" alt="WhatsApp QR Code" style="width: 100%; height: 100%; object-fit: contain;">
                     </div>
                     <div class="whatsapp-content-area">
                         <h3 class="whatsapp-title">${window.t('whatsapp.title')}</h3>
