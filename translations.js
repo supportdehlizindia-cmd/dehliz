@@ -68,7 +68,7 @@ export const translations = {
             text: "The legal and regulatory information provided on this platform is for general educational and informational purposes only. It does not constitute formal legal advice. Visitors should consult verified legal professionals or local protection agencies regarding specific situations."
         },
         hero: {
-            tag: "<img src=\"logo2.png?v=3\" class=\"logo-inline\" alt=\"dehliz ek umeed\">",
+            tag: "<img src=\"/logo2.png?v=3\" class=\"logo-inline\" alt=\"dehliz ek umeed\">",
             title: "Empowering Muslim Women. Protecting Rights.",
             desc: "We promote awareness, social safety networks, and legal understanding, focusing on women's rights under Indian constitutional law and Islamic jurisprudence.",
             actions: {
@@ -173,7 +173,7 @@ export const translations = {
         },
         aboutPage: {
             title: "Who We Are",
-            desc: "<img src=\"logo2.png?v=3\" class=\"logo-inline\" alt=\"Dehliz - Ek Umeed\"> is an initiative committed to creating a more informed, empowered and inclusive society where Muslim women have the knowledge, opportunities and confidence to shape their own futures.",
+            desc: "<img src=\"/logo2.png?v=3\" class=\"logo-inline\" alt=\"Dehliz - Ek Umeed\"> is an initiative committed to creating a more informed, empowered and inclusive society where Muslim women have the knowledge, opportunities and confidence to shape their own futures.",
             focusTitle: "Our Focus & Belief",
             missionTitle: "Our Mission",
             missionDesc: "To empower Muslim women with knowledge, skills, opportunities and awareness of their rights, enabling them to make informed decisions, achieve greater independence and participate equally in society.",
@@ -381,7 +381,7 @@ export const translations = {
             text: "इस मंच पर प्रदान की गई कानूनी जानकारी केवल सामान्य शैक्षिक और सूचनात्मक उद्देश्यों के लिए है। यह औपचारिक कानूनी सलाह नहीं है। विशिष्ट स्थितियों के लिए आगंतुकों को सत्यापित कानूनी पेशेवरों या स्थानीय सुरक्षा एजेंसियों से परामर्श करना चाहिए।"
         },
         hero: {
-            tag: "<img src=\"logo2.png?v=3\" class=\"logo-inline\" alt=\"dehliz ek umeed\">",
+            tag: "<img src=\"/logo2.png?v=3\" class=\"logo-inline\" alt=\"dehliz ek umeed\">",
             title: "मुस्लिम महिलाओं का सशक्तिकरण। अधिकारों की सुरक्षा।",
             desc: "हम भारतीय संवैधानिक कानून और इस्लामी न्यायशास्त्र के तहत महिलाओं के अधिकारों पर ध्यान केंद्रित करते हुए जागरूकता, सामाजिक सुरक्षा नेटवर्क और कानूनी समझ को बढ़ावा देते हैं।",
             actions: {
@@ -486,7 +486,7 @@ export const translations = {
         },
         aboutPage: {
             title: "हम कौन हैं",
-            desc: "<img src=\"logo2.png?v=3\" class=\"logo-inline\" alt=\"Dehliz - Ek Umeed\"> एक ऐसी पहल है जो एक अधिक सूचित, सशक्त और समावेशी समाज बनाने के लिए प्रतिबद्ध है जहां मुस्लिम महिलाओं के पास अपने स्वयं के भविष्य को आकार देने के लिए ज्ञान, अवसर और आत्मविश्वास हो।",
+            desc: "<img src=\"/logo2.png?v=3\" class=\"logo-inline\" alt=\"Dehliz - Ek Umeed\"> एक ऐसी पहल है जो एक अधिक सूचित, सशक्त और समावेशी समाज बनाने के लिए प्रतिबद्ध है जहां मुस्लिम महिलाओं के पास अपने स्वयं के भविष्य को आकार देने के लिए ज्ञान, अवसर और आत्मविश्वास हो।",
             focusTitle: "हमारा ध्यान और विश्वास",
             missionTitle: "हमारा मिशन",
             missionDesc: "मुस्लिम महिलाओं को ज्ञान, कौशल, अवसर और उनके अधिकारों के बारे में जागरूकता के साथ सशक्त बनाना, जिससे वे सूचित निर्णय लेने, अधिक स्वतंत्रता प्राप्त करने और समाज में समान रूप से भाग लेने में सक्षम हो सकें।",
@@ -694,7 +694,7 @@ export const translations = {
             text: "या प्लॅटफॉर्मवर प्रदान केलेली कायदेशीर माहिती केवळ सामान्य शैक्षणिक आणि माहितीच्या उद्देशाने आहे. हा अधिकृत कायदेशीर सल्ला नाही. अभ्यागतांनी विशिष्ट परिस्थितींसाठी प्रमाणित कायदेशीर तज्ञ किंवा स्थानिक संरक्षण संस्थांशी सल्लामसलत करावी."
         },
         hero: {
-            tag: "<img src=\"logo2.png?v=3\" class=\"logo-inline\" alt=\"dehliz ek umeed\">",
+            tag: "<img src=\"/logo2.png?v=3\" class=\"logo-inline\" alt=\"dehliz ek umeed\">",
             title: "मुस्लिम महिलांचे सक्षमीकरण. अधिकारांचे संरक्षण.",
             desc: "आम्ही भारतीय घटनात्मक कायदा आणि इस्लामी न्यायशास्त्र या अंतर्गत महिलांच्या अधिकारांवर लक्ष केंद्रित करून जागरूकता, सामाजिक सुरक्षा नेटवर्क आणि कायदेशीर समज वाढवतो.",
             actions: {
@@ -799,7 +799,7 @@ export const translations = {
         },
         aboutPage: {
             title: "आम्ही कोण आहोत",
-            desc: "<img src=\"logo2.png?v=3\" class=\"logo-inline\" alt=\"Dehliz - Ek Umeed\"> हा एक उपक्रम आहे जो अधिक जागरूक, सक्षम आणि सर्वसमावेशक समाज निर्माण करण्यासाठी कटिबद्ध आहे जिथे मुस्लिम महिलांना त्यांचे स्वतःचे भविष्य घडवण्यासाठी ज्ञान, संधी आणि आत्मविश्वास असेल.",
+            desc: "<img src=\"/logo2.png?v=3\" class=\"logo-inline\" alt=\"Dehliz - Ek Umeed\"> हा एक उपक्रम आहे जो अधिक जागरूक, सक्षम आणि सर्वसमावेशक समाज निर्माण करण्यासाठी कटिबद्ध आहे जिथे मुस्लिम महिलांनाcorporate आणि वैयक्तिक हक्कांबद्दल स्वतःचे भविष्य घडवण्यासाठी ज्ञान, संधी आणि आत्मविश्वास असेल.",
             focusTitle: "आमचे लक्ष आणि विश्वास",
             focusDesc: "आमचे कार्य चार प्रमुख क्षेत्रांच्या माध्यमातून जागरूकतेचे कृतीत रूपांतर करण्यावर केंद्रित आहे:",
             missionTitle: "आमचे ध्येय",
