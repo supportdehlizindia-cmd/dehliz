@@ -2,17 +2,33 @@ import { translations } from './translations.js';
 
 // Setup i18n
 window.t = function(key, params = {}, fallback = null) {
-    const lang = localStorage.getItem('dehliz_lang') || 'en';
+    let lang = localStorage.getItem('dehliz_lang') || 'en';
+    if (lang === 'mr') {
+        lang = 'ur';
+        localStorage.setItem('dehliz_lang', 'ur');
+    }
     const keys = key.split('.');
-    let translation = translations[lang];
+    let translation = translations[lang] || translations['en'];
     for (const k of keys) {
-        if (translation) {
+        if (translation && translation[k] !== undefined) {
             translation = translation[k];
         } else {
-            return fallback !== null ? fallback : key; // Fallback to provided fallback
+            // Fallback to English translation
+            let engFallback = translations['en'];
+            for (const ek of keys) {
+                if (engFallback && engFallback[ek] !== undefined) {
+                    engFallback = engFallback[ek];
+                } else {
+                    engFallback = null;
+                    break;
+                }
+            }
+            return engFallback !== null ? engFallback : (fallback !== null ? fallback : key);
         }
     }
-    if (!translation) return fallback !== null ? fallback : key;
+    if (translation === undefined || translation === null) {
+        return fallback !== null ? fallback : key;
+    }
     
     // Replace placeholders like {{name}}
     Object.keys(params).forEach(pKey => {
@@ -24,6 +40,7 @@ window.t = function(key, params = {}, fallback = null) {
 };
 
 window.setLanguage = function(lang) {
+    if (lang === 'mr') lang = 'ur';
     localStorage.setItem('dehliz_lang', lang);
     window.localizeDOM();
     
@@ -37,6 +54,22 @@ window.setLanguage = function(lang) {
 };
 
 window.localizeDOM = function() {
+    let currentLang = localStorage.getItem('dehliz_lang') || 'en';
+    if (currentLang === 'mr') {
+        currentLang = 'ur';
+        localStorage.setItem('dehliz_lang', 'ur');
+    }
+
+    // Set HTML lang and dir attributes for LTR/RTL support
+    document.documentElement.lang = currentLang;
+    if (currentLang === 'ur') {
+        document.documentElement.dir = 'rtl';
+        document.documentElement.classList.add('lang-ur');
+    } else {
+        document.documentElement.dir = 'ltr';
+        document.documentElement.classList.remove('lang-ur');
+    }
+
     // Translate standard elements
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -49,14 +82,10 @@ window.localizeDOM = function() {
     });
 
     // Update active language switcher UI select dropdown
-    const currentLang = localStorage.getItem('dehliz_lang') || 'en';
     const langSelect = document.getElementById('lang-select');
     if (langSelect) {
         langSelect.value = currentLang;
     }
-
-    // Set HTML lang attribute
-    document.documentElement.lang = currentLang;
 };
 
 /**
@@ -805,7 +834,7 @@ function getHomeHtml() {
     return `
         <!-- Hero Section -->
         <section class="hero bg-beige-section">
-            <div class="container grid-2">
+            <div class="container grid-2 hero-grid">
                 <div class="hero-content">
                     <span class="hero-tag" style="font-family: var(--font-logo); text-transform: lowercase; font-size: 1.3rem; color: var(--color-bronze); display: inline-flex; align-items: center; gap: 8px; margin-bottom: 1.5rem;">${window.t('hero.tag')}</span>
                     <h1 class="hero-title">${window.t('hero.title')}</h1>
@@ -815,11 +844,11 @@ function getHomeHtml() {
                         <a href="#/donate" class="btn btn-secondary">${window.t('hero.actions.donate')}</a>
                     </div>
                 </div>
-            </div>
-            <div class="hero-image-container">
-                <div class="hero-img-wrapper" style="overflow: hidden;">
-                    <!-- Brand logo video as primary visual anchor -->
-                    <video src="vid.mp4" autoplay loop muted playsinline style="width: 100%; height: auto; max-width: 480px; display: block; border-radius: 8px;"></video>
+                <div class="hero-image-container">
+                    <div class="hero-img-wrapper" style="overflow: hidden;">
+                        <!-- Brand logo video as primary visual anchor -->
+                        <video src="vid.mp4" autoplay loop muted playsinline style="width: 100%; height: auto; max-width: 440px; display: block; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);"></video>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1315,7 +1344,7 @@ function getOurWorkHtml() {
                     <span class="section-tag">${window.t('workPage.v1Tag')}</span>
                     <h2 class="section-title">${window.t('workPage.v1Title')}</h2>
                     <p style="margin-bottom: 1.2rem;">${window.t('workPage.v1Desc')}</p>
-                    <a href="#/contact" class="btn btn-primary">${window.t('home.hero.actions.getSupport')}</a>
+                    <a href="#/contact" class="btn btn-primary">${window.t('nav.support', {}, 'Get Support')}</a>
                 </div>
                 <div>
                     <img src="/community_support.png" alt="Counseling meeting context" style="border: 1px solid rgba(142, 112, 79, 0.2); padding: 8px; background: var(--color-cream); max-height: 380px; width: 100%; object-fit: cover;">
@@ -1572,28 +1601,10 @@ window.openResourceModal = function (id) {
 
     // Create modal wrapper overlay
     const modalOverlay = document.createElement('div');
-    modalOverlay.style.position = 'fixed';
-    modalOverlay.style.top = '0';
-    modalOverlay.style.left = '0';
-    modalOverlay.style.width = '100%';
-    modalOverlay.style.height = '100%';
-    modalOverlay.style.backgroundColor = 'rgba(20, 20, 20, 0.6)';
-    modalOverlay.style.backdropFilter = 'blur(5px)';
-    modalOverlay.style.zIndex = '2000';
-    modalOverlay.style.display = 'flex';
-    modalOverlay.style.alignItems = 'center';
-    modalOverlay.style.justifyContent = 'center';
-    modalOverlay.style.padding = '2rem';
+    modalOverlay.className = 'custom-modal-overlay';
 
     const modalContent = document.createElement('div');
-    modalContent.style.backgroundColor = 'var(--color-cream)';
-    modalContent.style.border = '1px solid var(--color-bronze)';
-    modalContent.style.padding = '3rem';
-    modalContent.style.maxWidth = '700px';
-    modalContent.style.width = '100%';
-    modalContent.style.maxHeight = '90vh';
-    modalContent.style.overflowY = 'auto';
-    modalContent.style.position = 'relative';
+    modalContent.className = 'custom-modal-content';
 
     const category = window.t(`resource.${r.id}.category`, {}, r.category);
     const type = window.t(`resource.${r.id}.type`, {}, r.type);
@@ -1602,14 +1613,14 @@ window.openResourceModal = function (id) {
     const content = window.t(`resource.${r.id}.content`, {}, r.content);
 
     modalContent.innerHTML = `
-        <button style="position: absolute; right: 1.5rem; top: 1.5rem; background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--color-text-light);" onclick="closeResourceModal(this)">&times;</button>
+        <button class="modal-close-btn" aria-label="Close Modal" onclick="closeResourceModal(this)">&times;</button>
         <span class="section-tag">${category} &bull; ${type}</span>
-        <h2 style="font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 1.5rem; line-height: 1.3;">${title}</h2>
-        <p style="font-size: 0.9rem; color: var(--color-bronze); margin-bottom: 1.5rem;">${window.t('common.published', {}, 'Published')}: ${r.date}</p>
-        <p style="font-weight: 500; font-size: 1.05rem; margin-bottom: 2rem; color: var(--color-text-dark);">${summary}</p>
-        ${r.pdfUrl ? `<div style="margin-bottom: 2rem; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <a href="${r.pdfUrl}" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> ${window.t('common.viewPdf', {}, 'View PDF')}</a>
-            <a href="${r.pdfUrl}" download class="btn btn-support" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> ${window.t('common.downloadPdf', {}, 'Download PDF')}</a>
+        <h2 style="font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 1.2rem; line-height: 1.3;">${title}</h2>
+        <p style="font-size: 0.85rem; color: var(--color-bronze); margin-bottom: 1.2rem;">${window.t('common.published', {}, 'Published')}: ${r.date}</p>
+        <p style="font-weight: 500; font-size: 1rem; margin-bottom: 1.5rem; color: var(--color-text-dark);">${summary}</p>
+        ${r.pdfUrl ? `<div class="modal-actions-row">
+            <a href="${r.pdfUrl}" target="_blank" class="btn btn-primary" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> ${window.t('common.viewPdf', {}, 'View PDF')}</a>
+            <a href="${r.pdfUrl}" download class="btn btn-support" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> ${window.t('common.downloadPdf', {}, 'Download PDF')}</a>
         </div>` : ''}
         <div style="font-size: 0.95rem; line-height: 1.8; color: var(--color-text-light); border-top: 1px solid rgba(142, 112, 79, 0.15); padding-top: 1.5rem;">
             ${content}
@@ -1853,44 +1864,25 @@ function setupJoinUsInteractions() {
 
 window.showFeedbackModal = function (title, htmlContent, isSuccess) {
     const modalOverlay = document.createElement('div');
-    modalOverlay.style.position = 'fixed';
-    modalOverlay.style.top = '0';
-    modalOverlay.style.left = '0';
-    modalOverlay.style.width = '100%';
-    modalOverlay.style.height = '100%';
-    modalOverlay.style.backgroundColor = 'rgba(20, 20, 20, 0.6)';
-    modalOverlay.style.backdropFilter = 'blur(5px)';
-    modalOverlay.style.zIndex = '2000';
-    modalOverlay.style.display = 'flex';
-    modalOverlay.style.alignItems = 'center';
-    modalOverlay.style.justifyContent = 'center';
-    modalOverlay.style.padding = '2rem';
+    modalOverlay.className = 'custom-modal-overlay';
 
     const modalContent = document.createElement('div');
-    modalContent.style.backgroundColor = 'var(--color-cream)';
-    modalContent.style.border = isSuccess ? '2px solid #2E7D32' : '2px solid #B00020';
-    modalContent.style.padding = '3rem';
-    modalContent.style.borderRadius = '8px';
-    modalContent.style.maxWidth = '550px';
-    modalContent.style.width = '100%';
-    modalContent.style.textAlign = 'center';
-    modalContent.style.position = 'relative';
-    modalContent.style.boxShadow = '0 20px 40px rgba(0,0,0,0.2)';
+    modalContent.className = 'feedback-modal-content ' + (isSuccess ? 'success-modal' : 'error-modal');
 
     const icon = isSuccess ? '&#10004;' : '&#9888;';
     const iconColor = isSuccess ? '#2E7D32' : '#B00020';
-    const iconBg = isSuccess ? '#2e7d321a' : '#b000201a';
+    const iconBg = isSuccess ? 'rgba(46, 125, 50, 0.1)' : 'rgba(176, 0, 32, 0.1)';
 
     modalContent.innerHTML = `
-        <button style="position: absolute; right: 1.5rem; top: 1.5rem; background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--color-text-light);" onclick="this.closest('div').parentElement.remove()">&times;</button>
-        <div style="width: 70px; height: 70px; background: ${iconBg}; color: ${iconColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 1.5rem auto; font-weight: bold;">
+        <button class="modal-close-btn" aria-label="Close Modal" onclick="this.closest('.custom-modal-overlay').remove()">&times;</button>
+        <div style="width: 60px; height: 60px; background: ${iconBg}; color: ${iconColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 1.2rem auto; font-weight: bold;">
             ${icon}
         </div>
-        <h2 style="font-family: var(--font-heading); font-size: 2rem; margin-bottom: 1rem; color: var(--color-charcoal);">${title}</h2>
-        <div style="font-size: 1.05rem; line-height: 1.6; color: var(--color-text-light); margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 1rem; color: var(--color-charcoal);">${title}</h2>
+        <div style="font-size: 1rem; line-height: 1.6; color: var(--color-text-light); margin-bottom: 1.8rem; word-break: break-word;">
             ${htmlContent}
         </div>
-        <button class="btn btn-primary" style="padding: 0.8rem 2.5rem;" onclick="this.closest('div').parentElement.remove()">Dismiss</button>
+        <button class="btn btn-primary" style="padding: 0.8rem 2.5rem; width: auto; min-width: 150px;" onclick="this.closest('.custom-modal-overlay').remove()">Dismiss</button>
     `;
 
     modalOverlay.appendChild(modalContent);
