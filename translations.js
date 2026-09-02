@@ -176,7 +176,7 @@ export const translations = {
             desc: "<img src=\"/logo2.png?v=3\" class=\"logo-inline\" alt=\"Dehliz - Ek Umeed\"> is an initiative committed to creating a more informed, empowered and inclusive society where Muslim women have the knowledge, opportunities and confidence to shape their own futures.",
             focusTitle: "Our Focus & Belief",
             missionTitle: "Our Mission",
-            missionDesc: "To empower Muslim women with knowledge, skills, opportunities and awareness of their rights, enabling them to make informed decisions, achieve greater independence and participate equally in society.",
+            missionDesc: "To empower Muslim women with knowledge, skills, opportunities and awareness of their rights. Enabling them to make informed decisions, achieve greater independence and participate equally in society.",
             visionTitle: "Our Vision",
             visionDesc: "A society where every Muslim woman has the knowledge, opportunity, freedom and confidence to shape her own future. We envision a society where Muslim women can access education, build sustainable livelihoods, understand and exercise their rights, participate in decision-making and live with equality, safety and dignity.",
             valuesTitle: "Our Values",
