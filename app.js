@@ -2240,7 +2240,7 @@ window.getAdminPageHtml = function () {
                     <form id="admin-login-form" onsubmit="handleAdminLogin(event)">
                         <div class="form-group" style="text-align: left;">
                             <label class="form-label" for="admin-email">Admin Email ID</label>
-                            <input type="email" id="admin-email" class="form-control" required placeholder="support.dehlizindia.com@gmail.com">
+                            <input type="email" id="admin-email" class="form-control" required placeholder="Enter Email ID">
                         </div>
                         <div class="form-group" style="text-align: left;">
                             <label class="form-label" for="admin-password">Password</label>
@@ -2312,7 +2312,7 @@ window.handleAdminLogin = function (event) {
     const alertBox = document.getElementById('admin-login-alert');
 
     // Credentials checks
-    if (emailInput === 'support.dehlizindia.com@gmail.com' && passwordInput === 'Dehliz@123') {
+    if (emailInput.toLowerCase() === 'support.dehlizindia.com@gmail.com' && passwordInput === 'Dehliz@123') {
         isAdminLoggedIn = true;
         sessionStorage.setItem('dehliz_admin_auth', 'true');
         renderPage('/admin');
