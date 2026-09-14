@@ -161,7 +161,7 @@ const DEHLIZ_DATA = {
             platform: 'instagram',
             id: 'Dcn6lycjG2m',
             url: 'https://www.instagram.com/dehlizindia/p/Dcn6lycjG2m/',
-            text: 'Advocating for educational block access and rights security awareness. Seminars held in regional Muslim Women.',
+            text: 'Advocating for educational block access and rights security awareness. Seminars held in regional communities.',
             image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800',
             date: 'August 15, 2026'
         }
@@ -171,7 +171,7 @@ const DEHLIZ_DATA = {
         title: "Dehliz India - Ek Umeed",
         tag: "About Our Mission",
         embedUrl: "https://www.youtube.com/embed/UJo3ItcQtD4?playlist=UJo3ItcQtD4",
-        description: "An overview of Dehliz India's efforts in building legal awareness, supporting Muslim Women, and empowering individuals."
+        description: "An overview of Dehliz India's efforts in building legal awareness, supporting women, and empowering individuals."
     },
 
     // Campaigns Data
@@ -181,7 +181,7 @@ const DEHLIZ_DATA = {
             title: 'Empower Her Rights',
             category: 'Legal Awareness',
             date: 'August 2026',
-            description: 'A nationwide campaign focused on spreading awareness about constitutional and personal legal rights of women in local Muslim Women.',
+            description: 'A nationwide campaign focused on spreading awareness about constitutional and personal legal rights of women in local communities.',
             progress: 'Initial Phase',
             status: 'Ongoing',
             image: 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&q=80&w=800'
@@ -294,8 +294,8 @@ const DEHLIZ_DATA = {
             category: 'Research & Briefs',
             type: 'Scheme Guidelines / PDF',
             date: '2026-08-30',
-            summary: 'Official guidelines and eligibility criteria of the Post-Matric Scholarship scheme for students belonging to minority Muslim Women.',
-            content: 'This scheme provides financial assistance for higher secondary, college, and university level studies to students belonging to notified minority Muslim Women (Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains). Features 30% earmarking for girl students.',
+            summary: 'Official guidelines and eligibility criteria of the Post-Matric Scholarship scheme for students belonging to minority communities.',
+            content: 'This scheme provides financial assistance for higher secondary, college, and university level studies to students belonging to notified minority communities (Muslims, Sikhs, Christians, Buddhists, Parsis, and Jains). Features 30% earmarking for girl students.',
             pdfUrl: '/pdfs/SCHEME-OF-POST-MATRIC-SCHOLARSHIP-FOR-STUDENTS-BELONGING-TO-MINORITY-COMMUNITY_copy.pdf'
         },
         {
