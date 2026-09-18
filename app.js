@@ -635,6 +635,14 @@ function initRouter() {
             path = '/' + path;
         }
 
+        // Close mobile drawer menu on route change
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        if (hamburger && navMenu) {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('mobile-open');
+        }
+
         currentRoute = path;
         renderPage(path);
         updateActiveNavLinks(hash);
@@ -663,18 +671,20 @@ function setupGlobalEvents() {
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
 
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('mobile-open');
-    });
-
-    // Close mobile menu when a nav link is clicked
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('mobile-open');
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('mobile-open');
         });
-    });
+
+        // Close mobile menu when ANY link inside nav-menu or logo is clicked
+        document.querySelectorAll('.nav-menu a, .logo-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('mobile-open');
+            });
+        });
+    }
 }
 
 // Route Renderer
@@ -1918,8 +1928,10 @@ function getDonateHtml() {
 
                     <div class="custom-amount-container">
                         <label class="form-label">${window.t('donatePage.customLabel')}</label>
-                        <span class="custom-amount-symbol">&#8377;</span>
-                        <input type="number" id="custom-amount" class="form-control custom-amount-input" placeholder="${window.t('donatePage.customPlaceholder')}" oninput="handleCustomAmountInput(this)">
+                        <div class="custom-amount-wrapper">
+                            <span class="custom-amount-symbol">&#8377;</span>
+                            <input type="number" id="custom-amount" class="form-control custom-amount-input" placeholder="${window.t('donatePage.customPlaceholder')}" oninput="handleCustomAmountInput(this)">
+                        </div>
                     </div>
 
                     <!-- Impact indicator text box -->
