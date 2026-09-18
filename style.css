@@ -1161,19 +1161,20 @@ textarea.form-control {
 
 .custom-amount-symbol {
     position: absolute;
-    left: 1.2rem;
+    left: 1rem;
     top: 50%;
     transform: translateY(-50%);
     font-family: var(--font-heading);
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--color-text-dark);
     pointer-events: none;
     z-index: 2;
+    line-height: 1;
 }
 
 .custom-amount-input {
-    padding-left: 2.6rem;
+    padding-left: 3.2rem !important;
 }
 
 .donation-impact-card {
@@ -2315,7 +2316,7 @@ footer {
     .custom-amount-input {
         min-height: 48px;
         font-size: 16px;
-        padding-left: 2.6rem;
+        padding-left: 3.2rem !important;
     }
 
     .donation-interactive .btn-primary {
